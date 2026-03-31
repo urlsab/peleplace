@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import CategoryCard from "@/components/CategoryCard";
 import OpportunityCard from "@/components/OpportunityCard";
+import RegistrationDialog from "@/components/RegistrationDialog";
 
 const categories = [
   {
@@ -177,9 +178,13 @@ const Index = () => {
             <p className="mx-auto mb-8 max-w-md text-lg text-primary-foreground/80">
               הצטרפו לקהילה שלנו ותמצאו את המקום המושלם לכל שבת וחג
             </p>
-            <button className="rounded-full bg-background px-8 py-3 text-base font-bold text-foreground shadow-warm transition-transform hover:scale-105">
-              הצטרפו עכשיו — בחינם
-            </button>
+            <RegistrationDialog
+              trigger={
+                <button className="rounded-full bg-background px-8 py-3 text-base font-bold text-foreground shadow-warm transition-transform hover:scale-105">
+                  הצטרפו עכשיו — בחינם
+                </button>
+              }
+            />
           </motion.div>
         </div>
       </section>

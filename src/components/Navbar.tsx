@@ -1,5 +1,6 @@
 import { Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import RegistrationDialog from "@/components/RegistrationDialog";
 
 const Navbar = () => {
   return (
@@ -16,9 +17,13 @@ const Navbar = () => {
           <a href="#opportunities" className="hover:text-foreground transition-colors">הזדמנויות</a>
           <a href="#about" className="hover:text-foreground transition-colors">עלינו</a>
         </div>
-        <Button size="sm" className="rounded-full font-semibold">
-          הרשמה
-        </Button>
+        <RegistrationDialog
+          trigger={
+            <Button size="sm" className="rounded-full font-semibold">
+              הרשמה
+            </Button>
+          }
+        />
       </div>
     </nav>
   );
