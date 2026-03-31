@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import CategoryCard from "@/components/CategoryCard";
 import OpportunityCard from "@/components/OpportunityCard";
+import RegistrationDialog from "@/components/RegistrationDialog";
 
 const categories = [
   {
