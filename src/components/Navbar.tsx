@@ -1,5 +1,6 @@
 import { Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import RegistrationDialog from "@/components/RegistrationDialog";
 
 const Navbar = () => {
   return (
