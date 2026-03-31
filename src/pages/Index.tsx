@@ -187,7 +187,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="border-t border-border bg-card py-8">
         <div className="container mx-auto px-6 text-center text-sm text-muted-foreground">
-          <p>© 2026 שבת ביחד. כל הזכויות שמורות ❤️</p>
+          <p>© 2026 פל״א — פשוט לבחור איפה. כל הזכויות שמורות ❤️</p>
         </div>
       </footer>
     </div>
