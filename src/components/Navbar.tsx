@@ -9,7 +9,7 @@ const Navbar = () => {
           <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary">
             <Heart className="h-5 w-5 text-primary-foreground" fill="hsl(var(--primary-foreground))" />
           </div>
-          <span className="text-xl font-black font-display">שבת ביחד</span>
+          <span className="text-xl font-black font-display">פל״א</span>
         </div>
         <div className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
           <a href="#categories" className="hover:text-foreground transition-colors">קטגוריות</a>

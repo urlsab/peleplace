@@ -21,7 +21,7 @@ const HeroSection = () => {
           >
             <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/20 px-4 py-2 backdrop-blur-sm border border-primary/30">
               <Heart className="h-4 w-4 text-primary" fill="hsl(var(--primary))" />
-              <span className="text-sm font-medium text-primary-foreground/90">שבת ביחד — כי אף אחד לא צריך להיות לבד</span>
+              <span className="text-sm font-medium text-primary-foreground/90">פל״א — פשוט לבחור איפה</span>
             </div>
           </motion.div>
 
