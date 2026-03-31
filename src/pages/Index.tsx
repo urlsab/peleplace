@@ -3,7 +3,7 @@ import { Briefcase, HandHeart, Home, Utensils } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import CategoryCard from "@/components/CategoryCard";
-import OpportunityCard from "@/components/OpportunityCard";
+<title>פל״א — פשוט לבחור איפה</title>
 
 const categories = [
   {
