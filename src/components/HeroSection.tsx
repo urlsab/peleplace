@@ -11,9 +11,9 @@ const HeroSection = () => {
     <section className="relative min-h-[92vh] flex items-center overflow-hidden">
       {/* Background image */}
       <div className="absolute inset-0">
-        <img src={heroImage} alt="שקיעה ושבת" width={1920} height={1024} className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-l from-black/70 via-black/50 to-black/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+        <img src={heroImage} alt="נוף פסטורלי" width={1920} height={1024} className="h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-l from-black/55 via-black/35 to-black/15" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
       </div>
 
       {/* Decorative elements */}
@@ -41,7 +41,7 @@ const HeroSection = () => {
           >
             תמיד יש לך
             <br />
-            <span className="bg-gradient-to-l from-[hsl(14,75%,72%)] to-[hsl(168,45%,60%)] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-l from-[hsl(20,50%,78%)] to-[hsl(155,30%,60%)] bg-clip-text text-transparent">
               איפה להיות.
             </span>
           </motion.h1>
