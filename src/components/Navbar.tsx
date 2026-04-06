@@ -19,6 +19,7 @@ const Navbar = () => {
         <div className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
           <a href="/#categories" className="hover:text-foreground transition-colors">קטגוריות</a>
           <a href="/#opportunities" className="hover:text-foreground transition-colors">הזדמנויות</a>
+          <button onClick={() => navigate("/explore")} className="hover:text-foreground transition-colors">חיפוש</button>
         </div>
         <div className="flex items-center gap-2">
           {user ? (
