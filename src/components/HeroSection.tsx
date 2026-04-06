@@ -12,8 +12,8 @@ const HeroSection = () => {
       {/* Background image */}
       <div className="absolute inset-0">
         <img src={heroImage} alt="נוף פסטורלי" width={1920} height={1024} className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-l from-black/55 via-black/35 to-black/15" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-l from-[hsl(210,18%,15%)]/60 via-[hsl(210,18%,15%)]/35 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[hsl(210,18%,15%)]/35 via-transparent to-transparent" />
       </div>
 
       {/* Decorative elements */}
@@ -27,9 +27,9 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="mb-8 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 backdrop-blur-md border border-white/15">
+            <div className="mb-8 inline-flex items-center gap-2 rounded-full bg-cream/20 px-4 py-2 backdrop-blur-md border border-cream/25">
               <Sparkles className="h-3.5 w-3.5 text-secondary" />
-              <span className="text-xs font-medium text-white/80 tracking-wide">הקהילה שתמיד מחכה לכם</span>
+              <span className="text-xs font-medium text-cream tracking-wide">הקהילה שתמיד מחכה לכם</span>
             </div>
           </motion.div>
 
@@ -37,7 +37,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-6 text-[3.2rem] font-black leading-[1.1] tracking-tight md:text-[4.5rem] text-white"
+            className="mb-6 text-[3.2rem] font-black leading-[1.1] tracking-tight md:text-[4.5rem] text-cream"
           >
             תמיד יש לך
             <br />
@@ -50,7 +50,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-10 max-w-md text-base leading-relaxed text-white/70 md:text-lg"
+            className="mb-10 max-w-md text-base leading-relaxed text-cream-deep md:text-lg"
           >
             מחברים רווקים ורווקות למקומות חמים, אנשים מדהימים וחוויות משמעותיות — בכל שבת וחג.
           </motion.p>
@@ -71,7 +71,7 @@ const HeroSection = () => {
             <Button
               size="lg"
               variant="outline"
-              className="rounded-full text-sm font-semibold px-7 h-11 bg-white/8 border-white/20 text-white hover:bg-white/15 hover:text-white backdrop-blur-sm"
+              className="rounded-full text-sm font-semibold px-7 h-11 bg-cream/10 border-cream/25 text-cream hover:bg-cream/20 hover:text-cream backdrop-blur-sm"
               onClick={() => navigate("/auth")}
             >
               אני רוצה לארח
@@ -85,7 +85,7 @@ const HeroSection = () => {
         transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
       >
-        <ArrowDown className="h-5 w-5 text-white/40" />
+        <ArrowDown className="h-5 w-5 text-cream/40" />
       </motion.div>
     </section>
   );
