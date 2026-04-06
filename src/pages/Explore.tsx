@@ -126,7 +126,7 @@ const Explore = () => {
     volunteerProfiles?.forEach((p) =>
       items.push({
         id: p.id,
-        type: "volunteer",
+        userId: p.user_id,
         title: p.place_name,
         city: p.city,
         region: p.region,
