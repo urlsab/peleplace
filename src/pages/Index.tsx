@@ -10,6 +10,7 @@ import CategoryCard from "@/components/CategoryCard";
 import RegistrationCards from "@/components/RegistrationCards";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
+import ContactSection from "@/components/ContactSection";
 
 const categories = [
   {
@@ -143,6 +144,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Contact */}
+      <ContactSection />
 
       {/* CTA */}
       <section className="py-24 pattern-dots">
