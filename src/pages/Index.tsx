@@ -10,6 +10,7 @@ import CategoryCard from "@/components/CategoryCard";
 import RegistrationCards from "@/components/RegistrationCards";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
+import ContactSection from "@/components/ContactSection";
 
 const categories = [
   {
