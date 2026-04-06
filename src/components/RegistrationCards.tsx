@@ -18,7 +18,7 @@ const registrationCards = [
   {
     image: cardHosting,
     title: "משפחה מארחת?",
-    subtitle: "פתחו את הדלת לאורח/ת לשבת",
+    subtitle: "הזמינו אורח/ת לשולחן השבת",
     description: "הצטרפו כמארחים והזמינו רווקים ורווקות לשולחן השבת שלכם",
     cta: "הירשמו כמארחים",
     userType: "host",
