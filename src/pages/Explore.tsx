@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Search, Filter, MapPin, Calendar, Users, Briefcase, HandHeart, Home, X } from "lucide-react";
+import { Search, Filter, MapPin, Calendar, Users, Briefcase, HandHeart, Home, X, Send } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
