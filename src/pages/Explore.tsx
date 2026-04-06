@@ -128,9 +128,8 @@ const Explore = () => {
       items.push({
         id: p.id,
         userId: p.user_id,
+        type: "volunteer",
         title: p.place_name,
-        city: p.city,
-        region: p.region,
         religiousLevel: null,
         availableDates: null,
         details: {
