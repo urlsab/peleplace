@@ -164,6 +164,47 @@ const Index = () => {
         </div>
       </section>
 
+      {/* About Us */}
+      <section className="py-24 bg-card">
+        <div className="container mx-auto px-6">
+          <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
+            <span className="mb-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
+              קצת עלינו
+            </span>
+            <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
+              מי <span className="text-gradient-warm">אנחנו?</span>
+            </h2>
+          </motion.div>
+          <div className="grid gap-8 md:grid-cols-2 items-center max-w-4xl mx-auto">
+            <motion.div {...fadeUp} transition={{ delay: 0.1, duration: 0.5 }} className="space-y-5 text-right">
+              <p className="text-muted-foreground leading-relaxed text-[15px]">
+                <strong className="text-foreground">פל״א</strong> — פשוט לבחור איפה — נולד מתוך הבנה עמוקה של מה שרווקים ורווקות מרגישים בשבתות ובחגים. כשכולם מתאספים עם המשפחה, לפעמים קשה למצוא את המקום שלך.
+              </p>
+              <p className="text-muted-foreground leading-relaxed text-[15px]">
+                אנחנו מחברים בין רווקים ורווקות לבין משפחות מארחות, מקומות עבודה ומקומות התנדבות — כדי שכל שבת וכל חג יהיו מלאים במשמעות, חום וחברה.
+              </p>
+              <p className="text-muted-foreground leading-relaxed text-[15px]">
+                הקהילה שלנו מבוססת על אמון, אימות מוקפד וערבות הדדית. כל חבר עובר תהליך אישור כדי ליצור סביבה בטוחה ואיכותית לכולם.
+              </p>
+            </motion.div>
+            <motion.div {...fadeUp} transition={{ delay: 0.2, duration: 0.5 }} className="grid grid-cols-2 gap-4">
+              {[
+                { emoji: "🤝", title: "אמון", desc: "כל חבר עובר אימות" },
+                { emoji: "🏡", title: "חום", desc: "משפחות פותחות את הדלת" },
+                { emoji: "💼", title: "הזדמנות", desc: "עבודה והתנדבות משמעותית" },
+                { emoji: "❤️", title: "קהילה", desc: "אלפי חברים פעילים" },
+              ].map((item) => (
+                <div key={item.title} className="rounded-2xl bg-background border border-border/60 p-5 text-center shadow-card">
+                  <div className="text-2xl mb-2">{item.emoji}</div>
+                  <div className="font-bold font-display text-sm mb-1">{item.title}</div>
+                  <div className="text-xs text-muted-foreground">{item.desc}</div>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
       <section className="py-24 pattern-dots">
         <div className="container mx-auto px-6">
