@@ -36,6 +36,9 @@ const Navbar = () => {
                   <Shield className="h-3.5 w-3.5" /> ניהול
                 </Button>
               )}
+              <Button size="sm" variant="outline" className="rounded-full gap-1.5 text-xs h-8" onClick={() => navigate("/my-bookings")}>
+                <CalendarCheck className="h-3.5 w-3.5" /> הזמנות
+              </Button>
               <Button size="sm" variant="outline" className="rounded-full gap-1.5 text-xs h-8" onClick={() => navigate("/profile")}>
                 <User className="h-3.5 w-3.5" /> פרופיל
               </Button>
