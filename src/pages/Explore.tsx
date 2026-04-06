@@ -92,7 +92,7 @@ const Explore = () => {
       items.push({
         id: p.id,
         type: "family",
-        title: p.about_us ? `אירוח אצל ${(p as any).profiles?.full_name || "משפחה"}` : `משפחה מארחת`,
+        title: p.about_us ? `אירוח — ${p.city || "משפחה מארחת"}` : "משפחה מארחת",
         city: p.city,
         region: p.region,
         religiousLevel: p.religious_level,
