@@ -68,10 +68,9 @@ const Explore = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("host_work_profiles")
-        .select("*, profiles!inner(full_name, registration_status)")
-        .eq("profiles.registration_status", "approved");
+        .select("*");
       if (error) throw error;
-      return data;
+      return data || [];
     },
   });
 
