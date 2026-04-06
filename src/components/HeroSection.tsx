@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Heart, ArrowDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-shabbat.jpg";
 
 const HeroSection = () => {
