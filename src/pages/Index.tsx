@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Briefcase, HandHeart, Home, ArrowLeft, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
+import aboutIllustration from "@/assets/about-illustration.jpg";
 import HeroSection from "@/components/HeroSection";
 import CategoryCard from "@/components/CategoryCard";
 import OpportunityCard from "@/components/OpportunityCard";
@@ -178,6 +179,14 @@ const Index = () => {
           <div className="grid gap-10 md:grid-cols-2 items-start max-w-5xl mx-auto">
             {/* Personal story */}
             <motion.div {...fadeUp} transition={{ delay: 0.1, duration: 0.5 }} className="space-y-5 text-right">
+              <img
+                src={aboutIllustration}
+                alt="אילוסטרציה של ארוחת שבת משותפת"
+                className="w-full rounded-2xl shadow-card mb-2"
+                loading="lazy"
+                width={800}
+                height={600}
+              />
               <p className="text-muted-foreground leading-[1.85] text-[15px]">
                 שלום, אני <strong className="text-foreground">אודיה עמרוסי</strong>, בת 32, נשואה ליוסף חיים ואמא לפלא בן 9 חודשים.
                 התחתנתי בגיל 30 — אחרי שנים ארוכות של שבתות וחגים שבהם הרגשתי קצת בודדה בתוך ההמולה המשפחתית.
