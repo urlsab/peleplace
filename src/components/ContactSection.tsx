@@ -15,7 +15,7 @@ const fadeUp = {
 };
 
 const ContactSection = () => {
-  const [form, setForm] = useState({ full_name: "", email: "", phone: "", message: "" });
+  const [form, setForm] = useState({ full_name: "", email: "", phone: "", subject: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
 
