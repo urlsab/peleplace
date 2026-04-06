@@ -70,7 +70,7 @@ const Admin = () => {
   if (!isAdmin) return null;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pattern-dots">
       <Navbar />
       <div className="pt-24 pb-12 px-4">
         <div className="mx-auto max-w-4xl">

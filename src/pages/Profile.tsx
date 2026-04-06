@@ -42,7 +42,7 @@ const Profile = () => {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background pattern-dots">
         <Navbar />
         <div className="pt-24 text-center px-4">
           <h1 className="text-2xl font-black font-display mb-4">עדיין לא נרשמת</h1>
@@ -55,7 +55,7 @@ const Profile = () => {
 
   if (profile.registration_status === "pending") {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background pattern-dots">
         <Navbar />
         <div className="pt-24 text-center px-4">
           <Clock className="mx-auto h-16 w-16 text-amber-soft mb-4" />
@@ -68,7 +68,7 @@ const Profile = () => {
 
   if (profile.registration_status === "rejected") {
     return (
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background pattern-dots">
         <Navbar />
         <div className="pt-24 text-center px-4">
           <XCircle className="mx-auto h-16 w-16 text-destructive mb-4" />
@@ -208,7 +208,7 @@ const Profile = () => {
   );
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pattern-dots">
       <Navbar />
       <div className="pt-24 pb-12 px-4">
         <div className="mx-auto max-w-lg">
