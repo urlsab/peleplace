@@ -167,7 +167,7 @@ const Index = () => {
       </section>
 
       {/* About Us */}
-      <section className="py-24 bg-card">
+      <section id="about" className="py-24 bg-card">
         <div className="container mx-auto px-6">
           <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
             <span className="mb-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
