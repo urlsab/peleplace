@@ -145,6 +145,9 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Contact */}
+      <ContactSection />
+
       {/* CTA */}
       <section className="py-24 pattern-dots">
         <div className="container mx-auto px-6">
