@@ -2,9 +2,10 @@
 
 ## Core
 פל״א — פשוט לבחור איפה. RTL Hebrew app with Heebo/Rubik fonts.
-Calm palette: primary teal #4E9E95, secondary coral, clean light bg.
+Text-only logo (no icon). Young & dynamic aesthetic. Primary teal, secondary coral.
 Lovable Cloud backend. 3 categories: עבודה, התנדבות, אירוח (NO חברה לארוחה).
 Admin approval flow: register → pending → admin approves → build profile.
+Google OAuth enabled via Lovable Cloud managed auth.
 
 ## Memories
 - [DB Schema](mem://features/db-schema) — Tables, enums, roles, and RLS policies

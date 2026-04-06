@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Briefcase, HandHeart, Home } from "lucide-react";
+import { Briefcase, HandHeart, Home, ArrowLeft, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
@@ -66,16 +66,18 @@ const stats = [
   { number: "98%", label: "שביעות רצון" },
 ];
 
+const fadeUp = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true },
+};
+
 const Index = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
 
   const handleCTA = () => {
-    if (user) {
-      navigate("/profile");
-    } else {
-      navigate("/auth");
-    }
+    navigate(user ? "/profile" : "/auth");
   };
 
   return (
@@ -84,46 +86,42 @@ const Index = () => {
       <HeroSection />
 
       {/* Stats */}
-      <section className="border-b border-border bg-card py-12">
-        <div className="container mx-auto grid grid-cols-2 gap-8 px-6 md:grid-cols-4">
+      <section className="relative border-b border-border/60 bg-card py-14">
+        <div className="container mx-auto grid grid-cols-2 gap-6 px-6 md:grid-cols-4">
           {stats.map((stat, i) => (
             <motion.div
               key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
+              {...fadeUp}
+              transition={{ delay: i * 0.08, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               className="text-center"
             >
-              <div className="text-3xl font-black font-display text-primary">{stat.number}</div>
-              <div className="mt-1 text-sm text-muted-foreground">{stat.label}</div>
+              <div className="text-3xl font-black font-display text-gradient-warm md:text-4xl">{stat.number}</div>
+              <div className="mt-1.5 text-xs font-medium text-muted-foreground tracking-wide">{stat.label}</div>
             </motion.div>
           ))}
         </div>
       </section>
 
       {/* Categories */}
-      <section id="categories" className="py-20">
+      <section id="categories" className="py-24 pattern-dots">
         <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12 text-center"
-          >
-            <h2 className="mb-3 text-3xl font-black md:text-4xl">
+          <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
+            <span className="mb-3 inline-block rounded-full bg-accent px-3 py-1 text-[11px] font-semibold text-accent-foreground tracking-wide">
+              קטגוריות
+            </span>
+            <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
               מה מתאים <span className="text-gradient-warm">לכם?</span>
             </h2>
-            <p className="text-muted-foreground text-lg">בחרו את הדרך שלכם לשבת מושלמת</p>
+            <p className="text-muted-foreground text-base max-w-md mx-auto">
+              בחרו את הדרך שלכם לשבת מושלמת — עבודה, התנדבות או אירוח חם
+            </p>
           </motion.div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {categories.map((cat, i) => (
               <motion.div
                 key={cat.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                {...fadeUp}
+                transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
                 <CategoryCard {...cat} />
               </motion.div>
@@ -133,25 +131,31 @@ const Index = () => {
       </section>
 
       {/* Opportunities */}
-      <section id="opportunities" className="bg-cream-deep py-20">
+      <section id="opportunities" className="bg-cream-deep py-24">
         <div className="container mx-auto px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12 text-center"
-          >
-            <h2 className="mb-3 text-3xl font-black md:text-4xl">הזדמנויות קרובות</h2>
-            <p className="text-muted-foreground text-lg">השבת הבאה מחכה לכם</p>
+          <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 flex flex-col items-center text-center md:flex-row md:justify-between md:text-right">
+            <div>
+              <span className="mb-3 inline-block rounded-full bg-secondary/10 px-3 py-1 text-[11px] font-semibold text-secondary tracking-wide">
+                הזדמנויות
+              </span>
+              <h2 className="mb-2 text-3xl font-black md:text-[2.75rem] leading-tight">הזדמנויות קרובות</h2>
+              <p className="text-muted-foreground text-base">השבת הבאה מחכה לכם</p>
+            </div>
+            <Button
+              variant="outline"
+              className="mt-4 md:mt-0 rounded-full gap-2 text-xs font-semibold"
+              onClick={() => navigate("/explore")}
+            >
+              ראו הכל
+              <ArrowLeft className="h-3.5 w-3.5" />
+            </Button>
           </motion.div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {opportunities.map((opp, i) => (
               <motion.div
                 key={opp.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                {...fadeUp}
+                transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
               >
                 <OpportunityCard {...opp} />
               </motion.div>
@@ -161,36 +165,56 @@ const Index = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-20">
+      <section className="py-24 pattern-dots">
         <div className="container mx-auto px-6">
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="relative overflow-hidden rounded-3xl p-12 text-center md:p-16"
+            transition={{ duration: 0.6 }}
+            className="relative overflow-hidden rounded-[2rem] p-12 text-center md:p-20"
             style={{ background: "var(--gradient-warm)" }}
           >
-            <h2 className="mb-4 text-3xl font-black text-primary-foreground md:text-4xl">
-              השבת הבאה שלכם מתחילה כאן
-            </h2>
-            <p className="mx-auto mb-8 max-w-md text-lg text-primary-foreground/80">
-              הצטרפו לקהילה שלנו ותמצאו את המקום המושלם לכל שבת וחג
-            </p>
-            <Button
-              onClick={handleCTA}
-              className="rounded-full bg-background px-8 py-3 text-base font-bold text-foreground shadow-warm transition-transform hover:scale-105 hover:bg-background/90"
-              size="lg"
-            >
-              הצטרפו עכשיו — בחינם
-            </Button>
+            {/* Decorative circles */}
+            <div className="absolute -top-20 -left-20 h-60 w-60 rounded-full bg-white/10 blur-2xl" />
+            <div className="absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-white/8 blur-2xl" />
+
+            <div className="relative z-10">
+              <div className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-medium text-white/80 backdrop-blur-sm">
+                <Star className="h-3 w-3" fill="currentColor" />
+                הצטרפו ל-2,500+ חברי קהילה
+              </div>
+              <h2 className="mb-4 text-3xl font-black text-white md:text-[2.75rem] leading-tight">
+                השבת הבאה שלכם
+                <br />
+                מתחילה כאן
+              </h2>
+              <p className="mx-auto mb-8 max-w-md text-base text-white/70">
+                הצטרפו לקהילה שלנו ותמצאו את המקום המושלם לכל שבת וחג
+              </p>
+              <Button
+                onClick={handleCTA}
+                size="lg"
+                className="rounded-full bg-white px-8 h-11 text-sm font-bold text-foreground shadow-lg hover:bg-white/90 transition-all hover:shadow-xl"
+              >
+                הצטרפו עכשיו — בחינם
+              </Button>
+            </div>
           </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-card py-8">
-        <div className="container mx-auto px-6 text-center text-sm text-muted-foreground">
-          <p>© 2026 פל״א — פשוט לבחור איפה. כל הזכויות שמורות ❤️</p>
+      <footer className="border-t border-border/60 bg-card py-10">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col items-center gap-4 md:flex-row md:justify-between">
+            <div className="flex items-center gap-1.5">
+              <span className="text-lg font-black font-display">פל<span className="text-gradient-warm">״</span>א</span>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              © 2026 פל״א — פשוט לבחור איפה. כל הזכויות שמורות
+            </p>
+          </div>
         </div>
       </footer>
     </div>
