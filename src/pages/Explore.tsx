@@ -1,13 +1,15 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Search, Filter, MapPin, Calendar, Users, Briefcase, HandHeart, Home, X } from "lucide-react";
+import { Search, Filter, MapPin, Calendar, Users, Briefcase, HandHeart, Home, X, Send } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import { useAuth } from "@/contexts/AuthContext";
+import BookingRequestDialog from "@/components/BookingRequestDialog";
 
 const regionLabels: Record<string, string> = {
   north: "צפון",
@@ -37,6 +39,7 @@ const categoryConfig = {
 
 type OpportunityItem = {
   id: string;
+  userId: string;
   type: "family" | "work" | "volunteer";
   title: string;
   city: string | null;
@@ -47,10 +50,12 @@ type OpportunityItem = {
 };
 
 const Explore = () => {
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
   const [regionFilter, setRegionFilter] = useState<string>("all");
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [religiousFilter, setReligiousFilter] = useState<string>("all");
+  const [bookingTarget, setBookingTarget] = useState<OpportunityItem | null>(null);
 
   const { data: familyProfiles } = useQuery({
     queryKey: ["explore-family"],
@@ -91,6 +96,7 @@ const Explore = () => {
     familyProfiles?.forEach((p) =>
       items.push({
         id: p.id,
+        userId: p.user_id,
         type: "family",
         title: p.about_us ? `אירוח — ${p.city || "משפחה מארחת"}` : "משפחה מארחת",
         city: p.city,
@@ -104,6 +110,7 @@ const Explore = () => {
     workProfiles?.forEach((p) =>
       items.push({
         id: p.id,
+        userId: p.user_id,
         type: "work",
         title: p.place_name,
         city: p.city,
@@ -122,6 +129,7 @@ const Explore = () => {
     volunteerProfiles?.forEach((p) =>
       items.push({
         id: p.id,
+        userId: p.user_id,
         type: "volunteer",
         title: p.place_name,
         city: p.city,
@@ -323,6 +331,15 @@ const Explore = () => {
                           </div>
                         )}
                       </div>
+                      {user && user.id !== item.userId && (
+                        <Button
+                          size="sm"
+                          className="mt-4 w-full rounded-full gap-1.5 font-semibold"
+                          onClick={() => setBookingTarget(item)}
+                        >
+                          <Send className="h-3.5 w-3.5" /> שלחו בקשה
+                        </Button>
+                      )}
                     </div>
                   </motion.div>
                 );
@@ -338,6 +355,17 @@ const Explore = () => {
           <p>© 2026 פל״א — פשוט לבחור איפה. כל הזכויות שמורות ❤️</p>
         </div>
       </footer>
+
+      {bookingTarget && (
+        <BookingRequestDialog
+          open={!!bookingTarget}
+          onOpenChange={(open) => !open && setBookingTarget(null)}
+          hostUserId={bookingTarget.userId}
+          hostType={bookingTarget.type}
+          hostTitle={bookingTarget.title}
+          eventDate={bookingTarget.availableDates?.[0]}
+        />
+      )}
     </div>
   );
 };

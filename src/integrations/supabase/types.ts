@@ -14,6 +14,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      bookings: {
+        Row: {
+          created_at: string
+          event_date: string
+          guest_user_id: string
+          host_type: string
+          host_user_id: string
+          id: string
+          message: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          event_date: string
+          guest_user_id: string
+          host_type: string
+          host_user_id: string
+          id?: string
+          message?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          event_date?: string
+          guest_user_id?: string
+          host_type?: string
+          host_user_id?: string
+          id?: string
+          message?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       host_family_profiles: {
         Row: {
           about_us: string | null
@@ -206,6 +242,50 @@ export type Database = {
           user_type?: Database["public"]["Enums"]["user_type"]
         }
         Relationships: []
+      }
+      ratings: {
+        Row: {
+          atmosphere_rating: number
+          booking_id: string
+          comment: string | null
+          created_at: string
+          food_rating: number
+          hospitality_rating: number
+          id: string
+          reviewed_user_id: string
+          reviewer_user_id: string
+        }
+        Insert: {
+          atmosphere_rating: number
+          booking_id: string
+          comment?: string | null
+          created_at?: string
+          food_rating: number
+          hospitality_rating: number
+          id?: string
+          reviewed_user_id: string
+          reviewer_user_id: string
+        }
+        Update: {
+          atmosphere_rating?: number
+          booking_id?: string
+          comment?: string | null
+          created_at?: string
+          food_rating?: number
+          hospitality_rating?: number
+          id?: string
+          reviewed_user_id?: string
+          reviewer_user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ratings_booking_id_fkey"
+            columns: ["booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       single_profiles: {
         Row: {
