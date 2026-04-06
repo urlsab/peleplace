@@ -331,6 +331,15 @@ const Explore = () => {
                           </div>
                         )}
                       </div>
+                      {user && user.id !== item.userId && (
+                        <Button
+                          size="sm"
+                          className="mt-4 w-full rounded-full gap-1.5 font-semibold"
+                          onClick={() => setBookingTarget(item)}
+                        >
+                          <Send className="h-3.5 w-3.5" /> שלחו בקשה
+                        </Button>
+                      )}
                     </div>
                   </motion.div>
                 );
