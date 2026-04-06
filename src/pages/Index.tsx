@@ -176,26 +176,26 @@ const Index = () => {
             style={{ background: "var(--gradient-warm)" }}
           >
             {/* Decorative circles */}
-            <div className="absolute -top-20 -left-20 h-60 w-60 rounded-full bg-white/10 blur-2xl" />
-            <div className="absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-white/8 blur-2xl" />
+            <div className="absolute -top-20 -left-20 h-60 w-60 rounded-full bg-cream/10 blur-2xl" />
+            <div className="absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-cream/8 blur-2xl" />
 
             <div className="relative z-10">
-              <div className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-3 py-1 text-[11px] font-medium text-white/80 backdrop-blur-sm">
+              <div className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-cream/15 px-3 py-1 text-[11px] font-medium text-cream/80 backdrop-blur-sm">
                 <Star className="h-3 w-3" fill="currentColor" />
                 הצטרפו ל-2,500+ חברי קהילה
               </div>
-              <h2 className="mb-4 text-3xl font-black text-white md:text-[2.75rem] leading-tight">
+              <h2 className="mb-4 text-3xl font-black text-cream md:text-[2.75rem] leading-tight">
                 השבת הבאה שלכם
                 <br />
                 מתחילה כאן
               </h2>
-              <p className="mx-auto mb-8 max-w-md text-base text-white/70">
+              <p className="mx-auto mb-8 max-w-md text-base text-cream-deep">
                 הצטרפו לקהילה שלנו ותמצאו את המקום המושלם לכל שבת וחג
               </p>
               <Button
                 onClick={handleCTA}
                 size="lg"
-                className="rounded-full bg-white px-8 h-11 text-sm font-bold text-foreground shadow-lg hover:bg-white/90 transition-all hover:shadow-xl"
+                className="rounded-full bg-cream px-8 h-11 text-sm font-bold text-foreground shadow-lg hover:bg-cream-deep transition-all hover:shadow-xl"
               >
                 הצטרפו עכשיו — בחינם
               </Button>
