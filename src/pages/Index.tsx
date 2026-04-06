@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import founderPhoto from "@/assets/founder-photo.png";
 import categoriesBg from "@/assets/categories-bg.jpg";
+import aboutBg from "@/assets/about-bg.jpg";
 import HeroSection from "@/components/HeroSection";
 import CategoryCard from "@/components/CategoryCard";
 import RegistrationCards from "@/components/RegistrationCards";
