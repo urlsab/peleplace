@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import categoriesBg from "@/assets/categories-bg.jpg";
 import cardFarm from "@/assets/card-farm.jpg";
 import cardGuesthouse from "@/assets/card-guesthouse.jpg";
 import cardHosting from "@/assets/card-hosting.jpg";
