@@ -4,6 +4,7 @@ import { Send, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -14,14 +15,14 @@ const fadeUp = {
 };
 
 const ContactSection = () => {
-  const [form, setForm] = useState({ full_name: "", email: "", phone: "", message: "" });
+  const [form, setForm] = useState({ full_name: "", email: "", phone: "", subject: "", message: "" });
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!form.full_name.trim() || !form.email.trim() || !form.phone.trim() || !form.message.trim()) {
+    if (!form.full_name.trim() || !form.email.trim() || !form.phone.trim() || !form.subject || !form.message.trim()) {
       toast.error("נא למלא את כל השדות");
       return;
     }
@@ -31,6 +32,7 @@ const ContactSection = () => {
       full_name: form.full_name.trim(),
       email: form.email.trim(),
       phone: form.phone.trim(),
+      subject: form.subject,
       message: form.message.trim(),
     });
     setLoading(false);
@@ -91,6 +93,16 @@ const ContactSection = () => {
                 maxLength={20}
                 required
               />
+              <Select value={form.subject} onValueChange={(val) => setForm((p) => ({ ...p, subject: val }))}>
+                <SelectTrigger>
+                  <SelectValue placeholder="נושא הפנייה" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="guest">מתארח/ת</SelectItem>
+                  <SelectItem value="host">מארח/ת</SelectItem>
+                  <SelectItem value="other">אחר</SelectItem>
+                </SelectContent>
+              </Select>
               <Textarea
                 placeholder="מה תרצו לשאול?"
                 value={form.message}

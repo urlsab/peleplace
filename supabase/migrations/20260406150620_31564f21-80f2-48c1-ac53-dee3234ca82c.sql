@@ -1,0 +1,1 @@
+ALTER TABLE public.contact_inquiries ADD COLUMN subject TEXT NOT NULL DEFAULT 'other';
