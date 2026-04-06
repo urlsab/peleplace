@@ -27,6 +27,9 @@ const Navbar = () => {
             <Search className="h-3.5 w-3.5" />
             חיפוש
           </button>
+          <a href="/#about" className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all">
+            קצת עלינו
+          </a>
         </div>
         <div className="flex items-center gap-2">
           {user ? (
