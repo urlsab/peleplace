@@ -355,6 +355,17 @@ const Explore = () => {
           <p>© 2026 פל״א — פשוט לבחור איפה. כל הזכויות שמורות ❤️</p>
         </div>
       </footer>
+
+      {bookingTarget && (
+        <BookingRequestDialog
+          open={!!bookingTarget}
+          onOpenChange={(open) => !open && setBookingTarget(null)}
+          hostUserId={bookingTarget.userId}
+          hostType={bookingTarget.type}
+          hostTitle={bookingTarget.title}
+          eventDate={bookingTarget.availableDates?.[0]}
+        />
+      )}
     </div>
   );
 };
