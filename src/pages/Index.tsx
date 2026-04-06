@@ -172,32 +172,63 @@ const Index = () => {
               קצת עלינו
             </span>
             <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
-              מי <span className="text-gradient-warm">אנחנו?</span>
+              הסיפור <span className="text-gradient-warm">שלנו</span>
             </h2>
           </motion.div>
-          <div className="grid gap-8 md:grid-cols-2 items-center max-w-4xl mx-auto">
+          <div className="grid gap-10 md:grid-cols-2 items-start max-w-5xl mx-auto">
+            {/* Personal story */}
             <motion.div {...fadeUp} transition={{ delay: 0.1, duration: 0.5 }} className="space-y-5 text-right">
-              <p className="text-muted-foreground leading-relaxed text-[15px]">
-                <strong className="text-foreground">פל״א</strong> — פשוט לבחור איפה — נולד מתוך הבנה עמוקה של מה שרווקים ורווקות מרגישים בשבתות ובחגים. כשכולם מתאספים עם המשפחה, לפעמים קשה למצוא את המקום שלך.
+              <p className="text-muted-foreground leading-[1.85] text-[15px]">
+                שלום, אני <strong className="text-foreground">אודיה עמרוסי</strong>, בת 32, נשואה ליוסף חיים ואמא לפלא בן 9 חודשים.
+                התחתנתי בגיל 30 — אחרי שנים ארוכות של שבתות וחגים שבהם הרגשתי קצת בודדה בתוך ההמולה המשפחתית.
               </p>
-              <p className="text-muted-foreground leading-relaxed text-[15px]">
-                אנחנו מחברים בין רווקים ורווקות לבין משפחות מארחות, מקומות עבודה ומקומות התנדבות — כדי שכל שבת וכל חג יהיו מלאים במשמעות, חום וחברה.
+              <p className="text-muted-foreground leading-[1.85] text-[15px]">
+                כשאחים שלי — הגדול ממני אבל גם קטנים ממני — התחתנו, הקושי רק גדל.
+                העדפתי כל שבת וחג להתארח אצל חברים או לעבוד כאחות בבית חולים, רק כדי לא להרגיש את החלל.
               </p>
-              <p className="text-muted-foreground leading-relaxed text-[15px]">
-                הקהילה שלנו מבוססת על אמון, אימות מוקפד וערבות הדדית. כל חבר עובר תהליך אישור כדי ליצור סביבה בטוחה ואיכותית לכולם.
+              <p className="text-muted-foreground leading-[1.85] text-[15px]">
+                הקמתי את <strong className="text-foreground">פל״א</strong> כדי לתת לרווקים ורווקות את מה שהייתי צריכה — <em>בחירה</em>.
+                בחירה אם להישאר אצל ההורים, או למצוא מקום אחר להיות בו. כי המטרה פשוטה:
+              </p>
+              <p className="text-lg font-bold font-display text-foreground leading-relaxed">
+                שכל אחד ירגיש שתמיד יש לו איפה להיות. ❤️
               </p>
             </motion.div>
-            <motion.div {...fadeUp} transition={{ delay: 0.2, duration: 0.5 }} className="grid grid-cols-2 gap-4">
+
+            {/* The need from both sides */}
+            <motion.div {...fadeUp} transition={{ delay: 0.2, duration: 0.5 }} className="space-y-4">
+              <h3 className="font-bold font-display text-lg mb-4 text-right">הצורך הוא דו-צדדי</h3>
               {[
-                { emoji: "🤝", title: "אמון", desc: "כל חבר עובר אימות" },
-                { emoji: "🏡", title: "חום", desc: "משפחות פותחות את הדלת" },
-                { emoji: "💼", title: "הזדמנות", desc: "עבודה והתנדבות משמעותית" },
-                { emoji: "❤️", title: "קהילה", desc: "אלפי חברים פעילים" },
+                {
+                  emoji: "💛",
+                  title: "רווקים ורווקות",
+                  desc: "מחפשים מקום חם ומשמעותי להיות בו בשבתות ובחגים",
+                },
+                {
+                  emoji: "🏡",
+                  title: "זוגות ומשפחות",
+                  desc: "רוצים להרגיש חלק, לפתוח את הדלת ולהכיל — גם כשאין יכולת לשדך",
+                },
+                {
+                  emoji: "🌱",
+                  title: "חוות ונוער בסיכון",
+                  desc: "ארגונים שזקוקים למתנדבים עם לב ורצון לתת",
+                },
+                {
+                  emoji: "💼",
+                  title: "מקומות עבודה",
+                  desc: "בתי מלון, בתי אבות ובתי הארחה שמחפשים עובדים טובים ואמינים",
+                },
               ].map((item) => (
-                <div key={item.title} className="rounded-2xl bg-background border border-border/60 p-5 text-center shadow-card">
-                  <div className="text-2xl mb-2">{item.emoji}</div>
-                  <div className="font-bold font-display text-sm mb-1">{item.title}</div>
-                  <div className="text-xs text-muted-foreground">{item.desc}</div>
+                <div
+                  key={item.title}
+                  className="flex items-start gap-4 rounded-2xl bg-background border border-border/60 p-5 shadow-card text-right"
+                >
+                  <div className="text-2xl mt-0.5 shrink-0">{item.emoji}</div>
+                  <div>
+                    <div className="font-bold font-display text-sm mb-1">{item.title}</div>
+                    <div className="text-xs text-muted-foreground leading-relaxed">{item.desc}</div>
+                  </div>
                 </div>
               ))}
             </motion.div>
