@@ -39,6 +39,7 @@ const categoryConfig = {
 
 type OpportunityItem = {
   id: string;
+  userId: string;
   type: "family" | "work" | "volunteer";
   title: string;
   city: string | null;
