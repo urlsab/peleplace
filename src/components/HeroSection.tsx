@@ -54,13 +54,14 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.45 }}
             className="flex flex-wrap gap-4"
           >
-            <Button size="lg" className="rounded-full text-base font-semibold px-8 shadow-warm">
+            <Button size="lg" className="rounded-full text-base font-semibold px-8 shadow-warm" onClick={() => navigate("/auth")}>
               מצאו את השבת שלכם
             </Button>
             <Button
               size="lg"
               variant="outline"
               className="rounded-full text-base font-semibold px-8 bg-cream/10 border-cream/30 text-cream hover:bg-cream/20 hover:text-cream"
+              onClick={() => navigate("/auth")}
             >
               אני רוצה לארח
             </Button>
