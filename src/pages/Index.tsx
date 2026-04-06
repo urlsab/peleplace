@@ -53,37 +53,8 @@ const Index = () => {
       <Navbar />
       <HeroSection />
 
-      {/* Categories */}
-      <section id="categories" className="relative py-24 overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={categoriesBg} alt="" className="h-full w-full object-cover" loading="lazy" width={1920} height={1024} />
-          <div className="absolute inset-0 bg-background/75 backdrop-blur-[2px]" />
-        </div>
-        <div className="container relative z-10 mx-auto px-6">
-          <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
-            <span className="mb-3 inline-block rounded-full bg-accent px-3 py-1 text-[11px] font-semibold text-accent-foreground tracking-wide">
-              קטגוריות
-            </span>
-            <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
-              מה מתאים <span className="text-gradient-warm">לכם?</span>
-            </h2>
-            <p className="text-muted-foreground text-base max-w-md mx-auto">
-              בחרו את הדרך שלכם לשבת מושלמת — עבודה, התנדבות או אירוח חם
-            </p>
-          </motion.div>
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((cat, i) => (
-              <motion.div
-                key={cat.title}
-                {...fadeUp}
-                transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <CategoryCard {...cat} />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+
+
 
       {/* Registration Cards */}
       <RegistrationCards />
