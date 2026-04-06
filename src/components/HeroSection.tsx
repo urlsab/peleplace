@@ -28,7 +28,6 @@ const HeroSection = () => {
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="mb-8 inline-flex items-center gap-2 rounded-full bg-cream/20 px-4 py-2 backdrop-blur-md border border-cream/25">
-              <Sparkles className="h-3.5 w-3.5 text-secondary" />
               <span className="text-xs font-medium text-cream tracking-wide">הקהילה שתמיד מחכה לכם</span>
             </div>
           </motion.div>
