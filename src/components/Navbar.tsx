@@ -1,7 +1,8 @@
-import { Heart, LogOut, User, Shield } from "lucide-react";
+import { LogOut, User, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import logoImg from "@/assets/logo-pela.png";
 
 const Navbar = () => {
   const { user, isAdmin, profile, signOut } = useAuth();
@@ -11,9 +12,7 @@ const Navbar = () => {
     <nav className="fixed top-0 right-0 left-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/50">
       <div className="container mx-auto flex items-center justify-between px-6 py-3">
         <button onClick={() => navigate("/")} className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-primary">
-            <Heart className="h-5 w-5 text-primary-foreground" fill="hsl(var(--primary-foreground))" />
-          </div>
+          <img src={logoImg} alt="פל״א" width={36} height={36} className="h-9 w-9 object-contain" />
           <span className="text-xl font-black font-display">פל״א</span>
         </button>
         <div className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
