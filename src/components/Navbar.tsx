@@ -1,4 +1,4 @@
-import { LogOut, User, Shield, Search } from "lucide-react";
+import { LogOut, User, Shield, Search, CalendarCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
