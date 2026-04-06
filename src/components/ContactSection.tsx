@@ -22,7 +22,7 @@ const ContactSection = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!form.full_name.trim() || !form.email.trim() || !form.phone.trim() || !form.message.trim()) {
+    if (!form.full_name.trim() || !form.email.trim() || !form.phone.trim() || !form.subject || !form.message.trim()) {
       toast.error("נא למלא את כל השדות");
       return;
     }
