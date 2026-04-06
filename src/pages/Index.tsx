@@ -54,7 +54,11 @@ const Index = () => {
       <HeroSection />
 
       {/* Categories */}
-      <section id="categories" className="py-24 pattern-dots">
+      <section id="categories" className="relative py-24 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={categoriesBg} alt="" className="h-full w-full object-cover" loading="lazy" width={1920} height={1024} />
+          <div className="absolute inset-0 bg-background/75 backdrop-blur-[2px]" />
+        </div>
         <div className="container mx-auto px-6">
           <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
             <span className="mb-3 inline-block rounded-full bg-accent px-3 py-1 text-[11px] font-semibold text-accent-foreground tracking-wide">
