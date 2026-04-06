@@ -94,6 +94,7 @@ const Explore = () => {
     familyProfiles?.forEach((p) =>
       items.push({
         id: p.id,
+        userId: p.user_id,
         type: "family",
         title: p.about_us ? `אירוח — ${p.city || "משפחה מארחת"}` : "משפחה מארחת",
         city: p.city,
