@@ -14,16 +14,295 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      host_family_profiles: {
+        Row: {
+          about_us: string | null
+          available_dates: string[] | null
+          city: string | null
+          created_at: string
+          guest_preference:
+            | Database["public"]["Enums"]["gender_preference"]
+            | null
+          id: string
+          region: Database["public"]["Enums"]["region"] | null
+          religious_level: Database["public"]["Enums"]["religious_level"] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          about_us?: string | null
+          available_dates?: string[] | null
+          city?: string | null
+          created_at?: string
+          guest_preference?:
+            | Database["public"]["Enums"]["gender_preference"]
+            | null
+          id?: string
+          region?: Database["public"]["Enums"]["region"] | null
+          religious_level?:
+            | Database["public"]["Enums"]["religious_level"]
+            | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          about_us?: string | null
+          available_dates?: string[] | null
+          city?: string | null
+          created_at?: string
+          guest_preference?:
+            | Database["public"]["Enums"]["gender_preference"]
+            | null
+          id?: string
+          region?: Database["public"]["Enums"]["region"] | null
+          religious_level?:
+            | Database["public"]["Enums"]["religious_level"]
+            | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      host_volunteer_profiles: {
+        Row: {
+          city: string | null
+          created_at: string
+          id: string
+          place_name: string
+          provides_accommodation: boolean | null
+          provides_meals: boolean | null
+          region: Database["public"]["Enums"]["region"] | null
+          special_requirements: string | null
+          updated_at: string
+          user_id: string
+          volunteer_type: string | null
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string
+          id?: string
+          place_name: string
+          provides_accommodation?: boolean | null
+          provides_meals?: boolean | null
+          region?: Database["public"]["Enums"]["region"] | null
+          special_requirements?: string | null
+          updated_at?: string
+          user_id: string
+          volunteer_type?: string | null
+        }
+        Update: {
+          city?: string | null
+          created_at?: string
+          id?: string
+          place_name?: string
+          provides_accommodation?: boolean | null
+          provides_meals?: boolean | null
+          region?: Database["public"]["Enums"]["region"] | null
+          special_requirements?: string | null
+          updated_at?: string
+          user_id?: string
+          volunteer_type?: string | null
+        }
+        Relationships: []
+      }
+      host_work_profiles: {
+        Row: {
+          available_dates: string[] | null
+          city: string | null
+          created_at: string
+          gender_preference:
+            | Database["public"]["Enums"]["gender_preference"]
+            | null
+          id: string
+          is_permanent: boolean | null
+          job_description: string | null
+          payment: string | null
+          place_name: string
+          region: Database["public"]["Enums"]["region"] | null
+          special_requirements: string | null
+          team_size: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          available_dates?: string[] | null
+          city?: string | null
+          created_at?: string
+          gender_preference?:
+            | Database["public"]["Enums"]["gender_preference"]
+            | null
+          id?: string
+          is_permanent?: boolean | null
+          job_description?: string | null
+          payment?: string | null
+          place_name: string
+          region?: Database["public"]["Enums"]["region"] | null
+          special_requirements?: string | null
+          team_size?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          available_dates?: string[] | null
+          city?: string | null
+          created_at?: string
+          gender_preference?:
+            | Database["public"]["Enums"]["gender_preference"]
+            | null
+          id?: string
+          is_permanent?: boolean | null
+          job_description?: string | null
+          payment?: string | null
+          place_name?: string
+          region?: Database["public"]["Enums"]["region"] | null
+          special_requirements?: string | null
+          team_size?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          id_document_url: string | null
+          phone: string
+          recommender_name: string
+          recommender_phone: string
+          registration_status: Database["public"]["Enums"]["registration_status"]
+          updated_at: string
+          user_id: string
+          user_type: Database["public"]["Enums"]["user_type"]
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          id_document_url?: string | null
+          phone: string
+          recommender_name: string
+          recommender_phone: string
+          registration_status?: Database["public"]["Enums"]["registration_status"]
+          updated_at?: string
+          user_id: string
+          user_type: Database["public"]["Enums"]["user_type"]
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          id_document_url?: string | null
+          phone?: string
+          recommender_name?: string
+          recommender_phone?: string
+          registration_status?: Database["public"]["Enums"]["registration_status"]
+          updated_at?: string
+          user_id?: string
+          user_type?: Database["public"]["Enums"]["user_type"]
+        }
+        Relationships: []
+      }
+      single_profiles: {
+        Row: {
+          about_me: string | null
+          age: number | null
+          city: string | null
+          created_at: string
+          gender: Database["public"]["Enums"]["gender_preference"] | null
+          id: string
+          region: Database["public"]["Enums"]["region"] | null
+          religious_level: Database["public"]["Enums"]["religious_level"] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          about_me?: string | null
+          age?: number | null
+          city?: string | null
+          created_at?: string
+          gender?: Database["public"]["Enums"]["gender_preference"] | null
+          id?: string
+          region?: Database["public"]["Enums"]["region"] | null
+          religious_level?:
+            | Database["public"]["Enums"]["religious_level"]
+            | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          about_me?: string | null
+          age?: number | null
+          city?: string | null
+          created_at?: string
+          gender?: Database["public"]["Enums"]["gender_preference"] | null
+          id?: string
+          region?: Database["public"]["Enums"]["region"] | null
+          religious_level?:
+            | Database["public"]["Enums"]["religious_level"]
+            | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      gender_preference: "men" | "women" | "mixed"
+      host_type: "family" | "work" | "volunteer"
+      region:
+        | "north"
+        | "haifa"
+        | "sharon"
+        | "center"
+        | "tel_aviv"
+        | "jerusalem"
+        | "shfela"
+        | "south"
+        | "judea_samaria"
+      registration_status: "pending" | "approved" | "rejected"
+      religious_level:
+        | "secular"
+        | "traditional"
+        | "religious"
+        | "ultra_orthodox"
+        | "other"
+      user_type: "single" | "host"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +429,30 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      gender_preference: ["men", "women", "mixed"],
+      host_type: ["family", "work", "volunteer"],
+      region: [
+        "north",
+        "haifa",
+        "sharon",
+        "center",
+        "tel_aviv",
+        "jerusalem",
+        "shfela",
+        "south",
+        "judea_samaria",
+      ],
+      registration_status: ["pending", "approved", "rejected"],
+      religious_level: [
+        "secular",
+        "traditional",
+        "religious",
+        "ultra_orthodox",
+        "other",
+      ],
+      user_type: ["single", "host"],
+    },
   },
 } as const
