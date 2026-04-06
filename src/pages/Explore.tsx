@@ -164,7 +164,7 @@ const Explore = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background" dir="rtl">
+    <div className="min-h-screen bg-background pattern-dots" dir="rtl">
       <Navbar />
       <div className="pt-20 pb-12">
         {/* Header */}
