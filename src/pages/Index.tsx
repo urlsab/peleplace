@@ -1,12 +1,11 @@
 import { motion } from "framer-motion";
-import { Briefcase, HandHeart, Home, ArrowLeft, Star } from "lucide-react";
+import { Briefcase, HandHeart, Home, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
-import aboutIllustration from "@/assets/about-illustration.jpg";
 import founderPhoto from "@/assets/founder-photo.png";
 import HeroSection from "@/components/HeroSection";
 import CategoryCard from "@/components/CategoryCard";
-import OpportunityCard from "@/components/OpportunityCard";
+import RegistrationCards from "@/components/RegistrationCards";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 
