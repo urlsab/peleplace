@@ -93,6 +93,16 @@ const ContactSection = () => {
                 maxLength={20}
                 required
               />
+              <Select value={form.subject} onValueChange={(val) => setForm((p) => ({ ...p, subject: val }))}>
+                <SelectTrigger>
+                  <SelectValue placeholder="נושא הפנייה" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="guest">מתארח/ת</SelectItem>
+                  <SelectItem value="host">מארח/ת</SelectItem>
+                  <SelectItem value="other">אחר</SelectItem>
+                </SelectContent>
+              </Select>
               <Textarea
                 placeholder="מה תרצו לשאול?"
                 value={form.message}
