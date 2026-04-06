@@ -33,39 +33,6 @@ const categories = [
   },
 ];
 
-const opportunities = [
-  {
-    title: "שבת בצימר בגליל",
-    location: "ראש פינה",
-    date: "שבת פרשת וירא",
-    spots: 4,
-    category: "אירוח",
-    image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=600&q=80",
-  },
-  {
-    title: "התנדבות בבית אבות",
-    location: "ירושלים",
-    date: "שבת פרשת חיי שרה",
-    spots: 8,
-    category: "התנדבות",
-    image: "https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&q=80",
-  },
-  {
-    title: "עבודה במלון ספא",
-    location: "ים המלח",
-    date: "חנוכה",
-    spots: 6,
-    category: "עבודה",
-    image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80",
-  },
-];
-
-const stats = [
-  { number: "2,500+", label: "רווקים ורווקות" },
-  { number: "450+", label: "מארחים" },
-  { number: "180+", label: "מקומות פעילים" },
-  { number: "98%", label: "שביעות רצון" },
-];
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
