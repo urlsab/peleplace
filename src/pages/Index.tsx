@@ -181,9 +181,9 @@ const Index = () => {
             {/* Personal story */}
             <motion.div {...fadeUp} transition={{ delay: 0.1, duration: 0.5 }} className="space-y-5 text-right">
               <img
-                src={aboutIllustration}
-                alt="אילוסטרציה של ארוחת שבת משותפת"
-                className="w-full rounded-2xl shadow-card mb-2"
+                src={founderPhoto}
+                alt="אודיה, יוסף חיים ופלא — המשפחה מאחורי הפרויקט"
+                className="w-full rounded-2xl shadow-card mb-2 object-cover max-h-[400px]"
                 loading="lazy"
                 width={800}
                 height={600}
