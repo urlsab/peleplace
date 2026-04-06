@@ -108,7 +108,7 @@ const Explore = () => {
     workProfiles?.forEach((p) =>
       items.push({
         id: p.id,
-        type: "work",
+        userId: p.user_id,
         title: p.place_name,
         city: p.city,
         region: p.region,
