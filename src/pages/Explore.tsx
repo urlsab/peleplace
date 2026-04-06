@@ -50,10 +50,12 @@ type OpportunityItem = {
 };
 
 const Explore = () => {
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState("");
   const [regionFilter, setRegionFilter] = useState<string>("all");
   const [typeFilter, setTypeFilter] = useState<string>("all");
   const [religiousFilter, setReligiousFilter] = useState<string>("all");
+  const [bookingTarget, setBookingTarget] = useState<OpportunityItem | null>(null);
 
   const { data: familyProfiles } = useQuery({
     queryKey: ["explore-family"],
