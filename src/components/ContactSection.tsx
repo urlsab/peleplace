@@ -32,6 +32,7 @@ const ContactSection = () => {
       full_name: form.full_name.trim(),
       email: form.email.trim(),
       phone: form.phone.trim(),
+      subject: form.subject,
       message: form.message.trim(),
     });
     setLoading(false);
