@@ -103,7 +103,7 @@
   }
 
   .pattern-dots {
-    background-image: radial-gradient(hsl(168 45% 40% / 0.07) 1px, transparent 1px);
+    background-image: radial-gradient(hsl(155 30% 45% / 0.06) 1px, transparent 1px);
     background-size: 24px 24px;
   }
 }

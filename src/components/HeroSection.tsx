@@ -41,7 +41,7 @@ const HeroSection = () => {
           >
             תמיד יש לך
             <br />
-            <span className="bg-gradient-to-l from-[hsl(14,75%,72%)] to-[hsl(168,45%,60%)] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-l from-[hsl(20,50%,78%)] to-[hsl(155,30%,60%)] bg-clip-text text-transparent">
               איפה להיות.
             </span>
           </motion.h1>
