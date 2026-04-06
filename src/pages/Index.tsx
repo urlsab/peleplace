@@ -3,6 +3,7 @@ import { Briefcase, HandHeart, Home, ArrowLeft, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import aboutIllustration from "@/assets/about-illustration.jpg";
+import founderPhoto from "@/assets/founder-photo.png";
 import HeroSection from "@/components/HeroSection";
 import CategoryCard from "@/components/CategoryCard";
 import OpportunityCard from "@/components/OpportunityCard";
