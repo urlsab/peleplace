@@ -17,19 +17,13 @@ const Navbar = () => {
           <span className="hidden sm:block text-[11px] text-muted-foreground font-medium mt-0.5">פשוט לבחור איפה</span>
         </button>
         <div className="hidden md:flex items-center gap-1">
-          <a href="/#categories" className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all">
-            קטגוריות
-          </a>
-          <a href="/#opportunities" className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all">
-            הזדמנויות
+          <a href="/#about" className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all">
+            הסיפור שלנו
           </a>
           <button onClick={() => navigate("/explore")} className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all flex items-center gap-1.5">
             <Search className="h-3.5 w-3.5" />
             חיפוש
           </button>
-          <a href="/#about" className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all">
-            קצת עלינו
-          </a>
         </div>
         <div className="flex items-center gap-2">
           {user ? (
