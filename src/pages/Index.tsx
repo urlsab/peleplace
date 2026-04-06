@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import founderPhoto from "@/assets/founder-photo.png";
 import categoriesBg from "@/assets/categories-bg.jpg";
+import aboutBg from "@/assets/about-bg.jpg";
 import HeroSection from "@/components/HeroSection";
 import CategoryCard from "@/components/CategoryCard";
 import RegistrationCards from "@/components/RegistrationCards";
@@ -60,8 +61,12 @@ const Index = () => {
       <RegistrationCards />
 
       {/* About Us */}
-      <section id="about" className="py-24 bg-card">
-        <div className="container mx-auto px-6">
+      <section id="about" className="relative py-24 overflow-hidden">
+        <div className="absolute inset-0">
+          <img src={aboutBg} alt="" className="h-full w-full object-cover" loading="lazy" width={1920} height={1080} />
+          <div className="absolute inset-0 bg-background/60 backdrop-blur-[1px]" />
+        </div>
+        <div className="container relative z-10 mx-auto px-6">
           <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
             <span className="mb-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
               קצת עלינו
