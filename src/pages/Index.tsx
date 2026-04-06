@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
-import { Briefcase, HandHeart, Home, Utensils } from "lucide-react";
+import { Briefcase, HandHeart, Home } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import CategoryCard from "@/components/CategoryCard";
 import OpportunityCard from "@/components/OpportunityCard";
-import RegistrationDialog from "@/components/RegistrationDialog";
+import { useAuth } from "@/contexts/AuthContext";
+import { Button } from "@/components/ui/button";
 
 const categories = [
   {
@@ -27,13 +29,6 @@ const categories = [
     description: "זוגות ומשפחות שפותחים את הבית שלהם בשבילכם",
     examples: ["זוגות צעירים", "משפחות", "קהילות"],
     color: "terracotta" as const,
-  },
-  {
-    icon: Utensils,
-    title: "חברה לארוחה",
-    description: "מצאו בני גיל לאכול איתם ולבלות שבת ביחד",
-    examples: ["ארוחת שישי", "סעודת שבת", "ארוחת חג"],
-    color: "amber" as const,
   },
 ];
 
@@ -62,14 +57,6 @@ const opportunities = [
     category: "עבודה",
     image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600&q=80",
   },
-  {
-    title: "ארוחת שישי קהילתית",
-    location: "תל אביב",
-    date: "כל שבת",
-    spots: 12,
-    category: "חברה",
-    image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=600&q=80",
-  },
 ];
 
 const stats = [
@@ -80,6 +67,17 @@ const stats = [
 ];
 
 const Index = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  const handleCTA = () => {
+    if (user) {
+      navigate("/profile");
+    } else {
+      navigate("/auth");
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -118,7 +116,7 @@ const Index = () => {
             </h2>
             <p className="text-muted-foreground text-lg">בחרו את הדרך שלכם לשבת מושלמת</p>
           </motion.div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {categories.map((cat, i) => (
               <motion.div
                 key={cat.title}
@@ -146,7 +144,7 @@ const Index = () => {
             <h2 className="mb-3 text-3xl font-black md:text-4xl">הזדמנויות קרובות</h2>
             <p className="text-muted-foreground text-lg">השבת הבאה מחכה לכם</p>
           </motion.div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {opportunities.map((opp, i) => (
               <motion.div
                 key={opp.title}
@@ -178,13 +176,13 @@ const Index = () => {
             <p className="mx-auto mb-8 max-w-md text-lg text-primary-foreground/80">
               הצטרפו לקהילה שלנו ותמצאו את המקום המושלם לכל שבת וחג
             </p>
-            <RegistrationDialog
-              trigger={
-                <button className="rounded-full bg-background px-8 py-3 text-base font-bold text-foreground shadow-warm transition-transform hover:scale-105">
-                  הצטרפו עכשיו — בחינם
-                </button>
-              }
-            />
+            <Button
+              onClick={handleCTA}
+              className="rounded-full bg-background px-8 py-3 text-base font-bold text-foreground shadow-warm transition-transform hover:scale-105 hover:bg-background/90"
+              size="lg"
+            >
+              הצטרפו עכשיו — בחינם
+            </Button>
           </motion.div>
         </div>
       </section>
