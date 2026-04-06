@@ -10,6 +10,7 @@ import Register from "./pages/Register.tsx";
 import Profile from "./pages/Profile.tsx";
 import Admin from "./pages/Admin.tsx";
 import Explore from "./pages/Explore.tsx";
+import MyBookings from "./pages/MyBookings.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
