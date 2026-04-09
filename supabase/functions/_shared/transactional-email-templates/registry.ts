@@ -19,3 +19,6 @@ TEMPLATES['booking-approved'] = bookingApproved
 
 import { template as welcomeEmail } from './welcome.tsx'
 TEMPLATES['welcome'] = welcomeEmail
+
+import { template as registrationApproved } from './registration-approved.tsx'
+TEMPLATES['registration-approved'] = registrationApproved
