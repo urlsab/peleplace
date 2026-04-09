@@ -24,12 +24,12 @@ const fadeUp = {
 };
 
 const backgroundLayers = [
-  { id: "hero", image: heroImage, overlay: "bg-gradient-to-l from-[hsl(210,18%,15%)]/60 via-[hsl(210,18%,15%)]/35 to-transparent" },
-  { id: "opportunities", image: categoriesBg, overlay: "bg-cream/70 backdrop-blur-[2px]" },
-  { id: "about", image: aboutWarmBg, overlay: "bg-background/78 backdrop-blur-[3px]" },
-  { id: "faq", image: warmLandscapeBg, overlay: "bg-background/75 backdrop-blur-[2px]" },
-  { id: "contact", image: shabbatTableBg, overlay: "bg-background/80 backdrop-blur-[3px]" },
-  { id: "cta", image: warmTextureBg, overlay: "bg-cream/55" },
+  { id: "hero", image: heroImage, overlay: "bg-gradient-to-l from-[hsl(210,18%,15%)]/70 via-[hsl(210,18%,15%)]/45 to-[hsl(210,18%,15%)]/15" },
+  { id: "opportunities", image: categoriesBg, overlay: "bg-background/75 backdrop-blur-[2px]" },
+  { id: "about", image: aboutWarmBg, overlay: "bg-background/82 backdrop-blur-[3px]" },
+  { id: "faq", image: warmLandscapeBg, overlay: "bg-background/82 backdrop-blur-[2px]" },
+  { id: "contact", image: shabbatTableBg, overlay: "bg-background/85 backdrop-blur-[3px]" },
+  { id: "cta", image: warmTextureBg, overlay: "bg-cream/60" },
 ];
 
 const Index = () => {
