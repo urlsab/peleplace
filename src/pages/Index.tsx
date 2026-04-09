@@ -29,7 +29,7 @@ const backgroundLayers = [
   { id: "about", image: aboutWarmBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.6)", backdropFilter: "blur(1px)" } },
   { id: "faq", image: warmLandscapeBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.55)", backdropFilter: "blur(1px)" } },
   { id: "contact", image: shabbatTableBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.6)", backdropFilter: "blur(1px)" } },
-  { id: "cta", image: warmTextureBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.4)" } },
+  { id: "cta", image: warmTextureBg, overlayStyle: { backgroundColor: "hsla(155,20%,20%,0.45)", backdropFilter: "blur(1px)" } },
 ];
 
 const Index = () => {
