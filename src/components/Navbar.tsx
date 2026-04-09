@@ -20,6 +20,9 @@ const Navbar = () => {
           <a href="/#about" className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all">
             הסיפור שלנו
           </a>
+          <a href="/#faq" className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all">
+            שאלות ותשובות
+          </a>
           <a href="/#contact" className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all">
             כתבו לי
           </a>
