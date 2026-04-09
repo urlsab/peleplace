@@ -10,7 +10,7 @@ const HeroSection = () => {
   return (
     <section id="hero" className="relative min-h-[92vh] flex items-center overflow-hidden">
       {/* Dark overlay for text readability */}
-      <div className="absolute inset-0 bg-[hsl(210,18%,8%)]/60 z-[1]" />
+      <div className="absolute inset-0 z-[1]" style={{ backgroundColor: "hsla(210, 18%, 8%, 0.6)" }} />
 
       {/* Decorative elements */}
       <div className="absolute top-20 left-10 h-72 w-72 rounded-full bg-primary/10 blur-[100px]" />
