@@ -7,8 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Upload, UserRound, Building2, Heart } from "lucide-react";
+import { Upload, UserRound, Building2, Heart, CalendarIcon } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { format, differenceInYears } from "date-fns";
+import { he } from "date-fns/locale";
+import { cn } from "@/lib/utils";
 
 type Category = "single" | "host" | null;
 type HostType = "family" | "work" | "volunteer" | null;
@@ -23,10 +28,20 @@ const Register = () => {
   const [idFile, setIdFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [dateOfBirth, setDateOfBirth] = useState<Date | undefined>();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!user || !category) return;
+    if (!user || !category || !dateOfBirth) return;
+
+    if (differenceInYears(new Date(), dateOfBirth) < 18) {
+      toast({
+        title: "גיל מינימלי",
+        description: "ניתן להירשם רק מגיל 18 ומעלה",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setLoading(true);
     const form = new FormData(e.currentTarget);
@@ -55,6 +70,7 @@ const Register = () => {
         recommender_phone: form.get("refPhone") as string,
         id_document_url: idDocUrl,
         terms_accepted_at: new Date().toISOString(),
+        date_of_birth: format(dateOfBirth, "yyyy-MM-dd"),
       } as any);
 
       if (profileError) throw profileError;
@@ -149,6 +165,38 @@ const Register = () => {
               <Input id="phone" name="phone" type="tel" required placeholder="050-1234567" dir="ltr" />
             </div>
 
+            <div className="space-y-2">
+              <Label>תאריך לידה *</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-right font-normal",
+                      !dateOfBirth && "text-muted-foreground"
+                    )}
+                    type="button"
+                  >
+                    <CalendarIcon className="ml-2 h-4 w-4" />
+                    {dateOfBirth ? format(dateOfBirth, "dd/MM/yyyy") : "בחרו תאריך לידה"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={dateOfBirth}
+                    onSelect={setDateOfBirth}
+                    captionLayout="dropdown-buttons"
+                    fromYear={1940}
+                    toYear={new Date().getFullYear() - 17}
+                    locale={he}
+                    initialFocus
+                    className={cn("p-3 pointer-events-auto")}
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
             <div className="space-y-3 rounded-xl border border-border bg-background p-4">
               <h4 className="font-bold text-sm">פרטי ממליץ/ה *</h4>
               <p className="text-xs text-muted-foreground">כדי לשמור על קהילה בטוחה, נבקש פרטי איש קשר שמכיר אתכם</p>
@@ -201,7 +249,7 @@ const Register = () => {
               </Label>
             </div>
 
-            <Button type="submit" className="w-full rounded-full text-base font-bold" size="lg" disabled={loading || !termsAccepted}>
+            <Button type="submit" className="w-full rounded-full text-base font-bold" size="lg" disabled={loading || !termsAccepted || !dateOfBirth}>
               {loading ? "שולח..." : "שליחת הרשמה"}
             </Button>
 
