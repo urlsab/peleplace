@@ -3,7 +3,7 @@ import { Briefcase, HandHeart, Home, Star, Heart, Sparkles, Sun } from "lucide-r
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import founderPhoto from "@/assets/founder-photo.png";
-import aboutBg from "@/assets/about-bg.jpg";
+import aboutWarmBg from "@/assets/about-warm-bg.jpg";
 import HeroSection from "@/components/HeroSection";
 import RegistrationCards from "@/components/RegistrationCards";
 import { useAuth } from "@/contexts/AuthContext";
@@ -37,8 +37,8 @@ const Index = () => {
       {/* About Us */}
       <section id="about" className="relative py-24 overflow-hidden">
         <div className="absolute inset-0">
-          <img src={aboutBg} alt="" className="h-full w-full object-cover" loading="lazy" width={1920} height={1080} />
-          <div className="absolute inset-0 bg-cream/55 backdrop-blur-[2px]" />
+          <img src={aboutWarmBg} alt="" className="h-full w-full object-cover" loading="lazy" width={1920} height={1080} />
+          <div className="absolute inset-0 bg-background/60 backdrop-blur-[2px]" />
         </div>
 
         {/* Floating decorative elements */}
