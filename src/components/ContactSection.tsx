@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, Mail, Phone, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import warmPatternBg from "@/assets/warm-pattern-bg.jpg";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -47,14 +48,35 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-24">
-      <div className="container mx-auto px-6">
+    <section id="contact" className="relative py-24 overflow-hidden">
+      {/* Warm pattern background */}
+      <div className="absolute inset-0">
+        <img src={warmPatternBg} alt="" className="h-full w-full object-cover opacity-20" loading="lazy" width={1920} height={1080} />
+        <div className="absolute inset-0 bg-cream-deep/80" />
+      </div>
+
+      {/* Floating decorative icons */}
+      <div className="absolute top-12 left-[12%] animate-float-slow opacity-[0.07]">
+        <Mail className="h-16 w-16 text-primary" />
+      </div>
+      <div className="absolute bottom-16 right-[10%] animate-float-reverse opacity-[0.06]">
+        <Phone className="h-14 w-14 text-secondary" />
+      </div>
+      <div className="absolute top-1/2 right-[4%] animate-drift opacity-[0.05]">
+        <Sparkles className="h-10 w-10 text-terracotta" />
+      </div>
+
+      {/* Warm blurred orbs */}
+      <div className="absolute top-0 right-1/3 h-56 w-56 rounded-full bg-secondary/10 blur-[80px]" />
+      <div className="absolute bottom-0 left-1/3 h-40 w-40 rounded-full bg-primary/8 blur-[60px]" />
+
+      <div className="container relative z-10 mx-auto px-6">
         <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
           <span className="mb-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
             צרו קשר
           </span>
           <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
-            כתבו <span className="text-gradient-warm">לי</span>
+            כתבו <span className="text-gradient-warm">לנו</span>
           </h2>
           <p className="text-muted-foreground text-base max-w-md mx-auto">
             השאירו פרטים ואחזור אליכם בהקדם
@@ -69,7 +91,7 @@ const ContactSection = () => {
               <p className="text-muted-foreground text-sm">קיבלתי את ההודעה ואחזור אליכם בהקדם 💛</p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4" dir="rtl">
+            <form onSubmit={handleSubmit} className="space-y-4 bg-card/60 backdrop-blur-sm rounded-2xl p-8 border border-border/40 shadow-card" dir="rtl">
               <Input
                 placeholder="שם מלא"
                 value={form.full_name}
