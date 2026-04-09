@@ -46,7 +46,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-10 max-w-md text-base leading-relaxed text-cream-deep md:text-lg"
+            className="mb-10 max-w-md text-base leading-relaxed text-cream-deep md:text-lg drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)]"
           >
             מחברים רווקים ורווקות למקומות חמים, אנשים מדהימים וחוויות משמעותיות — בכל שבת וחג.
           </motion.p>
