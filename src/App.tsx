@@ -12,6 +12,7 @@ import Admin from "./pages/Admin.tsx";
 import Explore from "./pages/Explore.tsx";
 import MyBookings from "./pages/MyBookings.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import Unsubscribe from "./pages/Unsubscribe.tsx";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/explore" element={<Explore />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/my-bookings" element={<MyBookings />} />
+            <Route path="/unsubscribe" element={<Unsubscribe />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
