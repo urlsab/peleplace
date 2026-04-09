@@ -38,7 +38,7 @@ const Index = () => {
       <section id="about" className="relative py-24 overflow-hidden">
         <div className="absolute inset-0">
           <img src={aboutBg} alt="" className="h-full w-full object-cover" loading="lazy" width={1920} height={1080} />
-          <div className="absolute inset-0 bg-cream/70 backdrop-blur-[1px]" />
+          <div className="absolute inset-0 bg-cream/55 backdrop-blur-[2px]" />
         </div>
 
         {/* Floating decorative elements */}
