@@ -102,20 +102,21 @@ const FAQSection = () => {
         >
           <Accordion type="single" collapsible className="space-y-3">
             {faqs.map((faq, i) => {
-              const gradients = [
-                "bg-gradient-to-l from-[hsl(155,30%,45%,0.08)] to-[hsl(20,50%,70%,0.06)]",
-                "bg-gradient-to-l from-[hsl(20,50%,70%,0.1)] to-[hsl(30,50%,58%,0.06)]",
-                "bg-gradient-to-l from-[hsl(30,50%,58%,0.08)] to-[hsl(155,30%,45%,0.05)]",
-                "bg-gradient-to-l from-[hsl(155,25%,42%,0.07)] to-[hsl(20,45%,68%,0.06)]",
-                "bg-gradient-to-l from-[hsl(20,45%,68%,0.09)] to-[hsl(155,30%,45%,0.05)]",
-                "bg-gradient-to-l from-[hsl(155,30%,45%,0.06)] to-[hsl(30,50%,58%,0.08)]",
-                "bg-gradient-to-l from-[hsl(30,50%,58%,0.07)] to-[hsl(20,50%,70%,0.06)]",
+              const bgColors = [
+                "hsl(155 30% 92%)",
+                "hsl(20 40% 93%)",
+                "hsl(30 40% 92%)",
+                "hsl(155 25% 93%)",
+                "hsl(20 35% 92%)",
+                "hsl(155 20% 94%)",
+                "hsl(30 35% 93%)",
               ];
               return (
               <AccordionItem
                 key={i}
                 value={`faq-${i}`}
-                className={`rounded-2xl border border-border/50 backdrop-blur-sm px-6 shadow-card data-[state=open]:shadow-hover transition-shadow ${gradients[i % gradients.length]}`}
+                className="rounded-2xl border border-border/50 px-6 shadow-card data-[state=open]:shadow-hover transition-shadow"
+                style={{ backgroundColor: bgColors[i % bgColors.length] }}
               >
                 <AccordionTrigger className="text-right font-bold font-display text-sm py-5 hover:no-underline [&>svg]:shrink-0">
                   {faq.question}
