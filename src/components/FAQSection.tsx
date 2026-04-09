@@ -76,7 +76,7 @@ const FAQSection = () => {
           transition={{ duration: 0.6 }}
           className="mb-14 text-center"
         >
-          <div className="inline-block rounded-2xl bg-background/70 backdrop-blur-sm px-8 py-6">
+          <div className="inline-block rounded-[2.5rem] px-10 py-7 backdrop-blur-sm border border-terracotta/15" style={{ background: "linear-gradient(140deg, hsla(30,50%,58%,0.22), hsla(20,45%,68%,0.15))" }}>
             <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
               <HelpCircle className="h-3.5 w-3.5" />
               שאלות נפוצות
