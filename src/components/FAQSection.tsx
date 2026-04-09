@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { HelpCircle, Heart, Star, Sun } from "lucide-react";
-import warmLandscapeBg from "@/assets/warm-landscape-bg.jpg";
+
 
 const faqs = [
   {
