@@ -8,7 +8,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="fixed top-0 right-0 left-0 z-50 bg-background/70 backdrop-blur-xl border-b border-border/40">
+    <nav className="fixed top-0 right-0 left-0 z-50 bg-cream/80 backdrop-blur-xl border-b border-border/40">
       <div className="container mx-auto flex items-center justify-between px-6 py-3.5">
         <button onClick={() => navigate("/")} className="group flex items-center gap-1.5">
           <span className="text-2xl font-black font-display tracking-tight">
