@@ -124,7 +124,9 @@ const FAQSection = () => {
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
-            ))}
+              );
+            })}
+
           </Accordion>
         </motion.div>
       </div>
