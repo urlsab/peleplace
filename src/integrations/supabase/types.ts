@@ -326,6 +326,7 @@ export type Database = {
           recommender_name: string
           recommender_phone: string
           registration_status: Database["public"]["Enums"]["registration_status"]
+          terms_accepted_at: string | null
           updated_at: string
           user_id: string
           user_type: Database["public"]["Enums"]["user_type"]
@@ -340,6 +341,7 @@ export type Database = {
           recommender_name: string
           recommender_phone: string
           registration_status?: Database["public"]["Enums"]["registration_status"]
+          terms_accepted_at?: string | null
           updated_at?: string
           user_id: string
           user_type: Database["public"]["Enums"]["user_type"]
@@ -354,6 +356,7 @@ export type Database = {
           recommender_name?: string
           recommender_phone?: string
           registration_status?: Database["public"]["Enums"]["registration_status"]
+          terms_accepted_at?: string | null
           updated_at?: string
           user_id?: string
           user_type?: Database["public"]["Enums"]["user_type"]
