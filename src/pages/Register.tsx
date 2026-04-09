@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Upload, UserRound, Building2, Heart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -21,6 +22,7 @@ const Register = () => {
   const [hostType, setHostType] = useState<HostType>(null);
   const [idFile, setIdFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -52,7 +54,8 @@ const Register = () => {
         recommender_name: form.get("refName") as string,
         recommender_phone: form.get("refPhone") as string,
         id_document_url: idDocUrl,
-      });
+        terms_accepted_at: new Date().toISOString(),
+      } as any);
 
       if (profileError) throw profileError;
 
@@ -182,7 +185,23 @@ const Register = () => {
               </label>
             </div>
 
-            <Button type="submit" className="w-full rounded-full text-base font-bold" size="lg" disabled={loading}>
+            <div className="flex items-start gap-3 rounded-xl border border-border bg-background p-4">
+              <Checkbox
+                id="terms"
+                checked={termsAccepted}
+                onCheckedChange={(checked) => setTermsAccepted(checked === true)}
+                className="mt-0.5"
+              />
+              <Label htmlFor="terms" className="text-sm leading-relaxed cursor-pointer">
+                קראתי ואני מאשר/ת את{" "}
+                <a href="/terms" target="_blank" className="text-primary font-bold hover:underline">
+                  תקנון פל״א
+                </a>{" "}
+                ומתחייב/ת לפעול על פיו *
+              </Label>
+            </div>
+
+            <Button type="submit" className="w-full rounded-full text-base font-bold" size="lg" disabled={loading || !termsAccepted}>
               {loading ? "שולח..." : "שליחת הרשמה"}
             </Button>
 
