@@ -67,7 +67,7 @@ const ContactSection = () => {
 
       <div className="container relative z-10 mx-auto px-6">
         <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
-          <div className="inline-block rounded-2xl bg-background/70 backdrop-blur-sm px-8 py-6">
+          <div className="inline-block rounded-2xl rotate-[-1deg] px-10 py-7 backdrop-blur-sm border border-primary/20" style={{ background: "linear-gradient(125deg, hsla(155,30%,45%,0.22), hsla(30,50%,58%,0.15))" }}>
             <span className="mb-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
               צרו קשר
             </span>

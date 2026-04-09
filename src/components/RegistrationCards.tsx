@@ -120,7 +120,7 @@ const RegistrationCards = () => {
     <section id="opportunities" className="relative py-24 overflow-hidden">
       <div className="container relative z-10 mx-auto px-6">
         <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
-          <div className="inline-block rounded-2xl bg-background/70 backdrop-blur-sm px-8 py-6">
+          <div className="inline-block rounded-[2rem] px-10 py-7 backdrop-blur-sm border border-secondary/20" style={{ background: "linear-gradient(135deg, hsla(20,50%,70%,0.25), hsla(30,50%,58%,0.2))" }}>
             <span className="mb-3 inline-block rounded-full bg-secondary/10 px-3 py-1 text-[11px] font-semibold text-secondary tracking-wide">
               הצטרפו אלינו
             </span>
