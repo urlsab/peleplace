@@ -324,6 +324,7 @@ export type Database = {
           date_of_birth: string | null
           email: string
           full_name: string
+          gender: string | null
           id: string
           id_document_url: string | null
           phone: string
@@ -340,6 +341,7 @@ export type Database = {
           date_of_birth?: string | null
           email: string
           full_name: string
+          gender?: string | null
           id?: string
           id_document_url?: string | null
           phone: string
@@ -356,6 +358,7 @@ export type Database = {
           date_of_birth?: string | null
           email?: string
           full_name?: string
+          gender?: string | null
           id?: string
           id_document_url?: string | null
           phone?: string

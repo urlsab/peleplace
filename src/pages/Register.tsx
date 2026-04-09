@@ -7,16 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Upload, UserRound, Building2, Heart, CalendarIcon } from "lucide-react";
+import { Upload, UserRound, Building2, Heart, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { format, differenceInYears } from "date-fns";
-import { he } from "date-fns/locale";
-import { cn } from "@/lib/utils";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type Category = "single" | "host" | null;
-type HostType = "family" | "work" | "volunteer" | null;
 
 const Register = () => {
   const { user } = useAuth();
@@ -24,24 +19,19 @@ const Register = () => {
   const { toast } = useToast();
 
   const [category, setCategory] = useState<Category>(null);
-  const [hostType, setHostType] = useState<HostType>(null);
   const [idFile, setIdFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
-  const [dateOfBirth, setDateOfBirth] = useState<Date | undefined>();
+  const [birthYear, setBirthYear] = useState("");
+  const [gender, setGender] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: currentYear - 1940 - 16 }, (_, i) => currentYear - 17 - i);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!user || !category || !dateOfBirth) return;
-
-    if (differenceInYears(new Date(), dateOfBirth) < 18) {
-      toast({
-        title: "גיל מינימלי",
-        description: "ניתן להירשם רק מגיל 18 ומעלה",
-        variant: "destructive",
-      });
-      return;
-    }
+    if (!user || !category || !birthYear || !gender) return;
 
     setLoading(true);
     const form = new FormData(e.currentTarget);
@@ -70,17 +60,13 @@ const Register = () => {
         recommender_phone: form.get("refPhone") as string,
         id_document_url: idDocUrl,
         terms_accepted_at: new Date().toISOString(),
-        date_of_birth: format(dateOfBirth, "yyyy-MM-dd"),
+        date_of_birth: `${birthYear}-01-01`,
+        gender,
       } as any);
 
       if (profileError) throw profileError;
 
-      toast({
-        title: "ההרשמה התקבלה! 🎉",
-        description: "נבדוק את הפרטים ונחזור אליכם בהקדם. לאחר אישור תוכלו לבנות פרופיל מלא.",
-      });
-
-      navigate("/");
+      setSubmitted(true);
     } catch (error: any) {
       toast({
         title: "שגיאה",
@@ -95,6 +81,39 @@ const Register = () => {
   if (!user) {
     navigate("/auth");
     return null;
+  }
+
+  // Success page after registration
+  if (submitted) {
+    return (
+      <div className="min-h-screen bg-background pattern-dots flex items-center justify-center px-4">
+        <div className="mx-auto max-w-md text-center space-y-6">
+          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+            <CheckCircle2 className="h-10 w-10 text-primary" />
+          </div>
+          <h1 className="text-3xl font-black font-display">הבקשה נשלחה בהצלחה! 🎉</h1>
+          <div className="rounded-2xl border border-border bg-card p-6 shadow-card space-y-4 text-right">
+            <p className="text-foreground leading-relaxed">
+              תודה שנרשמתם לפל״א! הבקשה שלכם התקבלה ותיבדק על ידי הצוות שלנו בהקדם.
+            </p>
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              אנחנו שמים דגש על בניית קהילה בטוחה ומכבדת, ולכן כל הרשמה עוברת אישור ידני. 
+              ברגע שההרשמה תאושר — תקבלו עדכון במייל ותוכלו להתחיל להשתמש באתר.
+            </p>
+            <p className="text-muted-foreground text-sm">
+              ⏳ זמן אישור ממוצע: עד 24 שעות
+            </p>
+          </div>
+          <Button
+            onClick={() => navigate("/")}
+            variant="outline"
+            className="rounded-full px-8"
+          >
+            חזרה לעמוד הראשי
+          </Button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -131,8 +150,8 @@ const Register = () => {
                 <Building2 className="h-6 w-6" />
               </div>
               <div>
-                <div className="font-bold font-display text-lg">מקום לשבת / לחג</div>
-                <div className="text-sm text-muted-foreground">מארח/ת, מעסיק/ה או התנדבות</div>
+                <div className="font-bold font-display text-lg">מקום מארח</div>
+                <div className="text-sm text-muted-foreground">אירוח לשבת/חג, עבודה או התנדבות</div>
               </div>
             </button>
           </div>
@@ -140,63 +159,67 @@ const Register = () => {
           <form onSubmit={handleSubmit} className="space-y-5 rounded-2xl border border-border bg-card p-8 shadow-card">
             <button
               type="button"
-              onClick={() => { setCategory(null); setHostType(null); }}
+              onClick={() => setCategory(null)}
               className="text-sm text-primary hover:underline"
             >
               ← חזרה לבחירת קטגוריה
             </button>
 
             <div className="rounded-xl bg-accent/60 px-4 py-2.5 text-center text-sm font-medium">
-              {category === "single" ? "🙋 הרשמה כרווק/ה" : "🏠 הרשמה כמארח/מעסיק/התנדבות"}
+              {category === "single" ? "🙋 הרשמה כרווק/ה" : "🏠 הרשמה כמקום מארח"}
             </div>
 
+            {/* Full name */}
             <div className="space-y-2">
-              <Label htmlFor="fullName">שם מלא *</Label>
+              <Label htmlFor="fullName">שם ומשפחה *</Label>
               <Input id="fullName" name="fullName" required placeholder="ישראל ישראלי" />
             </div>
 
+            {/* Email */}
             <div className="space-y-2">
               <Label htmlFor="email">אימייל *</Label>
               <Input id="email" name="email" type="email" required placeholder="israel@email.com" dir="ltr" defaultValue={user.email || ""} />
             </div>
 
+            {/* Phone */}
             <div className="space-y-2">
               <Label htmlFor="phone">מספר טלפון *</Label>
               <Input id="phone" name="phone" type="tel" required placeholder="050-1234567" dir="ltr" />
             </div>
 
+            {/* Birth Year */}
             <div className="space-y-2">
-              <Label>תאריך לידה *</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-right font-normal",
-                      !dateOfBirth && "text-muted-foreground"
-                    )}
-                    type="button"
-                  >
-                    <CalendarIcon className="ml-2 h-4 w-4" />
-                    {dateOfBirth ? format(dateOfBirth, "dd/MM/yyyy") : "בחרו תאריך לידה"}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={dateOfBirth}
-                    onSelect={setDateOfBirth}
-                    captionLayout="dropdown-buttons"
-                    fromYear={1940}
-                    toYear={new Date().getFullYear() - 17}
-                    locale={he}
-                    initialFocus
-                    className={cn("p-3 pointer-events-auto")}
-                  />
-                </PopoverContent>
-              </Popover>
+              <Label>שנת לידה *</Label>
+              <Select value={birthYear} onValueChange={setBirthYear} required>
+                <SelectTrigger className="rounded-xl">
+                  <SelectValue placeholder="בחרו שנת לידה" />
+                </SelectTrigger>
+                <SelectContent>
+                  {years.map((year) => (
+                    <SelectItem key={year} value={String(year)}>
+                      {year}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
+            {/* Gender */}
+            <div className="space-y-2">
+              <Label>מין *</Label>
+              <RadioGroup value={gender} onValueChange={setGender} className="flex gap-4 pt-1" dir="rtl">
+                <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-border px-5 py-2.5 text-sm transition-colors has-[*[data-state=checked]]:border-primary has-[*[data-state=checked]]:bg-accent">
+                  <RadioGroupItem value="male" />
+                  זכר
+                </label>
+                <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-border px-5 py-2.5 text-sm transition-colors has-[*[data-state=checked]]:border-primary has-[*[data-state=checked]]:bg-accent">
+                  <RadioGroupItem value="female" />
+                  נקבה
+                </label>
+              </RadioGroup>
+            </div>
+
+            {/* Recommender */}
             <div className="space-y-3 rounded-xl border border-border bg-background p-4">
               <h4 className="font-bold text-sm">פרטי ממליץ/ה *</h4>
               <p className="text-xs text-muted-foreground">כדי לשמור על קהילה בטוחה, נבקש פרטי איש קשר שמכיר אתכם</p>
@@ -210,10 +233,11 @@ const Register = () => {
               </div>
             </div>
 
+            {/* ID Upload - optional */}
             <div className="space-y-2">
               <Label>צילום תעודת זהות / רישיון נהיגה</Label>
               <p className="text-xs text-muted-foreground">
-                לא חובה, אך העלאת מסמך מזהה תקל עלינו לאשר את ההרשמה מהר יותר 🙏
+                לא חובה, אך העלאת מסמך מזהה תקל עלינו לאשר את ההרשמה מהר יותר 🚀
               </p>
               <label
                 htmlFor="idUpload"
@@ -233,6 +257,7 @@ const Register = () => {
               </label>
             </div>
 
+            {/* Terms */}
             <div className="flex items-start gap-3 rounded-xl border border-border bg-background p-4">
               <Checkbox
                 id="terms"
@@ -249,7 +274,12 @@ const Register = () => {
               </Label>
             </div>
 
-            <Button type="submit" className="w-full rounded-full text-base font-bold" size="lg" disabled={loading || !termsAccepted || !dateOfBirth}>
+            <Button
+              type="submit"
+              className="w-full rounded-full text-base font-bold"
+              size="lg"
+              disabled={loading || !termsAccepted || !birthYear || !gender}
+            >
               {loading ? "שולח..." : "שליחת הרשמה"}
             </Button>
 
