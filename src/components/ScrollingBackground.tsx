@@ -1,9 +1,9 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 interface BackgroundLayer {
   id: string;
   image: string;
-  overlay: string;
+  overlayStyle: React.CSSProperties;
 }
 
 const ScrollingBackground = ({ layers }: { layers: BackgroundLayer[] }) => {
@@ -14,7 +14,6 @@ const ScrollingBackground = ({ layers }: { layers: BackgroundLayer[] }) => {
 
     const observer = new IntersectionObserver(
       (entries) => {
-        // Find the most visible section
         let maxRatio = 0;
         let maxIndex = activeIndex;
         entries.forEach((entry) => {
@@ -56,7 +55,7 @@ const ScrollingBackground = ({ layers }: { layers: BackgroundLayer[] }) => {
             width={1920}
             height={1080}
           />
-          <div className={`absolute inset-0 ${layer.overlay}`} />
+          <div className="absolute inset-0" style={layer.overlayStyle} />
         </div>
       ))}
     </div>
