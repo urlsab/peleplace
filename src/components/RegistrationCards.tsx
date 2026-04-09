@@ -118,10 +118,6 @@ const RegistrationCards = () => {
 
   return (
     <section id="opportunities" className="relative py-24 overflow-hidden">
-      <div className="absolute inset-0">
-        <img src={categoriesBg} alt="" className="h-full w-full object-cover" loading="lazy" />
-        <div className="absolute inset-0 bg-cream/75 backdrop-blur-[2px]" />
-      </div>
       <div className="container relative z-10 mx-auto px-6">
         <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
           <span className="mb-3 inline-block rounded-full bg-secondary/10 px-3 py-1 text-[11px] font-semibold text-secondary tracking-wide">

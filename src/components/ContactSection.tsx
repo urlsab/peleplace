@@ -49,11 +49,6 @@ const ContactSection = () => {
 
   return (
     <section id="contact" className="relative py-24 overflow-hidden">
-      {/* Warm pattern background */}
-      <div className="absolute inset-0">
-        <img src={shabbatTableBg} alt="" className="h-full w-full object-cover" loading="lazy" width={1920} height={1080} />
-        <div className="absolute inset-0 bg-background/85 backdrop-blur-[3px]" />
-      </div>
 
       {/* Floating decorative icons */}
       <div className="absolute top-12 left-[12%] animate-float-slow opacity-[0.07]">

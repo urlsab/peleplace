@@ -49,11 +49,6 @@ const faqs = [
 const FAQSection = () => {
   return (
     <section id="faq" className="relative py-24 overflow-hidden">
-      {/* Warm texture background */}
-      <div className="absolute inset-0">
-        <img src={warmLandscapeBg} alt="" className="h-full w-full object-cover" loading="lazy" width={1920} height={1080} />
-        <div className="absolute inset-0 bg-background/80 backdrop-blur-[2px]" />
-      </div>
 
       {/* Floating decorative elements */}
       <div className="absolute top-16 right-[10%] animate-float-slow opacity-[0.08]">
