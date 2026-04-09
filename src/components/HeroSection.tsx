@@ -8,13 +8,7 @@ const HeroSection = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative min-h-[92vh] flex items-center overflow-hidden">
-      {/* Background image */}
-      <div className="absolute inset-0">
-        <img src={heroImage} alt="נוף פסטורלי" width={1920} height={1024} className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-l from-[hsl(210,18%,15%)]/60 via-[hsl(210,18%,15%)]/35 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[hsl(210,18%,15%)]/35 via-transparent to-transparent" />
-      </div>
+    <section id="hero" className="relative min-h-[92vh] flex items-center overflow-hidden">
 
       {/* Decorative elements */}
       <div className="absolute top-20 left-10 h-72 w-72 rounded-full bg-primary/10 blur-[100px]" />
