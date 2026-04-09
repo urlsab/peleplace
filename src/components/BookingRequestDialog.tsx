@@ -51,6 +51,19 @@ const BookingRequestDialog = ({
       toast({ title: "שגיאה בשליחת הבקשה", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "הבקשה נשלחה בהצלחה! ✨", description: "המארח יקבל הודעה ויחזור אליך" });
+      // Send confirmation email to guest
+      supabase.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "booking-confirmation",
+          recipientEmail: user.email,
+          templateData: {
+            guestName: user.user_metadata?.full_name || "אורח/ת",
+            hostTitle,
+            eventDate: eventDate || "",
+            hostType,
+          },
+        },
+      }).catch(console.error);
       setMessage("");
       onOpenChange(false);
       onSuccess?.();
