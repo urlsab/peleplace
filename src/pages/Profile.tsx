@@ -9,9 +9,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Heart, Clock, CheckCircle, XCircle } from "lucide-react";
+import { Clock, CheckCircle, XCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
+import ProfileView from "@/components/profile/ProfileView";
+import JewishDatePicker from "@/components/profile/JewishDatePicker";
 
 const regionLabels: Record<string, string> = {
   north: "צפון", haifa: "חיפה", sharon: "שרון", center: "מרכז",
@@ -24,6 +26,10 @@ const religiousLabels: Record<string, string> = {
   ultra_orthodox: "חרדי", other: "אחר",
 };
 
+const kashrutLabels: Record<string, string> = {
+  not_kosher: "לא כשר", kosher: "כשר", mehadrin: "כשר למהדרין", chalak_beit_yosef: "חלק/בית יוסף",
+};
+
 type HostType = "family" | "work" | "volunteer" | null;
 
 const Profile = () => {
@@ -32,12 +38,67 @@ const Profile = () => {
   const { toast } = useToast();
   const [hostType, setHostType] = useState<HostType>(null);
   const [saving, setSaving] = useState(false);
+  const [mode, setMode] = useState<"view" | "edit">("view");
+  const [detailedProfile, setDetailedProfile] = useState<any>(null);
+  const [profileType, setProfileType] = useState<"single" | "family" | "work" | "volunteer" | null>(null);
+  const [loadingProfile, setLoadingProfile] = useState(true);
+  const [availableDates, setAvailableDates] = useState<string[]>([]);
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/auth");
   }, [user, authLoading]);
 
-  if (authLoading) return <div className="min-h-screen flex items-center justify-center">טוען...</div>;
+  // Load detailed profile
+  useEffect(() => {
+    if (!user || !profile || profile.registration_status !== "approved") {
+      setLoadingProfile(false);
+      return;
+    }
+
+    const loadProfile = async () => {
+      setLoadingProfile(true);
+      const isSingle = profile.user_type === "single";
+
+      if (isSingle) {
+        const { data } = await supabase.from("single_profiles").select("*").eq("user_id", user.id).maybeSingle();
+        if (data) {
+          setDetailedProfile(data);
+          setProfileType("single");
+        }
+      } else {
+        // Try each host type
+        const { data: family } = await supabase.from("host_family_profiles").select("*").eq("user_id", user.id).maybeSingle();
+        if (family) {
+          setDetailedProfile(family);
+          setProfileType("family");
+          setHostType("family");
+          setAvailableDates(family.available_dates || []);
+          setLoadingProfile(false);
+          return;
+        }
+        const { data: work } = await supabase.from("host_work_profiles").select("*").eq("user_id", user.id).maybeSingle();
+        if (work) {
+          setDetailedProfile(work);
+          setProfileType("work");
+          setHostType("work");
+          setLoadingProfile(false);
+          return;
+        }
+        const { data: volunteer } = await supabase.from("host_volunteer_profiles").select("*").eq("user_id", user.id).maybeSingle();
+        if (volunteer) {
+          setDetailedProfile(volunteer);
+          setProfileType("volunteer");
+          setHostType("volunteer");
+          setLoadingProfile(false);
+          return;
+        }
+      }
+      setLoadingProfile(false);
+    };
+    loadProfile();
+  }, [user, profile]);
+
+  if (authLoading || loadingProfile) return <div className="min-h-screen flex items-center justify-center">טוען...</div>;
   if (!user) return null;
 
   if (!profile) {
@@ -79,14 +140,34 @@ const Profile = () => {
     );
   }
 
-  // Approved - show profile form
+  // If we have a detailed profile and are in view mode, show it
+  const showView = mode === "view" && detailedProfile && profileType;
+
   const isSingle = profile.user_type === "single";
+
+  const afterSave = async () => {
+    // Reload profile
+    if (profileType === "single") {
+      const { data } = await supabase.from("single_profiles").select("*").eq("user_id", user.id).maybeSingle();
+      setDetailedProfile(data);
+    } else if (profileType === "family") {
+      const { data } = await supabase.from("host_family_profiles").select("*").eq("user_id", user.id).maybeSingle();
+      setDetailedProfile(data);
+      setAvailableDates(data?.available_dates || []);
+    } else if (profileType === "work") {
+      const { data } = await supabase.from("host_work_profiles").select("*").eq("user_id", user.id).maybeSingle();
+      setDetailedProfile(data);
+    } else if (profileType === "volunteer") {
+      const { data } = await supabase.from("host_volunteer_profiles").select("*").eq("user_id", user.id).maybeSingle();
+      setDetailedProfile(data);
+    }
+    setMode("view");
+  };
 
   const handleSingleProfile = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSaving(true);
     const form = new FormData(e.currentTarget);
-
     const data = {
       user_id: user.id,
       age: parseInt(form.get("age") as string) || null,
@@ -96,13 +177,13 @@ const Profile = () => {
       city: form.get("city") as string || null,
       about_me: form.get("aboutMe") as string || null,
     };
-
     const { error } = await supabase.from("single_profiles").upsert(data, { onConflict: "user_id" });
-
     if (error) {
       toast({ title: "שגיאה", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "הפרופיל נשמר! ✨" });
+      setProfileType("single");
+      await afterSave();
     }
     setSaving(false);
   };
@@ -111,22 +192,23 @@ const Profile = () => {
     e.preventDefault();
     setSaving(true);
     const form = new FormData(e.currentTarget);
-
     const data = {
       user_id: user.id,
       about_us: form.get("aboutUs") as string || null,
       religious_level: form.get("religiousLevel") as any || null,
+      kashrut_level: form.get("kashrutLevel") as any || null,
       guest_preference: form.get("guestPref") as any || null,
       region: form.get("region") as any || null,
       city: form.get("city") as string || null,
+      available_dates: availableDates.length > 0 ? availableDates : null,
     };
-
     const { error } = await supabase.from("host_family_profiles").upsert(data, { onConflict: "user_id" });
-
     if (error) {
       toast({ title: "שגיאה", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "הפרופיל נשמר! ✨" });
+      setProfileType("family");
+      await afterSave();
     }
     setSaving(false);
   };
@@ -135,7 +217,6 @@ const Profile = () => {
     e.preventDefault();
     setSaving(true);
     const form = new FormData(e.currentTarget);
-
     const data = {
       user_id: user.id,
       place_name: form.get("placeName") as string,
@@ -148,13 +229,13 @@ const Profile = () => {
       team_size: parseInt(form.get("teamSize") as string) || null,
       special_requirements: form.get("specialReq") as string || null,
     };
-
     const { error } = await supabase.from("host_work_profiles").upsert(data, { onConflict: "user_id" });
-
     if (error) {
       toast({ title: "שגיאה", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "הפרופיל נשמר! ✨" });
+      setProfileType("work");
+      await afterSave();
     }
     setSaving(false);
   };
@@ -163,7 +244,6 @@ const Profile = () => {
     e.preventDefault();
     setSaving(true);
     const form = new FormData(e.currentTarget);
-
     const data = {
       user_id: user.id,
       place_name: form.get("placeName") as string,
@@ -174,19 +254,19 @@ const Profile = () => {
       provides_accommodation: form.get("accommodation") === "on",
       provides_meals: form.get("meals") === "on",
     };
-
     const { error } = await supabase.from("host_volunteer_profiles").upsert(data, { onConflict: "user_id" });
-
     if (error) {
       toast({ title: "שגיאה", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "הפרופיל נשמר! ✨" });
+      setProfileType("volunteer");
+      await afterSave();
     }
     setSaving(false);
   };
 
-  const RegionSelect = ({ name }: { name: string }) => (
-    <Select name={name}>
+  const RegionSelect = ({ name, defaultValue }: { name: string; defaultValue?: string }) => (
+    <Select name={name} defaultValue={defaultValue}>
       <SelectTrigger><SelectValue placeholder="בחרו אזור" /></SelectTrigger>
       <SelectContent>
         {Object.entries(regionLabels).map(([value, label]) => (
@@ -196,11 +276,22 @@ const Profile = () => {
     </Select>
   );
 
-  const ReligiousSelect = ({ name }: { name: string }) => (
-    <Select name={name}>
+  const ReligiousSelect = ({ name, defaultValue }: { name: string; defaultValue?: string }) => (
+    <Select name={name} defaultValue={defaultValue}>
       <SelectTrigger><SelectValue placeholder="בחרו רמה" /></SelectTrigger>
       <SelectContent>
         {Object.entries(religiousLabels).map(([value, label]) => (
+          <SelectItem key={value} value={value}>{label}</SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
+  );
+
+  const KashrutSelect = ({ name, defaultValue }: { name: string; defaultValue?: string }) => (
+    <Select name={name} defaultValue={defaultValue}>
+      <SelectTrigger><SelectValue placeholder="בחרו רמת כשרות" /></SelectTrigger>
+      <SelectContent>
+        {Object.entries(kashrutLabels).map(([value, label]) => (
           <SelectItem key={value} value={value}>{label}</SelectItem>
         ))}
       </SelectContent>
@@ -212,234 +303,194 @@ const Profile = () => {
       <Navbar />
       <div className="pt-24 pb-12 px-4">
         <div className="mx-auto max-w-lg">
-          <div className="text-center mb-8">
-            <CheckCircle className="mx-auto h-12 w-12 text-secondary mb-3" />
-            <h1 className="text-3xl font-black font-display">בניית הפרופיל</h1>
-            <p className="text-muted-foreground mt-1">שלום {profile.full_name}! 👋 מלאו את הפרטים הנוספים</p>
-          </div>
-
-          {isSingle ? (
-            <form onSubmit={handleSingleProfile} className="space-y-5 rounded-2xl border border-border bg-card p-8 shadow-card">
-              <h2 className="text-xl font-bold font-display text-center">🙋 פרופיל רווק/ה</h2>
-
-              <div className="space-y-2">
-                <Label htmlFor="age">גיל</Label>
-                <Input id="age" name="age" type="number" min={18} max={99} placeholder="25" />
+          {showView ? (
+            <>
+              <div className="text-center mb-6">
+                <h1 className="text-3xl font-black font-display">הפרופיל שלי</h1>
               </div>
-
-              <div className="space-y-2">
-                <Label>מגדר</Label>
-                <RadioGroup name="gender" className="flex gap-4">
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <RadioGroupItem value="men" /><span>גבר</span>
-                  </label>
-                  <label className="flex items-center gap-2 cursor-pointer">
-                    <RadioGroupItem value="women" /><span>אישה</span>
-                  </label>
-                </RadioGroup>
-              </div>
-
-              <div className="space-y-2">
-                <Label>רמה דתית</Label>
-                <ReligiousSelect name="religiousLevel" />
-              </div>
-
-              <div className="space-y-2">
-                <Label>אזור מגורים</Label>
-                <RegionSelect name="region" />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="city">עיר / יישוב</Label>
-                <Input id="city" name="city" placeholder="תל אביב" />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="aboutMe">קצת עלי</Label>
-                <Textarea id="aboutMe" name="aboutMe" placeholder="ספרו קצת על עצמכם..." className="min-h-[100px]" />
-              </div>
-
-              <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>
-                {saving ? "שומר..." : "שמירת פרופיל"}
-              </Button>
-            </form>
+              <ProfileView
+                profile={profile}
+                detailedProfile={detailedProfile}
+                profileType={profileType!}
+                onEdit={() => setMode("edit")}
+              />
+            </>
           ) : (
             <>
-              {!hostType ? (
-                <div className="space-y-4 rounded-2xl border border-border bg-card p-8 shadow-card">
-                  <h2 className="text-xl font-bold font-display text-center">🏠 בחרו סוג מארח</h2>
-                  {([
-                    { type: "family" as const, label: "משפחה מארחת", desc: "פתיחת הבית לאורחים בשבת/חג" },
-                    { type: "work" as const, label: "מקום עבודה", desc: "הצעת עבודה זמנית או קבועה" },
-                    { type: "volunteer" as const, label: "מקום התנדבות", desc: "חווה, בית ילד, בית חב״ד ועוד" },
-                  ]).map((opt) => (
-                    <button
-                      key={opt.type}
-                      onClick={() => setHostType(opt.type)}
-                      className="flex w-full items-center gap-4 rounded-2xl border-2 border-border bg-background p-4 text-right transition-all hover:border-primary hover:shadow-md"
-                    >
-                      <div>
-                        <div className="font-bold font-display">{opt.label}</div>
-                        <div className="text-sm text-muted-foreground">{opt.desc}</div>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              ) : hostType === "family" ? (
-                <form onSubmit={handleFamilyProfile} className="space-y-5 rounded-2xl border border-border bg-card p-8 shadow-card">
-                  <button type="button" onClick={() => setHostType(null)} className="text-sm text-primary hover:underline">← חזרה</button>
-                  <h2 className="text-xl font-bold font-display text-center">🏡 משפחה מארחת</h2>
+              <div className="text-center mb-8">
+                <CheckCircle className="mx-auto h-12 w-12 text-secondary mb-3" />
+                <h1 className="text-3xl font-black font-display">
+                  {detailedProfile ? "עריכת פרופיל" : "בניית הפרופיל"}
+                </h1>
+                <p className="text-muted-foreground mt-1">שלום {profile.full_name}! 👋</p>
+                {detailedProfile && (
+                  <Button variant="ghost" size="sm" onClick={() => setMode("view")} className="mt-2">
+                    ← חזרה לתצוגה
+                  </Button>
+                )}
+              </div>
 
+              {isSingle ? (
+                <form onSubmit={handleSingleProfile} className="space-y-5 rounded-2xl border border-border bg-card p-8 shadow-card">
+                  <h2 className="text-xl font-bold font-display text-center">🙋 פרופיל רווק/ה</h2>
                   <div className="space-y-2">
-                    <Label htmlFor="aboutUs">קצת עלינו</Label>
-                    <Textarea id="aboutUs" name="aboutUs" placeholder="ספרו קצת על המשפחה..." className="min-h-[100px]" />
+                    <Label htmlFor="age">גיל</Label>
+                    <Input id="age" name="age" type="number" min={18} max={99} placeholder="25" defaultValue={detailedProfile?.age || ""} />
                   </div>
-
+                  <div className="space-y-2">
+                    <Label>מגדר</Label>
+                    <RadioGroup name="gender" defaultValue={detailedProfile?.gender || ""} className="flex gap-4">
+                      <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="men" /><span>גבר</span></label>
+                      <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="women" /><span>אישה</span></label>
+                    </RadioGroup>
+                  </div>
                   <div className="space-y-2">
                     <Label>רמה דתית</Label>
-                    <ReligiousSelect name="religiousLevel" />
+                    <ReligiousSelect name="religiousLevel" defaultValue={detailedProfile?.religious_level || undefined} />
                   </div>
-
-                  <div className="space-y-2">
-                    <Label>את מי מעוניינים להזמין?</Label>
-                    <RadioGroup name="guestPref" className="flex gap-4">
-                      <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="men" /><span>גברים</span></label>
-                      <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="women" /><span>נשים</span></label>
-                      <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="mixed" /><span>מעורב</span></label>
-                    </RadioGroup>
-                  </div>
-
                   <div className="space-y-2">
                     <Label>אזור מגורים</Label>
-                    <RegionSelect name="region" />
+                    <RegionSelect name="region" defaultValue={detailedProfile?.region || undefined} />
                   </div>
-
                   <div className="space-y-2">
                     <Label htmlFor="city">עיר / יישוב</Label>
-                    <Input id="city" name="city" placeholder="הרצליה" />
+                    <Input id="city" name="city" placeholder="תל אביב" defaultValue={detailedProfile?.city || ""} />
                   </div>
-
-                  <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>
-                    {saving ? "שומר..." : "שמירת פרופיל"}
-                  </Button>
-                </form>
-              ) : hostType === "work" ? (
-                <form onSubmit={handleWorkProfile} className="space-y-5 rounded-2xl border border-border bg-card p-8 shadow-card">
-                  <button type="button" onClick={() => setHostType(null)} className="text-sm text-primary hover:underline">← חזרה</button>
-                  <h2 className="text-xl font-bold font-display text-center">💼 מקום עבודה</h2>
-
                   <div className="space-y-2">
-                    <Label htmlFor="placeName">שם המקום *</Label>
-                    <Input id="placeName" name="placeName" required placeholder='מלון רמת רחל' />
+                    <Label htmlFor="aboutMe">קצת עלי</Label>
+                    <Textarea id="aboutMe" name="aboutMe" placeholder="ספרו קצת על עצמכם..." className="min-h-[100px]" defaultValue={detailedProfile?.about_me || ""} />
                   </div>
-
-                  <div className="space-y-2">
-                    <Label>אזור</Label>
-                    <RegionSelect name="region" />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="city">עיר / מיקום</Label>
-                    <Input id="city" name="city" placeholder="ירושלים" />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="jobDescription">מה העבודה?</Label>
-                    <Textarea id="jobDescription" name="jobDescription" placeholder="תיאור המשרה..." />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="payment">תשלום</Label>
-                    <Input id="payment" name="payment" placeholder="150 ₪ לשעה" />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>סוג העסקה</Label>
-                    <RadioGroup name="isPermanent" className="flex gap-4">
-                      <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="false" /><span>זמני / חד פעמי</span></label>
-                      <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="true" /><span>עובד/ת קבוע/ה</span></label>
-                    </RadioGroup>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>העדפת מגדר</Label>
-                    <RadioGroup name="genderPref" className="flex gap-4">
-                      <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="men" /><span>גברים</span></label>
-                      <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="women" /><span>נשים</span></label>
-                      <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="mixed" /><span>מעורב</span></label>
-                    </RadioGroup>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="teamSize">מספר אנשי צוות נדרשים</Label>
-                    <Input id="teamSize" name="teamSize" type="number" min={1} placeholder="3" />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="specialReq">דרישות מיוחדות</Label>
-                    <Textarea id="specialReq" name="specialReq" placeholder="תואר, רישיון לנשק, ניסיון..." />
-                  </div>
-
                   <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>
                     {saving ? "שומר..." : "שמירת פרופיל"}
                   </Button>
                 </form>
               ) : (
-                <form onSubmit={handleVolunteerProfile} className="space-y-5 rounded-2xl border border-border bg-card p-8 shadow-card">
-                  <button type="button" onClick={() => setHostType(null)} className="text-sm text-primary hover:underline">← חזרה</button>
-                  <h2 className="text-xl font-bold font-display text-center">🤝 מקום התנדבות</h2>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="placeName">שם המקום *</Label>
-                    <Input id="placeName" name="placeName" required placeholder='בית חב"ד הרצליה' />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="volunteerType">סוג ההתנדבות</Label>
-                    <Select name="volunteerType">
-                      <SelectTrigger><SelectValue placeholder="בחרו סוג" /></SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="farm">חווה</SelectItem>
-                        <SelectItem value="children_home">בית ילד</SelectItem>
-                        <SelectItem value="chabad">בית חב״ד</SelectItem>
-                        <SelectItem value="elderly">בית אבות</SelectItem>
-                        <SelectItem value="military_families">משפחות מילואים</SelectItem>
-                        <SelectItem value="other">אחר</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>אזור</Label>
-                    <RegionSelect name="region" />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="city">עיר / מיקום</Label>
-                    <Input id="city" name="city" placeholder="כפר חב״ד" />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="specialReq">דרישות מיוחדות</Label>
-                    <Textarea id="specialReq" name="specialReq" placeholder="כושר פיזי, ניסיון עם ילדים..." />
-                  </div>
-
-                  <div className="space-y-3 rounded-xl border border-border bg-background p-4">
-                    <h4 className="font-bold text-sm">מה כלול?</h4>
-                    <div className="flex items-center gap-2">
-                      <Checkbox id="accommodation" name="accommodation" />
-                      <Label htmlFor="accommodation" className="cursor-pointer">מקום לינה</Label>
+                <>
+                  {!hostType ? (
+                    <div className="space-y-4 rounded-2xl border border-border bg-card p-8 shadow-card">
+                      <h2 className="text-xl font-bold font-display text-center">🏠 בחרו סוג מארח</h2>
+                      {([
+                        { type: "family" as const, label: "משפחה מארחת", desc: "פתיחת הבית לאורחים בשבת/חג" },
+                        { type: "work" as const, label: "מקום עבודה", desc: "הצעת עבודה זמנית או קבועה" },
+                        { type: "volunteer" as const, label: "מקום התנדבות", desc: "חווה, בית ילד, בית חב״ד ועוד" },
+                      ]).map((opt) => (
+                        <button key={opt.type} onClick={() => setHostType(opt.type)}
+                          className="flex w-full items-center gap-4 rounded-2xl border-2 border-border bg-background p-4 text-right transition-all hover:border-primary hover:shadow-md">
+                          <div>
+                            <div className="font-bold font-display">{opt.label}</div>
+                            <div className="text-sm text-muted-foreground">{opt.desc}</div>
+                          </div>
+                        </button>
+                      ))}
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Checkbox id="meals" name="meals" />
-                      <Label htmlFor="meals" className="cursor-pointer">ארוחות</Label>
-                    </div>
-                  </div>
-
-                  <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>
-                    {saving ? "שומר..." : "שמירת פרופיל"}
-                  </Button>
-                </form>
+                  ) : hostType === "family" ? (
+                    <form onSubmit={handleFamilyProfile} className="space-y-5 rounded-2xl border border-border bg-card p-8 shadow-card">
+                      <button type="button" onClick={() => setHostType(null)} className="text-sm text-primary hover:underline">← חזרה</button>
+                      <h2 className="text-xl font-bold font-display text-center">🏡 משפחה מארחת</h2>
+                      <div className="space-y-2">
+                        <Label htmlFor="aboutUs">קצת עלינו</Label>
+                        <Textarea id="aboutUs" name="aboutUs" placeholder="ספרו קצת על המשפחה..." className="min-h-[100px]" defaultValue={detailedProfile?.about_us || ""} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>רמה דתית</Label>
+                        <ReligiousSelect name="religiousLevel" defaultValue={detailedProfile?.religious_level || undefined} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>רמת כשרות</Label>
+                        <KashrutSelect name="kashrutLevel" defaultValue={detailedProfile?.kashrut_level || undefined} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>את מי מעוניינים להזמין?</Label>
+                        <RadioGroup name="guestPref" defaultValue={detailedProfile?.guest_preference || ""} className="flex gap-4">
+                          <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="men" /><span>גברים</span></label>
+                          <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="women" /><span>נשים</span></label>
+                          <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="mixed" /><span>מעורב</span></label>
+                        </RadioGroup>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>אזור מגורים</Label>
+                        <RegionSelect name="region" defaultValue={detailedProfile?.region || undefined} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label htmlFor="city">עיר / יישוב</Label>
+                        <Input id="city" name="city" placeholder="הרצליה" defaultValue={detailedProfile?.city || ""} />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>תאריכים פנויים לאירוח</Label>
+                        <JewishDatePicker selectedDates={availableDates} onChange={setAvailableDates} />
+                      </div>
+                      <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>
+                        {saving ? "שומר..." : "שמירת פרופיל"}
+                      </Button>
+                    </form>
+                  ) : hostType === "work" ? (
+                    <form onSubmit={handleWorkProfile} className="space-y-5 rounded-2xl border border-border bg-card p-8 shadow-card">
+                      <button type="button" onClick={() => setHostType(null)} className="text-sm text-primary hover:underline">← חזרה</button>
+                      <h2 className="text-xl font-bold font-display text-center">💼 מקום עבודה</h2>
+                      <div className="space-y-2">
+                        <Label htmlFor="placeName">שם המקום *</Label>
+                        <Input id="placeName" name="placeName" required placeholder='מלון רמת רחל' defaultValue={detailedProfile?.place_name || ""} />
+                      </div>
+                      <div className="space-y-2"><Label>אזור</Label><RegionSelect name="region" defaultValue={detailedProfile?.region || undefined} /></div>
+                      <div className="space-y-2"><Label htmlFor="city">עיר / מיקום</Label><Input id="city" name="city" placeholder="ירושלים" defaultValue={detailedProfile?.city || ""} /></div>
+                      <div className="space-y-2"><Label htmlFor="jobDescription">מה העבודה?</Label><Textarea id="jobDescription" name="jobDescription" placeholder="תיאור המשרה..." defaultValue={detailedProfile?.job_description || ""} /></div>
+                      <div className="space-y-2"><Label htmlFor="payment">תשלום</Label><Input id="payment" name="payment" placeholder="150 ₪ לשעה" defaultValue={detailedProfile?.payment || ""} /></div>
+                      <div className="space-y-2">
+                        <Label>סוג העסקה</Label>
+                        <RadioGroup name="isPermanent" defaultValue={detailedProfile?.is_permanent ? "true" : "false"} className="flex gap-4">
+                          <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="false" /><span>זמני / חד פעמי</span></label>
+                          <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="true" /><span>עובד/ת קבוע/ה</span></label>
+                        </RadioGroup>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>העדפת מגדר</Label>
+                        <RadioGroup name="genderPref" defaultValue={detailedProfile?.gender_preference || ""} className="flex gap-4">
+                          <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="men" /><span>גברים</span></label>
+                          <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="women" /><span>נשים</span></label>
+                          <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="mixed" /><span>מעורב</span></label>
+                        </RadioGroup>
+                      </div>
+                      <div className="space-y-2"><Label htmlFor="teamSize">מספר אנשי צוות נדרשים</Label><Input id="teamSize" name="teamSize" type="number" min={1} placeholder="3" defaultValue={detailedProfile?.team_size || ""} /></div>
+                      <div className="space-y-2"><Label htmlFor="specialReq">דרישות מיוחדות</Label><Textarea id="specialReq" name="specialReq" placeholder="תואר, רישיון לנשק, ניסיון..." defaultValue={detailedProfile?.special_requirements || ""} /></div>
+                      <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>{saving ? "שומר..." : "שמירת פרופיל"}</Button>
+                    </form>
+                  ) : (
+                    <form onSubmit={handleVolunteerProfile} className="space-y-5 rounded-2xl border border-border bg-card p-8 shadow-card">
+                      <button type="button" onClick={() => setHostType(null)} className="text-sm text-primary hover:underline">← חזרה</button>
+                      <h2 className="text-xl font-bold font-display text-center">🤝 מקום התנדבות</h2>
+                      <div className="space-y-2"><Label htmlFor="placeName">שם המקום *</Label><Input id="placeName" name="placeName" required placeholder='בית חב"ד הרצליה' defaultValue={detailedProfile?.place_name || ""} /></div>
+                      <div className="space-y-2">
+                        <Label htmlFor="volunteerType">סוג ההתנדבות</Label>
+                        <Select name="volunteerType" defaultValue={detailedProfile?.volunteer_type || undefined}>
+                          <SelectTrigger><SelectValue placeholder="בחרו סוג" /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="farm">חווה</SelectItem>
+                            <SelectItem value="children_home">בית ילד</SelectItem>
+                            <SelectItem value="chabad">בית חב״ד</SelectItem>
+                            <SelectItem value="elderly">בית אבות</SelectItem>
+                            <SelectItem value="military_families">משפחות מילואים</SelectItem>
+                            <SelectItem value="other">אחר</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2"><Label>אזור</Label><RegionSelect name="region" defaultValue={detailedProfile?.region || undefined} /></div>
+                      <div className="space-y-2"><Label htmlFor="city">עיר / מיקום</Label><Input id="city" name="city" placeholder="כפר חב״ד" defaultValue={detailedProfile?.city || ""} /></div>
+                      <div className="space-y-2"><Label htmlFor="specialReq">דרישות מיוחדות</Label><Textarea id="specialReq" name="specialReq" placeholder="כושר פיזי, ניסיון עם ילדים..." defaultValue={detailedProfile?.special_requirements || ""} /></div>
+                      <div className="space-y-3 rounded-xl border border-border bg-background p-4">
+                        <h4 className="font-bold text-sm">מה כלול?</h4>
+                        <div className="flex items-center gap-2">
+                          <Checkbox id="accommodation" name="accommodation" defaultChecked={detailedProfile?.provides_accommodation} />
+                          <Label htmlFor="accommodation" className="cursor-pointer">מקום לינה</Label>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Checkbox id="meals" name="meals" defaultChecked={detailedProfile?.provides_meals} />
+                          <Label htmlFor="meals" className="cursor-pointer">ארוחות</Label>
+                        </div>
+                      </div>
+                      <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>{saving ? "שומר..." : "שמירת פרופיל"}</Button>
+                    </form>
+                  )}
+                </>
               )}
             </>
           )}
