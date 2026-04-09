@@ -113,7 +113,7 @@ const Register = () => {
               </div>
               <div>
                 <div className="font-bold font-display text-lg">מקום לשבת / לחג</div>
-                <div className="text-sm text-muted-foreground">מארח/ת, מעסיק/ה או מתנדב/ת</div>
+                <div className="text-sm text-muted-foreground">מארח/ת, מעסיק/ה או התנדבות</div>
               </div>
             </button>
           </div>
@@ -128,7 +128,7 @@ const Register = () => {
             </button>
 
             <div className="rounded-xl bg-accent/60 px-4 py-2.5 text-center text-sm font-medium">
-              {category === "single" ? "🙋 הרשמה כרווק/ה" : "🏠 הרשמה כמארח/מעסיק/מתנדב"}
+              {category === "single" ? "🙋 הרשמה כרווק/ה" : "🏠 הרשמה כמארח/מעסיק/התנדבות"}
             </div>
 
             <div className="space-y-2">
