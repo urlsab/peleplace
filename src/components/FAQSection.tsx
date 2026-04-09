@@ -5,7 +5,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, Heart, Star, Sun } from "lucide-react";
+import warmTextureBg from "@/assets/warm-texture-bg.jpg";
 
 const faqs = [
   {
@@ -47,8 +48,32 @@ const faqs = [
 
 const FAQSection = () => {
   return (
-    <section id="faq" className="py-24 bg-background">
-      <div className="container mx-auto px-6">
+    <section id="faq" className="relative py-24 overflow-hidden">
+      {/* Warm texture background */}
+      <div className="absolute inset-0">
+        <img src={warmTextureBg} alt="" className="h-full w-full object-cover" loading="lazy" width={1920} height={1080} />
+        <div className="absolute inset-0 bg-background/70" />
+      </div>
+
+      {/* Floating decorative elements */}
+      <div className="absolute top-16 right-[10%] animate-float-slow opacity-[0.08]">
+        <HelpCircle className="h-20 w-20 text-primary" />
+      </div>
+      <div className="absolute bottom-20 left-[8%] animate-float-reverse opacity-[0.06]">
+        <Heart className="h-16 w-16 text-secondary" />
+      </div>
+      <div className="absolute top-1/3 left-[5%] animate-drift opacity-[0.05]">
+        <Star className="h-12 w-12 text-terracotta" />
+      </div>
+      <div className="absolute bottom-1/4 right-[6%] animate-float opacity-[0.07]">
+        <Sun className="h-14 w-14 text-amber-soft" />
+      </div>
+
+      {/* Warm blurred orbs */}
+      <div className="absolute top-10 left-1/4 h-64 w-64 rounded-full bg-secondary/8 blur-[80px]" />
+      <div className="absolute bottom-10 right-1/4 h-48 w-48 rounded-full bg-primary/6 blur-[60px]" />
+
+      <div className="container relative z-10 mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -80,7 +105,7 @@ const FAQSection = () => {
               <AccordionItem
                 key={i}
                 value={`faq-${i}`}
-                className="rounded-2xl border border-border bg-card px-6 shadow-card data-[state=open]:shadow-hover transition-shadow"
+                className="rounded-2xl border border-border bg-card/80 backdrop-blur-sm px-6 shadow-card data-[state=open]:shadow-hover transition-shadow"
               >
                 <AccordionTrigger className="text-right font-bold font-display text-sm py-5 hover:no-underline [&>svg]:shrink-0">
                   {faq.question}

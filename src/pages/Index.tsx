@@ -1,41 +1,16 @@
 import { motion } from "framer-motion";
-import { Briefcase, HandHeart, Home, Star } from "lucide-react";
+import { Briefcase, HandHeart, Home, Star, Heart, Sparkles, Sun } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import founderPhoto from "@/assets/founder-photo.png";
-import categoriesBg from "@/assets/categories-bg.jpg";
 import aboutBg from "@/assets/about-bg.jpg";
 import HeroSection from "@/components/HeroSection";
-import CategoryCard from "@/components/CategoryCard";
 import RegistrationCards from "@/components/RegistrationCards";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import ContactSection from "@/components/ContactSection";
 import FAQSection from "@/components/FAQSection";
-
-const categories = [
-  {
-    icon: Briefcase,
-    title: "עבודה זמנית",
-    description: "הרוויחו כסף תוך כדי שהייה במקומות מיוחדים בשבתות וחגים",
-    examples: ["בתי מלון", "בתי הארחה", "בתי אבות"],
-    color: "primary" as const,
-  },
-  {
-    icon: HandHeart,
-    title: "התנדבות",
-    description: "תנו מעצמכם ותקבלו חוויה משמעותית וחברה חמה",
-    examples: ["נשות מילואים", "בתי ילד", "בתי חב״ד"],
-    color: "secondary" as const,
-  },
-  {
-    icon: Home,
-    title: "אירוח",
-    description: "זוגות ומשפחות שפותחים את הבית שלהם בשבילכם",
-    examples: ["זוגות צעירים", "משפחות", "קהילות"],
-    color: "terracotta" as const,
-  },
-];
+import warmTextureBg from "@/assets/warm-texture-bg.jpg";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -56,9 +31,6 @@ const Index = () => {
       <Navbar />
       <HeroSection />
 
-
-
-
       {/* Registration Cards */}
       <RegistrationCards />
 
@@ -66,8 +38,24 @@ const Index = () => {
       <section id="about" className="relative py-24 overflow-hidden">
         <div className="absolute inset-0">
           <img src={aboutBg} alt="" className="h-full w-full object-cover" loading="lazy" width={1920} height={1080} />
-          <div className="absolute inset-0 bg-background/60 backdrop-blur-[1px]" />
+          <div className="absolute inset-0 bg-cream/70 backdrop-blur-[1px]" />
         </div>
+
+        {/* Floating decorative elements */}
+        <div className="absolute top-20 right-[8%] animate-float-slow opacity-[0.07]">
+          <Heart className="h-16 w-16 text-secondary" />
+        </div>
+        <div className="absolute bottom-24 left-[6%] animate-float-reverse opacity-[0.06]">
+          <Home className="h-14 w-14 text-primary" />
+        </div>
+        <div className="absolute top-1/3 left-[3%] animate-drift opacity-[0.05]">
+          <Sparkles className="h-10 w-10 text-terracotta" />
+        </div>
+
+        {/* Warm blurred orbs */}
+        <div className="absolute top-0 left-1/4 h-72 w-72 rounded-full bg-secondary/10 blur-[100px]" />
+        <div className="absolute bottom-0 right-1/4 h-56 w-56 rounded-full bg-primary/8 blur-[80px]" />
+
         <div className="container relative z-10 mx-auto px-6">
           <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
             <span className="mb-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
@@ -132,7 +120,7 @@ const Index = () => {
               ].map((item) => (
                 <div
                   key={item.title}
-                  className="flex items-start gap-4 rounded-2xl bg-background border border-border/60 p-5 shadow-card text-right"
+                  className="flex items-start gap-4 rounded-2xl bg-card/70 backdrop-blur-sm border border-border/40 p-5 shadow-card text-right"
                 >
                   <div className="text-2xl mt-0.5 shrink-0">{item.emoji}</div>
                   <div>
@@ -153,8 +141,22 @@ const Index = () => {
       <ContactSection />
 
       {/* CTA */}
-      <section className="py-24 pattern-dots">
-        <div className="container mx-auto px-6">
+      <section className="relative py-24 overflow-hidden">
+        {/* Warm texture background */}
+        <div className="absolute inset-0">
+          <img src={warmTextureBg} alt="" className="h-full w-full object-cover opacity-30" loading="lazy" width={1920} height={1080} />
+          <div className="absolute inset-0 bg-cream/60" />
+        </div>
+
+        {/* Floating decorative */}
+        <div className="absolute top-10 right-[15%] animate-float opacity-[0.06]">
+          <Star className="h-12 w-12 text-primary" />
+        </div>
+        <div className="absolute bottom-10 left-[12%] animate-float-slow opacity-[0.05]">
+          <Sun className="h-14 w-14 text-secondary" />
+        </div>
+
+        <div className="container relative z-10 mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -188,7 +190,7 @@ const Index = () => {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border/60 bg-card py-10">
+      <footer className="border-t border-border/60 bg-cream-deep py-10">
         <div className="container mx-auto px-6">
           <div className="flex flex-col items-center gap-4 md:flex-row md:justify-between">
             <div className="flex items-center gap-1.5">
