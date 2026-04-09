@@ -98,13 +98,13 @@ const FAQSection = () => {
           <Accordion type="single" collapsible className="space-y-3">
             {faqs.map((faq, i) => {
               const bgColors = [
-                "hsl(155 30% 82%)",
-                "hsl(20 40% 85%)",
-                "hsl(30 40% 83%)",
-                "hsl(155 25% 84%)",
-                "hsl(20 35% 84%)",
-                "hsl(155 20% 85%)",
-                "hsl(30 35% 84%)",
+                "hsl(155 30% 75%)",
+                "hsl(20 40% 80%)",
+                "hsl(30 40% 78%)",
+                "hsl(155 25% 77%)",
+                "hsl(20 35% 79%)",
+                "hsl(155 20% 78%)",
+                "hsl(30 35% 78%)",
               ];
               return (
               <AccordionItem
