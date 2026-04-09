@@ -48,6 +48,71 @@ const fadeUp = {
   viewport: { once: true },
 };
 
+const FlipCard = ({ card, index, onNavigate }: { card: typeof registrationCards[0]; index: number; onNavigate: () => void }) => {
+  return (
+    <motion.div
+      {...fadeUp}
+      transition={{ delay: index * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      className="group perspective-[1000px] min-h-[300px] md:min-h-[320px] cursor-pointer"
+      onClick={onNavigate}
+    >
+      <div className="relative w-full h-full min-h-[300px] md:min-h-[320px] transition-transform duration-700 [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)]">
+        {/* Front - title + image only */}
+        <div className="absolute inset-0 [backface-visibility:hidden] rounded-2xl overflow-hidden shadow-card">
+          <img
+            src={card.image}
+            alt={card.title}
+            loading="lazy"
+            width={800}
+            height={512}
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[hsl(210,18%,12%)]/80 via-[hsl(210,18%,12%)]/30 to-transparent" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <h3 className="text-3xl md:text-4xl font-black text-cream font-display drop-shadow-lg">
+              {card.title}
+            </h3>
+          </div>
+        </div>
+
+        {/* Back - details */}
+        <div className="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] rounded-2xl overflow-hidden shadow-card">
+          <img
+            src={card.image}
+            alt={card.title}
+            loading="lazy"
+            width={800}
+            height={512}
+            className="h-full w-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[hsl(210,18%,12%)]/90 via-[hsl(210,18%,12%)]/70 to-[hsl(210,18%,12%)]/40" />
+          <div className="absolute inset-0 flex flex-col justify-end p-7 text-right">
+            <h3 className="text-2xl font-black text-cream mb-1 font-display">
+              {card.title}
+            </h3>
+            <p className="text-base font-semibold text-cream/90 mb-2">
+              {card.subtitle}
+            </p>
+            <p className="text-sm text-cream-deep/80 mb-5 leading-relaxed max-w-sm">
+              {card.description}
+            </p>
+            <Button
+              size="sm"
+              className="self-start rounded-full text-xs font-bold px-6 h-9 shadow-md hover:shadow-lg transition-all"
+              onClick={(e) => {
+                e.stopPropagation();
+                onNavigate();
+              }}
+            >
+              {card.cta}
+            </Button>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
 const RegistrationCards = () => {
   const navigate = useNavigate();
 
@@ -55,7 +120,7 @@ const RegistrationCards = () => {
     <section id="opportunities" className="relative py-24 overflow-hidden">
       <div className="absolute inset-0">
         <img src={categoriesBg} alt="" className="h-full w-full object-cover" loading="lazy" />
-        <div className="absolute inset-0 bg-background/75 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-cream/75 backdrop-blur-[2px]" />
       </div>
       <div className="container relative z-10 mx-auto px-6">
         <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
@@ -72,49 +137,12 @@ const RegistrationCards = () => {
 
         <div className="grid gap-6 sm:grid-cols-2">
           {registrationCards.map((card, i) => (
-            <motion.div
+            <FlipCard
               key={card.title}
-              {...fadeUp}
-              transition={{ delay: i * 0.1, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="group relative overflow-hidden rounded-2xl shadow-card hover:shadow-xl transition-shadow duration-300 cursor-pointer"
-              onClick={() => navigate("/auth")}
-            >
-              {/* Background image */}
-              <div className="absolute inset-0">
-                <img
-                  src={card.image}
-                  alt={card.title}
-                  loading="lazy"
-                  width={800}
-                  height={512}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[hsl(210,18%,12%)]/85 via-[hsl(210,18%,12%)]/50 to-[hsl(210,18%,12%)]/20" />
-              </div>
-
-              {/* Content */}
-              <div className="relative z-10 flex flex-col justify-end p-7 min-h-[280px] md:min-h-[300px] text-right">
-                <h3 className="text-2xl font-black text-cream mb-1 font-display">
-                  {card.title}
-                </h3>
-                <p className="text-base font-semibold text-cream/90 mb-2">
-                  {card.subtitle}
-                </p>
-                <p className="text-sm text-cream-deep/80 mb-5 leading-relaxed max-w-sm">
-                  {card.description}
-                </p>
-                <Button
-                  size="sm"
-                  className="self-start rounded-full text-xs font-bold px-6 h-9 shadow-md hover:shadow-lg transition-all"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate("/auth");
-                  }}
-                >
-                  {card.cta}
-                </Button>
-              </div>
-            </motion.div>
+              card={card}
+              index={i}
+              onNavigate={() => navigate("/auth")}
+            />
           ))}
         </div>
       </div>
