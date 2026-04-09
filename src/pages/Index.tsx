@@ -194,9 +194,13 @@ const Index = () => {
             <div className="flex items-center gap-1.5">
               <span className="text-lg font-black font-display">פל<span className="text-gradient-warm">״</span>א</span>
             </div>
-            <p className="text-xs text-muted-foreground">
-              © 2026 פל״א — פשוט לבחור איפה. כל הזכויות שמורות
-            </p>
+            <div className="flex items-center gap-4">
+              <a href="/terms" className="text-xs text-muted-foreground hover:text-primary transition-colors">תקנון</a>
+              <span className="text-border">|</span>
+              <p className="text-xs text-muted-foreground">
+                © 2026 פל״א — פשוט לבחור איפה. כל הזכויות שמורות
+              </p>
+            </div>
           </div>
         </div>
       </footer>
