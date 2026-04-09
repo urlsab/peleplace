@@ -76,16 +76,18 @@ const FAQSection = () => {
           transition={{ duration: 0.6 }}
           className="mb-14 text-center"
         >
-          <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
-            <HelpCircle className="h-3.5 w-3.5" />
-            שאלות נפוצות
-          </span>
-          <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
-            שאלות <span className="text-gradient-warm">ותשובות</span>
-          </h2>
-          <p className="mx-auto max-w-md text-muted-foreground">
-            כל מה שרציתם לדעת על פל״א במקום אחד
-          </p>
+          <div className="inline-block rounded-2xl bg-background/70 backdrop-blur-sm px-8 py-6">
+            <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
+              <HelpCircle className="h-3.5 w-3.5" />
+              שאלות נפוצות
+            </span>
+            <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
+              שאלות <span className="text-gradient-warm">ותשובות</span>
+            </h2>
+            <p className="mx-auto max-w-md text-muted-foreground">
+              כל מה שרציתם לדעת על פל״א במקום אחד
+            </p>
+          </div>
         </motion.div>
 
         <motion.div

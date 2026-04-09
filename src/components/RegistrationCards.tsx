@@ -120,15 +120,17 @@ const RegistrationCards = () => {
     <section id="opportunities" className="relative py-24 overflow-hidden">
       <div className="container relative z-10 mx-auto px-6">
         <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
-          <span className="mb-3 inline-block rounded-full bg-secondary/10 px-3 py-1 text-[11px] font-semibold text-secondary tracking-wide">
-            הצטרפו אלינו
-          </span>
-          <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
-            מי <span className="text-gradient-warm">אתם?</span>
-          </h2>
-          <p className="text-muted-foreground text-base max-w-md mx-auto">
-            בחרו את הקטגוריה שמתאימה לכם והירשמו — זה חינם ולוקח דקה
-          </p>
+          <div className="inline-block rounded-2xl bg-background/70 backdrop-blur-sm px-8 py-6">
+            <span className="mb-3 inline-block rounded-full bg-secondary/10 px-3 py-1 text-[11px] font-semibold text-secondary tracking-wide">
+              הצטרפו אלינו
+            </span>
+            <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
+              מי <span className="text-gradient-warm">אתם?</span>
+            </h2>
+            <p className="text-muted-foreground text-base max-w-md mx-auto">
+              בחרו את הקטגוריה שמתאימה לכם והירשמו — זה חינם ולוקח דקה
+            </p>
+          </div>
         </motion.div>
 
         <div className="grid gap-6 sm:grid-cols-2">
