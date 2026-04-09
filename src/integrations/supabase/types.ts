@@ -177,6 +177,7 @@ export type Database = {
             | Database["public"]["Enums"]["gender_preference"]
             | null
           id: string
+          kashrut_level: Database["public"]["Enums"]["kashrut_level"] | null
           region: Database["public"]["Enums"]["region"] | null
           religious_level: Database["public"]["Enums"]["religious_level"] | null
           updated_at: string
@@ -191,6 +192,7 @@ export type Database = {
             | Database["public"]["Enums"]["gender_preference"]
             | null
           id?: string
+          kashrut_level?: Database["public"]["Enums"]["kashrut_level"] | null
           region?: Database["public"]["Enums"]["region"] | null
           religious_level?:
             | Database["public"]["Enums"]["religious_level"]
@@ -207,6 +209,7 @@ export type Database = {
             | Database["public"]["Enums"]["gender_preference"]
             | null
           id?: string
+          kashrut_level?: Database["public"]["Enums"]["kashrut_level"] | null
           region?: Database["public"]["Enums"]["region"] | null
           religious_level?:
             | Database["public"]["Enums"]["religious_level"]
@@ -537,6 +540,7 @@ export type Database = {
       app_role: "admin" | "user"
       gender_preference: "men" | "women" | "mixed"
       host_type: "family" | "work" | "volunteer"
+      kashrut_level: "not_kosher" | "kosher" | "mehadrin" | "chalak_beit_yosef"
       region:
         | "north"
         | "haifa"
@@ -685,6 +689,7 @@ export const Constants = {
       app_role: ["admin", "user"],
       gender_preference: ["men", "women", "mixed"],
       host_type: ["family", "work", "volunteer"],
+      kashrut_level: ["not_kosher", "kosher", "mehadrin", "chalak_beit_yosef"],
       region: [
         "north",
         "haifa",
