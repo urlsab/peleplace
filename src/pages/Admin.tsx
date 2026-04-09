@@ -53,6 +53,9 @@ const Admin = () => {
   };
 
   const updateStatus = async (profileId: string, status: "approved" | "rejected") => {
+    // Find the registration to get email and name for the notification
+    const reg = registrations.find((r) => r.id === profileId);
+
     const { error } = await supabase
       .from("profiles")
       .update({ registration_status: status })
@@ -62,6 +65,22 @@ const Admin = () => {
       toast({ title: "שגיאה בעדכון", description: error.message, variant: "destructive" });
     } else {
       toast({ title: status === "approved" ? "הנרשם אושר ✅" : "הנרשם נדחה ❌" });
+
+      // Send approval email
+      if (status === "approved" && reg) {
+        supabase.functions.invoke("send-transactional-email", {
+          body: {
+            templateName: "registration-approved",
+            recipientEmail: reg.email,
+            templateData: { fullName: reg.full_name },
+          },
+        }).then(({ error: emailError }) => {
+          if (emailError) {
+            console.error("Failed to send approval email:", emailError);
+          }
+        });
+      }
+
       fetchRegistrations();
     }
   };
