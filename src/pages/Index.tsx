@@ -11,6 +11,7 @@ import RegistrationCards from "@/components/RegistrationCards";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import ContactSection from "@/components/ContactSection";
+import FAQSection from "@/components/FAQSection";
 
 const categories = [
   {
@@ -144,6 +145,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* FAQ */}
+      <FAQSection />
 
       {/* Contact */}
       <ContactSection />

@@ -30,7 +30,7 @@ const Register = () => {
     const form = new FormData(e.currentTarget);
 
     try {
-      // Upload ID document
+      // Upload ID document (optional)
       let idDocUrl: string | null = null;
       if (idFile) {
         const ext = idFile.name.split(".").pop();
@@ -160,22 +160,23 @@ const Register = () => {
             </div>
 
             <div className="space-y-2">
-              <Label>צילום תעודת זהות / רישיון נהיגה *</Label>
-              <p className="text-xs text-muted-foreground">לצורכי אימות בלבד — לא יוצג לאף אחד</p>
+              <Label>צילום תעודת זהות / רישיון נהיגה</Label>
+              <p className="text-xs text-muted-foreground">
+                לא חובה, אך העלאת מסמך מזהה תקל עלינו לאשר את ההרשמה מהר יותר 🙏
+              </p>
               <label
                 htmlFor="idUpload"
                 className="flex cursor-pointer flex-col items-center gap-2 rounded-xl border-2 border-dashed border-border bg-background p-6 transition-colors hover:border-primary hover:bg-accent/40"
               >
                 <Upload className="h-8 w-8 text-muted-foreground" />
                 <span className="text-sm font-medium text-muted-foreground">
-                  {idFile ? idFile.name : "לחצו להעלאת קובץ"}
+                  {idFile ? idFile.name : "לחצו להעלאת קובץ (אופציונלי)"}
                 </span>
                 <input
                   id="idUpload"
                   type="file"
                   accept="image/*,.pdf"
                   className="hidden"
-                  required
                   onChange={(e) => setIdFile(e.target.files?.[0] ?? null)}
                 />
               </label>
