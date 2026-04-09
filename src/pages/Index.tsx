@@ -24,12 +24,12 @@ const fadeUp = {
 };
 
 const backgroundLayers = [
-  { id: "hero", image: heroImage, overlayStyle: { background: "linear-gradient(to left, hsla(210,18%,6%,0.82) 25%, hsla(210,18%,6%,0.55) 55%, hsla(210,18%,6%,0.3) 100%)" } },
-  { id: "opportunities", image: categoriesBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.75)", backdropFilter: "blur(2px)" } },
-  { id: "about", image: aboutWarmBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.82)", backdropFilter: "blur(3px)" } },
-  { id: "faq", image: warmLandscapeBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.78)", backdropFilter: "blur(2px)" } },
-  { id: "contact", image: shabbatTableBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.82)", backdropFilter: "blur(3px)" } },
-  { id: "cta", image: warmTextureBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.6)" } },
+  { id: "hero", image: heroImage, overlayStyle: { background: "linear-gradient(to left, hsla(210,18%,6%,0.7) 20%, hsla(210,18%,6%,0.4) 50%, hsla(210,18%,6%,0.15) 100%)" } },
+  { id: "opportunities", image: categoriesBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.55)", backdropFilter: "blur(1px)" } },
+  { id: "about", image: aboutWarmBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.6)", backdropFilter: "blur(1px)" } },
+  { id: "faq", image: warmLandscapeBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.55)", backdropFilter: "blur(1px)" } },
+  { id: "contact", image: shabbatTableBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.6)", backdropFilter: "blur(1px)" } },
+  { id: "cta", image: warmTextureBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.4)" } },
 ];
 
 const Index = () => {
