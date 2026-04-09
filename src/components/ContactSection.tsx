@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import warmPatternBg from "@/assets/warm-pattern-bg.jpg";
+import shabbatTableBg from "@/assets/shabbat-table-bg.jpg";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -51,8 +51,8 @@ const ContactSection = () => {
     <section id="contact" className="relative py-24 overflow-hidden">
       {/* Warm pattern background */}
       <div className="absolute inset-0">
-        <img src={warmPatternBg} alt="" className="h-full w-full object-cover opacity-20" loading="lazy" width={1920} height={1080} />
-        <div className="absolute inset-0 bg-cream-deep/80" />
+        <img src={shabbatTableBg} alt="" className="h-full w-full object-cover" loading="lazy" width={1920} height={1080} />
+        <div className="absolute inset-0 bg-background/85 backdrop-blur-[3px]" />
       </div>
 
       {/* Floating decorative icons */}
