@@ -70,16 +70,18 @@ const Index = () => {
 
           <div className="container relative z-10 mx-auto px-6">
             <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
-              <span className="mb-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
-                קצת עלינו
-              </span>
-              <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
-                הסיפור <span className="text-gradient-warm">שלנו</span>
-              </h2>
+              <div className="inline-block rounded-2xl bg-background/70 backdrop-blur-sm px-8 py-6">
+                <span className="mb-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
+                  קצת עלינו
+                </span>
+                <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
+                  הסיפור <span className="text-gradient-warm">שלנו</span>
+                </h2>
+              </div>
             </motion.div>
             <div className="grid gap-10 md:grid-cols-2 items-start max-w-5xl mx-auto">
               {/* Personal story */}
-              <motion.div {...fadeUp} transition={{ delay: 0.1, duration: 0.5 }} className="space-y-5 text-right">
+              <motion.div {...fadeUp} transition={{ delay: 0.1, duration: 0.5 }} className="space-y-5 text-right bg-background/70 backdrop-blur-sm rounded-2xl p-6">
                 <img
                   src={founderPhoto}
                   alt="אודיה, יוסף חיים ופלא — המשפחה מאחורי הפרויקט"
@@ -106,7 +108,7 @@ const Index = () => {
               </motion.div>
 
               {/* The need from both sides */}
-              <motion.div {...fadeUp} transition={{ delay: 0.2, duration: 0.5 }} className="space-y-4">
+              <motion.div {...fadeUp} transition={{ delay: 0.2, duration: 0.5 }} className="space-y-4 bg-background/70 backdrop-blur-sm rounded-2xl p-6">
                 <h3 className="font-bold font-display text-lg mb-4 text-right">הצורך הוא דו-צדדי</h3>
                 {[
                   { emoji: "💛", title: "רווקים ורווקות", desc: "מחפשים מקום חם ומשמעותי להיות בו בשבתות ובחגים" },

@@ -67,15 +67,17 @@ const ContactSection = () => {
 
       <div className="container relative z-10 mx-auto px-6">
         <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
-          <span className="mb-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
-            צרו קשר
-          </span>
-          <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
-            כתבו <span className="text-gradient-warm">לנו</span>
-          </h2>
-          <p className="text-muted-foreground text-base max-w-md mx-auto">
-            השאירו פרטים ואחזור אליכם בהקדם
-          </p>
+          <div className="inline-block rounded-2xl bg-background/70 backdrop-blur-sm px-8 py-6">
+            <span className="mb-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
+              צרו קשר
+            </span>
+            <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
+              כתבו <span className="text-gradient-warm">לנו</span>
+            </h2>
+            <p className="text-muted-foreground text-base max-w-md mx-auto">
+              השאירו פרטים ואחזור אליכם בהקדם
+            </p>
+          </div>
         </motion.div>
 
         <motion.div {...fadeUp} transition={{ delay: 0.15, duration: 0.5 }} className="max-w-lg mx-auto">
@@ -86,7 +88,7 @@ const ContactSection = () => {
               <p className="text-muted-foreground text-sm">קיבלתי את ההודעה ואחזור אליכם בהקדם 💛</p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4 bg-card/60 backdrop-blur-sm rounded-2xl p-8 border border-border/40 shadow-card" dir="rtl">
+            <form onSubmit={handleSubmit} className="space-y-4 bg-background/80 backdrop-blur-sm rounded-2xl p-8 border border-border/40 shadow-card" dir="rtl">
               <Input
                 placeholder="שם מלא"
                 value={form.full_name}
