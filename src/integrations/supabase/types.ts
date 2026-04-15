@@ -328,8 +328,8 @@ export type Database = {
           id: string
           id_document_url: string | null
           phone: string
-          recommender_name: string
-          recommender_phone: string
+          recommender_name: string | null
+          recommender_phone: string | null
           registration_status: Database["public"]["Enums"]["registration_status"]
           terms_accepted_at: string | null
           updated_at: string
@@ -345,8 +345,8 @@ export type Database = {
           id?: string
           id_document_url?: string | null
           phone: string
-          recommender_name: string
-          recommender_phone: string
+          recommender_name?: string | null
+          recommender_phone?: string | null
           registration_status?: Database["public"]["Enums"]["registration_status"]
           terms_accepted_at?: string | null
           updated_at?: string
@@ -362,8 +362,8 @@ export type Database = {
           id?: string
           id_document_url?: string | null
           phone?: string
-          recommender_name?: string
-          recommender_phone?: string
+          recommender_name?: string | null
+          recommender_phone?: string | null
           registration_status?: Database["public"]["Enums"]["registration_status"]
           terms_accepted_at?: string | null
           updated_at?: string
@@ -420,10 +420,12 @@ export type Database = {
         Row: {
           about_me: string | null
           age: number | null
+          banner_image_url: string | null
           city: string | null
           created_at: string
           gender: Database["public"]["Enums"]["gender_preference"] | null
           id: string
+          profile_image_url: string | null
           region: Database["public"]["Enums"]["region"] | null
           religious_level: Database["public"]["Enums"]["religious_level"] | null
           updated_at: string
@@ -432,10 +434,12 @@ export type Database = {
         Insert: {
           about_me?: string | null
           age?: number | null
+          banner_image_url?: string | null
           city?: string | null
           created_at?: string
           gender?: Database["public"]["Enums"]["gender_preference"] | null
           id?: string
+          profile_image_url?: string | null
           region?: Database["public"]["Enums"]["region"] | null
           religious_level?:
             | Database["public"]["Enums"]["religious_level"]
@@ -446,10 +450,12 @@ export type Database = {
         Update: {
           about_me?: string | null
           age?: number | null
+          banner_image_url?: string | null
           city?: string | null
           created_at?: string
           gender?: Database["public"]["Enums"]["gender_preference"] | null
           id?: string
+          profile_image_url?: string | null
           region?: Database["public"]["Enums"]["region"] | null
           religious_level?:
             | Database["public"]["Enums"]["religious_level"]
