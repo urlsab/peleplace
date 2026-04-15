@@ -108,7 +108,7 @@ const Profile = () => {
         <div className="pt-24 text-center px-4">
           <h1 className="text-2xl font-black font-display mb-4">עדיין לא נרשמת</h1>
           <p className="text-muted-foreground mb-6">צריך למלא את טופס ההרשמה קודם</p>
-          <Button onClick={() => navigate("/register")} className="rounded-full">להרשמה</Button>
+          <Button onClick={() => navigate("/auth")} className="rounded-full">להרשמה</Button>
         </div>
       </div>
     );
