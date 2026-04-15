@@ -35,6 +35,11 @@ const MyBookings = () => {
     reviewedUserId: string;
     reviewedName?: string;
   } | null>(null);
+  // Guard: only approved users
+  useEffect(() => {
+    if (!user) { navigate("/auth"); return; }
+    if (profile && profile.registration_status !== "approved") { navigate("/profile"); }
+  }, [user, profile]);
 
   const { data: bookings, isLoading } = useQuery({
     queryKey: ["my-bookings", user?.id],
