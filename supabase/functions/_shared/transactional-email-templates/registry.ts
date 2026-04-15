@@ -22,3 +22,6 @@ TEMPLATES['welcome'] = welcomeEmail
 
 import { template as registrationApproved } from './registration-approved.tsx'
 TEMPLATES['registration-approved'] = registrationApproved
+
+import { template as registrationReceived } from './registration-received.tsx'
+TEMPLATES['registration-received'] = registrationReceived
