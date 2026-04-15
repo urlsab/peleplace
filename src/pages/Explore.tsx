@@ -50,7 +50,8 @@ type OpportunityItem = {
 };
 
 const Explore = () => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
+  const isApproved = profile?.registration_status === "approved";
   const [searchQuery, setSearchQuery] = useState("");
   const [regionFilter, setRegionFilter] = useState<string>("all");
   const [typeFilter, setTypeFilter] = useState<string>("all");
@@ -331,7 +332,7 @@ const Explore = () => {
                           </div>
                         )}
                       </div>
-                      {user && user.id !== item.userId && (
+                      {user && user.id !== item.userId && isApproved && (
                         <Button
                           size="sm"
                           className="mt-4 w-full rounded-full gap-1.5 font-semibold"
@@ -339,6 +340,11 @@ const Explore = () => {
                         >
                           <Send className="h-3.5 w-3.5" /> שלחו בקשה
                         </Button>
+                      )}
+                      {user && !isApproved && (
+                        <p className="mt-4 text-xs text-center text-muted-foreground">
+                          ⏳ שליחת בקשות תתאפשר לאחר אישור ההרשמה
+                        </p>
                       )}
                     </div>
                   </motion.div>

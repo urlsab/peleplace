@@ -108,7 +108,7 @@ const Profile = () => {
         <div className="pt-24 text-center px-4">
           <h1 className="text-2xl font-black font-display mb-4">עדיין לא נרשמת</h1>
           <p className="text-muted-foreground mb-6">צריך למלא את טופס ההרשמה קודם</p>
-          <Button onClick={() => navigate("/register")} className="rounded-full">להרשמה</Button>
+          <Button onClick={() => navigate("/auth")} className="rounded-full">להרשמה</Button>
         </div>
       </div>
     );
@@ -118,10 +118,25 @@ const Profile = () => {
     return (
       <div className="min-h-screen bg-background pattern-dots">
         <Navbar />
-        <div className="pt-24 text-center px-4">
-          <Clock className="mx-auto h-16 w-16 text-amber-soft mb-4" />
-          <h1 className="text-2xl font-black font-display mb-2">ההרשמה שלך בבדיקה</h1>
-          <p className="text-muted-foreground">נבדוק את הפרטים ונחזור אליך בהקדם 🙏</p>
+        <div className="pt-24 pb-12 px-4">
+          <div className="mx-auto max-w-md text-center space-y-6">
+            <Clock className="mx-auto h-16 w-16 text-amber-soft" />
+            <h1 className="text-2xl font-black font-display">ההרשמה שלך בבדיקה</h1>
+            <div className="rounded-2xl border border-border bg-card p-6 shadow-card space-y-4 text-right">
+              <p className="text-foreground leading-relaxed">
+                הצוות שלנו בודק כעת את פרטי ההרשמה שלך כדי לשמור על מרחב בטוח ומכבד לכל המשתתפים.
+              </p>
+              <p className="text-muted-foreground text-sm leading-relaxed">
+                בינתיים את/ה מוזמן/ת לגלוש באתר ולהכיר את ההזדמנויות — אך שליחת בקשות תתאפשר רק לאחר האישור.
+              </p>
+              <p className="text-muted-foreground text-sm">
+                ⏳ זמן אישור ממוצע: עד 24 שעות
+              </p>
+            </div>
+            <Button onClick={() => navigate("/explore")} variant="outline" className="rounded-full px-8">
+              גלשו באתר בינתיים
+            </Button>
+          </div>
         </div>
       </div>
     );

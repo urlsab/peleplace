@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index.tsx";
 import Auth from "./pages/Auth.tsx";
-import Register from "./pages/Register.tsx";
+// Register page removed — registration is now part of Auth.tsx
 import Profile from "./pages/Profile.tsx";
 import Admin from "./pages/Admin.tsx";
 import Explore from "./pages/Explore.tsx";
@@ -27,7 +27,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
-            <Route path="/register" element={<Register />} />
+            <Route path="/register" element={<Auth />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/admin" element={<Admin />} />

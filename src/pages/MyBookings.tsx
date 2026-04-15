@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { CalendarCheck, CheckCircle, XCircle, Clock, Star, MessageSquare } from "lucide-react";
@@ -25,7 +26,8 @@ const hostTypeLabels: Record<string, string> = {
 };
 
 const MyBookings = () => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [ratingDialog, setRatingDialog] = useState<{
@@ -33,6 +35,11 @@ const MyBookings = () => {
     reviewedUserId: string;
     reviewedName?: string;
   } | null>(null);
+  // Guard: only approved users
+  useEffect(() => {
+    if (!user) { navigate("/auth"); return; }
+    if (profile && profile.registration_status !== "approved") { navigate("/profile"); }
+  }, [user, profile]);
 
   const { data: bookings, isLoading } = useQuery({
     queryKey: ["my-bookings", user?.id],
