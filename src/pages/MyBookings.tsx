@@ -25,7 +25,8 @@ const hostTypeLabels: Record<string, string> = {
 };
 
 const MyBookings = () => {
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
+  const navigate = useNavigate();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [ratingDialog, setRatingDialog] = useState<{
