@@ -29,7 +29,7 @@ const volunteerTypeLabels: Record<string, string> = {
 interface ProfileViewProps {
   profile: any;
   detailedProfile: any;
-  profileType: "single" | "family" | "work" | "volunteer";
+  profileType: "single" | "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat";
   onEdit: () => void;
 }
 
@@ -140,6 +140,69 @@ const ProfileView = ({ profile, detailedProfile, profileType, onEdit }: ProfileV
               {d.provides_accommodation && <Badge variant="secondary">🛏️ לינה</Badge>}
               {d.provides_meals && <Badge variant="secondary">🍽️ ארוחות</Badge>}
             </div>
+          </div>
+        )}
+
+        {profileType === "singles_group" && (
+          <div className="space-y-1">
+            <h3 className="font-bold font-display mb-3">✨ {d.group_name}</h3>
+            <InfoRow label="רמה דתית" value={d.religious_level ? religiousLabels[d.religious_level] : null} />
+            <InfoRow label="גודל החבורה" value={d.group_size?.toString()} />
+            <InfoRow label="מי מוזמנים?" value={d.guest_preference ? genderLabels[d.guest_preference] : null} />
+            <InfoRow label="טווח גילאים" value={(d.age_range_min || d.age_range_max) ? `${d.age_range_min || "?"}-${d.age_range_max || "?"}` : null} />
+            {d.description && (
+              <div className="pt-3">
+                <p className="text-sm text-muted-foreground mb-1">על החבורה:</p>
+                <p className="text-sm whitespace-pre-wrap">{d.description}</p>
+              </div>
+            )}
+            {d.available_dates?.length > 0 && (
+              <div className="pt-3">
+                <p className="text-sm text-muted-foreground mb-2">תאריכים:</p>
+                <div className="flex flex-wrap gap-1">
+                  {d.available_dates.sort().map((date: string) => (
+                    <Badge key={date} variant="secondary" className="text-xs">
+                      {new Date(date + "T00:00:00").toLocaleDateString("he-IL", { day: "numeric", month: "short" })}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {profileType === "organized_shabbat" && (
+          <div className="space-y-1">
+            <h3 className="font-bold font-display mb-3">📅 {d.organization_name}</h3>
+            <InfoRow label="סוג השבת" value={d.shabbat_type} />
+            <InfoRow label="רמה דתית" value={d.religious_level ? religiousLabels[d.religious_level] : null} />
+            <InfoRow label="קהל יעד" value={d.target_audience} />
+            <InfoRow label="עלות" value={d.cost} />
+            {d.registration_link && (
+              <div className="pt-2">
+                <a href={d.registration_link} target="_blank" rel="noopener noreferrer" className="text-sm text-primary hover:underline">
+                  🔗 קישור להרשמה
+                </a>
+              </div>
+            )}
+            {d.description && (
+              <div className="pt-3">
+                <p className="text-sm text-muted-foreground mb-1">תיאור:</p>
+                <p className="text-sm whitespace-pre-wrap">{d.description}</p>
+              </div>
+            )}
+            {d.available_dates?.length > 0 && (
+              <div className="pt-3">
+                <p className="text-sm text-muted-foreground mb-2">תאריכי שבתות:</p>
+                <div className="flex flex-wrap gap-1">
+                  {d.available_dates.sort().map((date: string) => (
+                    <Badge key={date} variant="secondary" className="text-xs">
+                      {new Date(date + "T00:00:00").toLocaleDateString("he-IL", { day: "numeric", month: "short" })}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
       </div>

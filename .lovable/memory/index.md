@@ -3,7 +3,7 @@
 ## Core
 פל״א — פשוט לבחור איפה. RTL Hebrew app with Heebo/Rubik fonts.
 Pastel palette: primary sage-green, secondary soft coral, cream bg with dot pattern.
-Lovable Cloud backend. 3 categories: עבודה, התנדבות, אירוח (NO חברה לארוחה).
+Lovable Cloud backend. 5 host categories: family, work, volunteer, singles_group, organized_shabbat (NO חברה לארוחה).
 Admin approval flow: register → pending → admin approves → build profile.
 
 ## Memories

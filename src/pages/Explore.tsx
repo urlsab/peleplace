@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Search, Filter, MapPin, Calendar, Users, Briefcase, HandHeart, Home, X, Send } from "lucide-react";
+import { Search, Filter, MapPin, Calendar, Users, Briefcase, HandHeart, Home, X, Send, Sparkles, CalendarDays } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
@@ -35,12 +35,16 @@ const categoryConfig = {
   family: { label: "אירוח", icon: Home, color: "bg-[hsl(var(--terracotta))]" },
   work: { label: "עבודה", icon: Briefcase, color: "bg-primary" },
   volunteer: { label: "התנדבות", icon: HandHeart, color: "bg-secondary" },
+  singles_group: { label: "חבורת רווקים/ות", icon: Sparkles, color: "bg-[hsl(var(--olive))]" },
+  organized_shabbat: { label: "שבת מאורגנת", icon: CalendarDays, color: "bg-[hsl(var(--amber-soft))]" },
 };
+
+type OpportunityType = "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat";
 
 type OpportunityItem = {
   id: string;
   userId: string;
-  type: "family" | "work" | "volunteer";
+  type: OpportunityType;
   title: string;
   city: string | null;
   region: string | null;
@@ -85,6 +89,28 @@ const Explore = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("host_volunteer_profiles")
+        .select("*");
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  const { data: singlesGroupProfiles } = useQuery({
+    queryKey: ["explore-singles-group"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("host_singles_group_profiles")
+        .select("*");
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  const { data: organizedShabbatProfiles } = useQuery({
+    queryKey: ["explore-organized-shabbat"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("host_organized_shabbat_profiles")
         .select("*");
       if (error) throw error;
       return data || [];
@@ -145,8 +171,48 @@ const Explore = () => {
       })
     );
 
+    singlesGroupProfiles?.forEach((p) =>
+      items.push({
+        id: p.id,
+        userId: p.user_id,
+        type: "singles_group",
+        title: p.group_name,
+        city: p.city,
+        region: p.region,
+        religiousLevel: p.religious_level,
+        availableDates: p.available_dates,
+        details: {
+          description: p.description,
+          groupSize: p.group_size,
+          guestPreference: p.guest_preference,
+          ageRangeMin: p.age_range_min,
+          ageRangeMax: p.age_range_max,
+        },
+      })
+    );
+
+    organizedShabbatProfiles?.forEach((p) =>
+      items.push({
+        id: p.id,
+        userId: p.user_id,
+        type: "organized_shabbat",
+        title: p.organization_name,
+        city: p.city,
+        region: p.region,
+        religiousLevel: p.religious_level,
+        availableDates: p.available_dates,
+        details: {
+          shabbatType: p.shabbat_type,
+          description: p.description,
+          cost: p.cost,
+          registrationLink: p.registration_link,
+          targetAudience: p.target_audience,
+        },
+      })
+    );
+
     return items;
-  }, [familyProfiles, workProfiles, volunteerProfiles]);
+  }, [familyProfiles, workProfiles, volunteerProfiles, singlesGroupProfiles, organizedShabbatProfiles]);
 
   const filtered = useMemo(() => {
     return allOpportunities.filter((item) => {
@@ -216,7 +282,9 @@ const Explore = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">כל הסוגים</SelectItem>
-                  <SelectItem value="family">אירוח</SelectItem>
+                  <SelectItem value="family">אירוח משפחה</SelectItem>
+                  <SelectItem value="singles_group">חבורת רווקים/ות</SelectItem>
+                  <SelectItem value="organized_shabbat">שבת מאורגנת</SelectItem>
                   <SelectItem value="work">עבודה</SelectItem>
                   <SelectItem value="volunteer">התנדבות</SelectItem>
                 </SelectContent>
@@ -329,6 +397,30 @@ const Explore = () => {
                           <div className="flex items-center gap-2">
                             <HandHeart className="h-3.5 w-3.5 shrink-0" />
                             <span>{(item.details as any).volunteerType}</span>
+                          </div>
+                        )}
+                        {item.type === "singles_group" && (item.details as any).groupSize && (
+                          <div className="flex items-center gap-2">
+                            <Users className="h-3.5 w-3.5 shrink-0" />
+                            <span>{(item.details as any).groupSize} בחבורה</span>
+                          </div>
+                        )}
+                        {item.type === "singles_group" && ((item.details as any).ageRangeMin || (item.details as any).ageRangeMax) && (
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs">🎂</span>
+                            <span>גילאים {(item.details as any).ageRangeMin || "?"}-{(item.details as any).ageRangeMax || "?"}</span>
+                          </div>
+                        )}
+                        {item.type === "organized_shabbat" && (item.details as any).shabbatType && (
+                          <div className="flex items-center gap-2">
+                            <Sparkles className="h-3.5 w-3.5 shrink-0" />
+                            <span>{(item.details as any).shabbatType}</span>
+                          </div>
+                        )}
+                        {item.type === "organized_shabbat" && (item.details as any).cost && (
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs">💰</span>
+                            <span>{(item.details as any).cost}</span>
                           </div>
                         )}
                       </div>

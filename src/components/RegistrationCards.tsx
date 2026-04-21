@@ -6,6 +6,8 @@ import cardFarm from "@/assets/card-farm.jpg";
 import cardGuesthouse from "@/assets/card-guesthouse.jpg";
 import cardHosting from "@/assets/card-hosting.jpg";
 import cardSingle from "@/assets/card-single.jpg";
+import cardSinglesGroup from "@/assets/card-singles-group.jpg";
+import cardOrganizedShabbat from "@/assets/card-organized-shabbat.jpg";
 
 const registrationCards = [
   {
@@ -22,6 +24,22 @@ const registrationCards = [
     subtitle: "הזמינו אורח/ת לשולחן השבת",
     description: "הצטרפו כמארחים והזמינו רווקים ורווקות לשולחן השבת שלכם",
     cta: "הירשמו כמארחים",
+    userType: "host",
+  },
+  {
+    image: cardSinglesGroup,
+    title: "חבורת רווקים/ות?",
+    subtitle: "מתארגנים על שבת ביחד?",
+    description: "פרסמו את השבת שלכם והזמינו רווקים נוספים בני גילכם להצטרף לחבורה",
+    cta: "הירשמו כחבורה",
+    userType: "host",
+  },
+  {
+    image: cardOrganizedShabbat,
+    title: "שבת מאורגנת?",
+    subtitle: "סמינר ערכים, שבת שידוכים או ארגון?",
+    description: "פרסמו את השבתות המאורגנות שלכם ותגיעו לקהל הרלוונטי",
+    cta: "הירשמו כארגון",
     userType: "host",
   },
   {
