@@ -30,7 +30,7 @@ const kashrutLabels: Record<string, string> = {
   not_kosher: "לא כשר", kosher: "כשר", mehadrin: "כשר למהדרין", chalak_beit_yosef: "חלק/בית יוסף",
 };
 
-type HostType = "family" | "work" | "volunteer" | null;
+type HostType = "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat" | null;
 
 const Profile = () => {
   const { user, profile, loading: authLoading } = useAuth();
@@ -40,7 +40,7 @@ const Profile = () => {
   const [saving, setSaving] = useState(false);
   const [mode, setMode] = useState<"view" | "edit">("view");
   const [detailedProfile, setDetailedProfile] = useState<any>(null);
-  const [profileType, setProfileType] = useState<"single" | "family" | "work" | "volunteer" | null>(null);
+  const [profileType, setProfileType] = useState<"single" | "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat" | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [availableDates, setAvailableDates] = useState<string[]>([]);
 
@@ -89,6 +89,24 @@ const Profile = () => {
           setDetailedProfile(volunteer);
           setProfileType("volunteer");
           setHostType("volunteer");
+          setLoadingProfile(false);
+          return;
+        }
+        const { data: singlesGroup } = await supabase.from("host_singles_group_profiles").select("*").eq("user_id", user.id).maybeSingle();
+        if (singlesGroup) {
+          setDetailedProfile(singlesGroup);
+          setProfileType("singles_group");
+          setHostType("singles_group");
+          setAvailableDates(singlesGroup.available_dates || []);
+          setLoadingProfile(false);
+          return;
+        }
+        const { data: organized } = await supabase.from("host_organized_shabbat_profiles").select("*").eq("user_id", user.id).maybeSingle();
+        if (organized) {
+          setDetailedProfile(organized);
+          setProfileType("organized_shabbat");
+          setHostType("organized_shabbat");
+          setAvailableDates(organized.available_dates || []);
           setLoadingProfile(false);
           return;
         }
@@ -175,6 +193,14 @@ const Profile = () => {
     } else if (profileType === "volunteer") {
       const { data } = await supabase.from("host_volunteer_profiles").select("*").eq("user_id", user.id).maybeSingle();
       setDetailedProfile(data);
+    } else if (profileType === "singles_group") {
+      const { data } = await supabase.from("host_singles_group_profiles").select("*").eq("user_id", user.id).maybeSingle();
+      setDetailedProfile(data);
+      setAvailableDates(data?.available_dates || []);
+    } else if (profileType === "organized_shabbat") {
+      const { data } = await supabase.from("host_organized_shabbat_profiles").select("*").eq("user_id", user.id).maybeSingle();
+      setDetailedProfile(data);
+      setAvailableDates(data?.available_dates || []);
     }
     setMode("view");
   };
