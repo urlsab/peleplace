@@ -219,6 +219,122 @@ export type Database = {
         }
         Relationships: []
       }
+      host_organized_shabbat_profiles: {
+        Row: {
+          available_dates: string[] | null
+          city: string | null
+          cost: string | null
+          created_at: string
+          description: string | null
+          id: string
+          organization_name: string
+          region: Database["public"]["Enums"]["region"] | null
+          registration_link: string | null
+          religious_level: Database["public"]["Enums"]["religious_level"] | null
+          shabbat_type: string | null
+          target_audience: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          available_dates?: string[] | null
+          city?: string | null
+          cost?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          organization_name: string
+          region?: Database["public"]["Enums"]["region"] | null
+          registration_link?: string | null
+          religious_level?:
+            | Database["public"]["Enums"]["religious_level"]
+            | null
+          shabbat_type?: string | null
+          target_audience?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          available_dates?: string[] | null
+          city?: string | null
+          cost?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          organization_name?: string
+          region?: Database["public"]["Enums"]["region"] | null
+          registration_link?: string | null
+          religious_level?:
+            | Database["public"]["Enums"]["religious_level"]
+            | null
+          shabbat_type?: string | null
+          target_audience?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      host_singles_group_profiles: {
+        Row: {
+          age_range_max: number | null
+          age_range_min: number | null
+          available_dates: string[] | null
+          city: string | null
+          created_at: string
+          description: string | null
+          group_name: string
+          group_size: number | null
+          guest_preference:
+            | Database["public"]["Enums"]["gender_preference"]
+            | null
+          id: string
+          region: Database["public"]["Enums"]["region"] | null
+          religious_level: Database["public"]["Enums"]["religious_level"] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age_range_max?: number | null
+          age_range_min?: number | null
+          available_dates?: string[] | null
+          city?: string | null
+          created_at?: string
+          description?: string | null
+          group_name: string
+          group_size?: number | null
+          guest_preference?:
+            | Database["public"]["Enums"]["gender_preference"]
+            | null
+          id?: string
+          region?: Database["public"]["Enums"]["region"] | null
+          religious_level?:
+            | Database["public"]["Enums"]["religious_level"]
+            | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age_range_max?: number | null
+          age_range_min?: number | null
+          available_dates?: string[] | null
+          city?: string | null
+          created_at?: string
+          description?: string | null
+          group_name?: string
+          group_size?: number | null
+          guest_preference?:
+            | Database["public"]["Enums"]["gender_preference"]
+            | null
+          id?: string
+          region?: Database["public"]["Enums"]["region"] | null
+          religious_level?:
+            | Database["public"]["Enums"]["religious_level"]
+            | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       host_volunteer_profiles: {
         Row: {
           city: string | null
@@ -548,7 +664,12 @@ export type Database = {
     Enums: {
       app_role: "admin" | "user"
       gender_preference: "men" | "women" | "mixed"
-      host_type: "family" | "work" | "volunteer"
+      host_type:
+        | "family"
+        | "work"
+        | "volunteer"
+        | "singles_group"
+        | "organized_shabbat"
       kashrut_level: "not_kosher" | "kosher" | "mehadrin" | "chalak_beit_yosef"
       region:
         | "north"
@@ -697,7 +818,13 @@ export const Constants = {
     Enums: {
       app_role: ["admin", "user"],
       gender_preference: ["men", "women", "mixed"],
-      host_type: ["family", "work", "volunteer"],
+      host_type: [
+        "family",
+        "work",
+        "volunteer",
+        "singles_group",
+        "organized_shabbat",
+      ],
       kashrut_level: ["not_kosher", "kosher", "mehadrin", "chalak_beit_yosef"],
       region: [
         "north",
