@@ -12,7 +12,7 @@ interface BookingRequestDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   hostUserId: string;
-  hostType: "family" | "work" | "volunteer";
+  hostType: "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat";
   hostTitle: string;
   eventDate?: string;
   onSuccess?: () => void;
