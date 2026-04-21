@@ -468,6 +468,8 @@ const Profile = () => {
                       <h2 className="text-xl font-bold font-display text-center">🏠 בחרו סוג מארח</h2>
                       {([
                         { type: "family" as const, label: "משפחה מארחת", desc: "פתיחת הבית לאורחים בשבת/חג" },
+                        { type: "singles_group" as const, label: "חבורת רווקים/ות", desc: "אנחנו חבורת רווקים/ות שמתארגנים על שבת ביחד" },
+                        { type: "organized_shabbat" as const, label: "שבת מאורגנת", desc: "סמינר ערכים, שבת שידוכים, ארגון" },
                         { type: "work" as const, label: "מקום עבודה", desc: "הצעת עבודה זמנית או קבועה" },
                         { type: "volunteer" as const, label: "מקום התנדבות", desc: "חווה, בית ילד, בית חב״ד ועוד" },
                       ]).map((opt) => (
@@ -551,7 +553,7 @@ const Profile = () => {
                       <div className="space-y-2"><Label htmlFor="specialReq">דרישות מיוחדות</Label><Textarea id="specialReq" name="specialReq" placeholder="תואר, רישיון לנשק, ניסיון..." defaultValue={detailedProfile?.special_requirements || ""} /></div>
                       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>{saving ? "שומר..." : "שמירת פרופיל"}</Button>
                     </form>
-                  ) : (
+                  ) : hostType === "volunteer" ? (
                     <form onSubmit={handleVolunteerProfile} className="space-y-5 rounded-2xl border border-border bg-card p-8 shadow-card">
                       <button type="button" onClick={() => setHostType(null)} className="text-sm text-primary hover:underline">← חזרה</button>
                       <h2 className="text-xl font-bold font-display text-center">🤝 מקום התנדבות</h2>
@@ -583,6 +585,65 @@ const Profile = () => {
                           <Checkbox id="meals" name="meals" defaultChecked={detailedProfile?.provides_meals} />
                           <Label htmlFor="meals" className="cursor-pointer">ארוחות</Label>
                         </div>
+                      </div>
+                      <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>{saving ? "שומר..." : "שמירת פרופיל"}</Button>
+                    </form>
+                  ) : hostType === "singles_group" ? (
+                    <form onSubmit={handleSinglesGroupProfile} className="space-y-5 rounded-2xl border border-border bg-card p-8 shadow-card">
+                      <button type="button" onClick={() => setHostType(null)} className="text-sm text-primary hover:underline">← חזרה</button>
+                      <h2 className="text-xl font-bold font-display text-center">✨ חבורת רווקים/ות</h2>
+                      <div className="space-y-2"><Label htmlFor="groupName">שם החבורה *</Label><Input id="groupName" name="groupName" required placeholder="חבורת השבת של ירושלים" defaultValue={detailedProfile?.group_name || ""} /></div>
+                      <div className="space-y-2"><Label htmlFor="description">על החבורה</Label><Textarea id="description" name="description" placeholder="ספרו על החבורה, האווירה והתכנים..." className="min-h-[100px]" defaultValue={detailedProfile?.description || ""} /></div>
+                      <div className="space-y-2"><Label>רמה דתית</Label><ReligiousSelect name="religiousLevel" defaultValue={detailedProfile?.religious_level || undefined} /></div>
+                      <div className="space-y-2"><Label>אזור</Label><RegionSelect name="region" defaultValue={detailedProfile?.region || undefined} /></div>
+                      <div className="space-y-2"><Label htmlFor="city">עיר / יישוב</Label><Input id="city" name="city" placeholder="ירושלים" defaultValue={detailedProfile?.city || ""} /></div>
+                      <div className="space-y-2"><Label htmlFor="groupSize">גודל החבורה הנוכחי</Label><Input id="groupSize" name="groupSize" type="number" min={2} placeholder="6" defaultValue={detailedProfile?.group_size || ""} /></div>
+                      <div className="space-y-2">
+                        <Label>את מי מעוניינים להזמין?</Label>
+                        <RadioGroup name="guestPref" defaultValue={detailedProfile?.guest_preference || ""} className="flex gap-4">
+                          <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="men" /><span>גברים</span></label>
+                          <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="women" /><span>נשים</span></label>
+                          <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="mixed" /><span>מעורב</span></label>
+                        </RadioGroup>
+                      </div>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="space-y-2"><Label htmlFor="ageMin">גיל מינימום</Label><Input id="ageMin" name="ageMin" type="number" min={18} max={99} placeholder="22" defaultValue={detailedProfile?.age_range_min || ""} /></div>
+                        <div className="space-y-2"><Label htmlFor="ageMax">גיל מקסימום</Label><Input id="ageMax" name="ageMax" type="number" min={18} max={99} placeholder="35" defaultValue={detailedProfile?.age_range_max || ""} /></div>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>תאריכי שבתות</Label>
+                        <JewishDatePicker selectedDates={availableDates} onChange={setAvailableDates} />
+                      </div>
+                      <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>{saving ? "שומר..." : "שמירת פרופיל"}</Button>
+                    </form>
+                  ) : (
+                    <form onSubmit={handleOrganizedShabbatProfile} className="space-y-5 rounded-2xl border border-border bg-card p-8 shadow-card">
+                      <button type="button" onClick={() => setHostType(null)} className="text-sm text-primary hover:underline">← חזרה</button>
+                      <h2 className="text-xl font-bold font-display text-center">📅 שבת מאורגנת</h2>
+                      <div className="space-y-2"><Label htmlFor="orgName">שם הארגון *</Label><Input id="orgName" name="orgName" required placeholder="סמינר ערכים" defaultValue={detailedProfile?.organization_name || ""} /></div>
+                      <div className="space-y-2">
+                        <Label htmlFor="shabbatType">סוג השבת</Label>
+                        <Select name="shabbatType" defaultValue={detailedProfile?.shabbat_type || undefined}>
+                          <SelectTrigger><SelectValue placeholder="בחרו סוג" /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="ערכים">סמינר ערכים</SelectItem>
+                            <SelectItem value="שידוכים">שבת שידוכים</SelectItem>
+                            <SelectItem value="חווייתית">שבת חווייתית</SelectItem>
+                            <SelectItem value="לימודית">שבת לימודית</SelectItem>
+                            <SelectItem value="אחר">אחר</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2"><Label htmlFor="description">תיאור השבת</Label><Textarea id="description" name="description" placeholder="ספרו על התוכן, הסדנאות, האווירה..." className="min-h-[100px]" defaultValue={detailedProfile?.description || ""} /></div>
+                      <div className="space-y-2"><Label>רמה דתית</Label><ReligiousSelect name="religiousLevel" defaultValue={detailedProfile?.religious_level || undefined} /></div>
+                      <div className="space-y-2"><Label>אזור</Label><RegionSelect name="region" defaultValue={detailedProfile?.region || undefined} /></div>
+                      <div className="space-y-2"><Label htmlFor="city">עיר / מיקום</Label><Input id="city" name="city" placeholder="צפת" defaultValue={detailedProfile?.city || ""} /></div>
+                      <div className="space-y-2"><Label htmlFor="targetAudience">קהל יעד</Label><Input id="targetAudience" name="targetAudience" placeholder="רווקים/ות 25-35, דתיים" defaultValue={detailedProfile?.target_audience || ""} /></div>
+                      <div className="space-y-2"><Label htmlFor="cost">עלות</Label><Input id="cost" name="cost" placeholder="450 ₪ לאדם" defaultValue={detailedProfile?.cost || ""} /></div>
+                      <div className="space-y-2"><Label htmlFor="regLink">קישור להרשמה</Label><Input id="regLink" name="regLink" type="url" placeholder="https://..." defaultValue={detailedProfile?.registration_link || ""} /></div>
+                      <div className="space-y-2">
+                        <Label>תאריכי שבתות</Label>
+                        <JewishDatePicker selectedDates={availableDates} onChange={setAvailableDates} />
                       </div>
                       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>{saving ? "שומר..." : "שמירת פרופיל"}</Button>
                     </form>
