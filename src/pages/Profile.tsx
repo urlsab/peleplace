@@ -306,6 +306,62 @@ const Profile = () => {
     setSaving(false);
   };
 
+  const handleSinglesGroupProfile = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSaving(true);
+    const form = new FormData(e.currentTarget);
+    const data = {
+      user_id: user.id,
+      group_name: form.get("groupName") as string,
+      description: form.get("description") as string || null,
+      religious_level: form.get("religiousLevel") as any || null,
+      region: form.get("region") as any || null,
+      city: form.get("city") as string || null,
+      group_size: parseInt(form.get("groupSize") as string) || null,
+      guest_preference: form.get("guestPref") as any || null,
+      age_range_min: parseInt(form.get("ageMin") as string) || null,
+      age_range_max: parseInt(form.get("ageMax") as string) || null,
+      available_dates: availableDates.length > 0 ? availableDates : null,
+    };
+    const { error } = await supabase.from("host_singles_group_profiles").upsert(data, { onConflict: "user_id" });
+    if (error) {
+      toast({ title: "שגיאה", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "הפרופיל נשמר! ✨" });
+      setProfileType("singles_group");
+      await afterSave();
+    }
+    setSaving(false);
+  };
+
+  const handleOrganizedShabbatProfile = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSaving(true);
+    const form = new FormData(e.currentTarget);
+    const data = {
+      user_id: user.id,
+      organization_name: form.get("orgName") as string,
+      shabbat_type: form.get("shabbatType") as string || null,
+      description: form.get("description") as string || null,
+      religious_level: form.get("religiousLevel") as any || null,
+      region: form.get("region") as any || null,
+      city: form.get("city") as string || null,
+      cost: form.get("cost") as string || null,
+      registration_link: form.get("regLink") as string || null,
+      target_audience: form.get("targetAudience") as string || null,
+      available_dates: availableDates.length > 0 ? availableDates : null,
+    };
+    const { error } = await supabase.from("host_organized_shabbat_profiles").upsert(data, { onConflict: "user_id" });
+    if (error) {
+      toast({ title: "שגיאה", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "הפרופיל נשמר! ✨" });
+      setProfileType("organized_shabbat");
+      await afterSave();
+    }
+    setSaving(false);
+  };
+
   const RegionSelect = ({ name, defaultValue }: { name: string; defaultValue?: string }) => (
     <Select name={name} defaultValue={defaultValue}>
       <SelectTrigger><SelectValue placeholder="בחרו אזור" /></SelectTrigger>
