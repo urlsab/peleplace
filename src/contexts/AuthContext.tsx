@@ -63,6 +63,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) setLoading(false);
+      // Safety: ensure loading flips off even if onAuthStateChange is slow
+      setTimeout(() => setLoading((l) => (l ? false : l)), 2000);
     });
 
     return () => subscription.unsubscribe();
