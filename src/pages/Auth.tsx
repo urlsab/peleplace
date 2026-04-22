@@ -24,6 +24,8 @@ const Auth = () => {
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
+  const [recommenderName, setRecommenderName] = useState("");
+  const [recommenderPhone, setRecommenderPhone] = useState("");
   const [idFile, setIdFile] = useState<File | null>(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -64,7 +66,7 @@ const Auth = () => {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!termsAccepted || !gender || !dateOfBirth) return;
+    if (!termsAccepted || !gender || !dateOfBirth || !recommenderName.trim() || !recommenderPhone.trim()) return;
     setLoading(true);
 
     try {
@@ -101,8 +103,8 @@ const Auth = () => {
         gender,
         id_document_url: idDocUrl,
         terms_accepted_at: new Date().toISOString(),
-        recommender_name: "",
-        recommender_phone: "",
+        recommender_name: recommenderName,
+        recommender_phone: recommenderPhone,
       });
       if (profileError) throw profileError;
 
@@ -395,6 +397,40 @@ const Auth = () => {
                 </RadioGroup>
               </div>
 
+              {/* Recommender */}
+              <div className="rounded-xl border border-border bg-accent/30 p-3 space-y-3">
+                <div>
+                  <Label className="text-xs font-bold">פרטי ממליץ/ה *</Label>
+                  <p className="text-[11px] text-muted-foreground mt-0.5 leading-relaxed">
+                    אדם/אישה שמכיר/ה אותך ויכול/ה להעיד עליך — חבר/ה, רב/נית קהילה, מדריך/ה וכו׳
+                  </p>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="rec-name" className="text-xs">שם הממליץ/ה</Label>
+                  <Input
+                    id="rec-name"
+                    value={recommenderName}
+                    onChange={(e) => setRecommenderName(e.target.value)}
+                    required
+                    placeholder="שם מלא"
+                    className="h-10 rounded-xl bg-background"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="rec-phone" className="text-xs">טלפון הממליץ/ה</Label>
+                  <Input
+                    id="rec-phone"
+                    type="tel"
+                    value={recommenderPhone}
+                    onChange={(e) => setRecommenderPhone(e.target.value)}
+                    required
+                    placeholder="050-1234567"
+                    dir="ltr"
+                    className="h-10 rounded-xl bg-background"
+                  />
+                </div>
+              </div>
+
               {/* ID Upload */}
               <div className="space-y-1.5">
                 <Label className="text-xs">צילום תעודת זהות</Label>
@@ -440,7 +476,7 @@ const Auth = () => {
               <Button
                 type="submit"
                 className="w-full rounded-full font-bold h-11"
-                disabled={loading || !termsAccepted || !gender || !dateOfBirth}
+                disabled={loading || !termsAccepted || !gender || !dateOfBirth || !recommenderName.trim() || !recommenderPhone.trim()}
               >
                 {loading ? "נרשם..." : "הצטרפות לפל״א"}
               </Button>
