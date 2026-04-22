@@ -30,6 +30,10 @@ const kashrutLabels: Record<string, string> = {
   not_kosher: "לא כשר", kosher: "כשר", mehadrin: "כשר למהדרין", chalak_beit_yosef: "חלק/בית יוסף",
 };
 
+const dietaryLabels: Record<string, string> = {
+  regular: "רגיל", vegetarian: "צמחוני", vegan: "טבעוני", gluten_free: "ללא גלוטן", other: "אחר",
+};
+
 type HostType = "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat" | null;
 
 const Profile = () => {
@@ -209,6 +213,23 @@ const Profile = () => {
     e.preventDefault();
     setSaving(true);
     const form = new FormData(e.currentTarget);
+
+    // Optional profile image upload
+    let profileImageUrl = detailedProfile?.profile_image_url || null;
+    const imgFile = form.get("profileImage") as File | null;
+    if (imgFile && imgFile.size > 0) {
+      const ext = imgFile.name.split(".").pop();
+      const path = `${user.id}/profile-${Date.now()}.${ext}`;
+      const { error: upErr } = await supabase.storage.from("profile-images").upload(path, imgFile, { upsert: true });
+      if (upErr) {
+        toast({ title: "שגיאה בהעלאת תמונה", description: upErr.message, variant: "destructive" });
+        setSaving(false);
+        return;
+      }
+      const { data: pub } = supabase.storage.from("profile-images").getPublicUrl(path);
+      profileImageUrl = pub.publicUrl;
+    }
+
     const data = {
       user_id: user.id,
       age: parseInt(form.get("age") as string) || null,
@@ -217,6 +238,9 @@ const Profile = () => {
       region: form.get("region") as any || null,
       city: form.get("city") as string || null,
       about_me: form.get("aboutMe") as string || null,
+      profile_image_url: profileImageUrl,
+      kashrut_preference: (form.get("kashrutPref") as any) || null,
+      dietary_preference: (form.get("dietaryPref") as any) || null,
     };
     const { error } = await supabase.from("single_profiles").upsert(data, { onConflict: "user_id" });
     if (error) {
