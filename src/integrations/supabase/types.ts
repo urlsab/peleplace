@@ -446,6 +446,7 @@ export type Database = {
           phone: string
           recommender_name: string | null
           recommender_phone: string | null
+          recommender_relationship: string | null
           registration_status: Database["public"]["Enums"]["registration_status"]
           terms_accepted_at: string | null
           updated_at: string
@@ -463,6 +464,7 @@ export type Database = {
           phone: string
           recommender_name?: string | null
           recommender_phone?: string | null
+          recommender_relationship?: string | null
           registration_status?: Database["public"]["Enums"]["registration_status"]
           terms_accepted_at?: string | null
           updated_at?: string
@@ -480,6 +482,7 @@ export type Database = {
           phone?: string
           recommender_name?: string | null
           recommender_phone?: string | null
+          recommender_relationship?: string | null
           registration_status?: Database["public"]["Enums"]["registration_status"]
           terms_accepted_at?: string | null
           updated_at?: string

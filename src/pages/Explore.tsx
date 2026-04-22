@@ -238,6 +238,42 @@ const Explore = () => {
     setSearchQuery("");
   };
 
+  // Block unapproved (or unauthenticated) users from searching shabbatot
+  if (!user || !isApproved) {
+    return (
+      <div className="min-h-screen bg-background pattern-dots" dir="rtl">
+        <Navbar />
+        <div className="pt-28 pb-16 px-6">
+          <div className="mx-auto max-w-md text-center rounded-3xl border border-border bg-card p-8 shadow-card space-y-5">
+            <div className="mx-auto h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center text-3xl">⏳</div>
+            <h1 className="text-2xl font-black font-display">חיפוש שבתות זמין רק לחברי פל״א מאושרים</h1>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {user
+                ? "ההרשמה שלך עדיין ממתינה לאישור הצוות. נעדכן אותך במייל ברגע שתאושר."
+                : "כדי לחפש ולהזמין שבתות יש להירשם לפל״א ולקבל אישור מהצוות."}
+            </p>
+            <div className="flex gap-3 justify-center pt-2">
+              <button
+                onClick={() => (window.location.href = "/")}
+                className="rounded-full px-6 py-2.5 text-sm font-bold border border-border hover:bg-muted/60 transition-colors"
+              >
+                חזרה לעמוד הראשי
+              </button>
+              {!user && (
+                <button
+                  onClick={() => (window.location.href = "/auth")}
+                  className="rounded-full px-6 py-2.5 text-sm font-bold bg-primary text-primary-foreground hover:opacity-90 transition-opacity"
+                >
+                  הצטרפות / התחברות
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background pattern-dots" dir="rtl">
       <Navbar />
