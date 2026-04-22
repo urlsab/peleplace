@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useRef, useState, ReactNode } from "react";
 import { User, Session } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -28,56 +28,74 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
   const [profile, setProfile] = useState<any | null>(null);
+  const requestIdRef = useRef(0);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
+    let active = true;
 
-        if (session?.user) {
-          // Fetch profile
-          const { data: profileData } = await supabase
-            .from("profiles")
-            .select("*")
-            .eq("user_id", session.user.id)
-            .maybeSingle();
-          setProfile(profileData);
+    const syncAuthState = async (nextSession: Session | null) => {
+      const requestId = ++requestIdRef.current;
 
-          // Check admin role
-          const { data: roleData } = await supabase
-            .from("user_roles")
-            .select("role")
-            .eq("user_id", session.user.id)
-            .eq("role", "admin")
-            .maybeSingle();
-          setIsAdmin(!!roleData);
-        } else {
-          setProfile(null);
-          setIsAdmin(false);
-        }
+      setSession(nextSession);
+      setUser(nextSession?.user ?? null);
 
+      if (!nextSession?.user) {
+        if (!active || requestIdRef.current !== requestId) return;
+        setProfile(null);
+        setIsAdmin(false);
         setLoading(false);
+        return;
       }
-    );
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) setLoading(false);
-      // Safety: ensure loading flips off even if onAuthStateChange is slow
-      setTimeout(() => setLoading((l) => (l ? false : l)), 2000);
+      setLoading(true);
+
+      const [profileResult, roleResult] = await Promise.all([
+        supabase
+          .from("profiles")
+          .select("*")
+          .eq("user_id", nextSession.user.id)
+          .maybeSingle(),
+        supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", nextSession.user.id)
+          .eq("role", "admin")
+          .maybeSingle(),
+      ]);
+
+      if (!active || requestIdRef.current !== requestId) return;
+
+      setProfile(profileResult.data ?? null);
+      setIsAdmin(!!roleResult.data);
+      setLoading(false);
+    };
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      void syncAuthState(nextSession);
     });
 
-    return () => subscription.unsubscribe();
+    void supabase.auth.getSession().then(({ data: { session: currentSession } }) => {
+      void syncAuthState(currentSession);
+    });
+
+    return () => {
+      active = false;
+      requestIdRef.current += 1;
+      subscription.unsubscribe();
+    };
   }, []);
 
   const signOut = async () => {
-    // 1. Clear local React state IMMEDIATELY so UI updates
+    requestIdRef.current += 1;
+
     setUser(null);
     setSession(null);
     setProfile(null);
     setIsAdmin(false);
+    setLoading(false);
 
-    // 2. Aggressively clear all supabase auth keys from storage
     try {
       Object.keys(localStorage)
         .filter((k) => k.startsWith("sb-") || k.includes("supabase.auth"))
@@ -87,7 +105,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         .forEach((k) => sessionStorage.removeItem(k));
     } catch {}
 
-    // 3. Tell supabase to sign out (locally) — fire & forget
     try {
       await supabase.auth.signOut({ scope: "local" });
     } catch (err) {
