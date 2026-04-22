@@ -66,7 +66,7 @@ const Auth = () => {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!termsAccepted || !gender || !dateOfBirth) return;
+    if (!termsAccepted || !gender || !dateOfBirth || !recommenderName.trim() || !recommenderPhone.trim()) return;
     setLoading(true);
 
     try {
