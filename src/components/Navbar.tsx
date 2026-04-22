@@ -1,4 +1,4 @@
-import { LogOut, User, Shield, Search, CalendarCheck, Menu, FileText, Mail, CalendarRange, ChevronDown } from "lucide-react";
+import { LogOut, User, Shield, Search, CalendarCheck, Menu, FileText, Mail, CalendarRange, ChevronDown, Settings as SettingsIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -100,6 +100,9 @@ const Navbar = () => {
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => goToSection("#contact")} className="rounded-xl gap-2 cursor-pointer">
                   <Mail className="h-4 w-4" /> צור קשר
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/settings")} className="rounded-xl gap-2 cursor-pointer">
+                  <SettingsIcon className="h-4 w-4" /> הגדרות
                 </DropdownMenuItem>
 
                 {isAdmin && (

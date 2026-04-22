@@ -21,6 +21,10 @@ const kashrutLabels: Record<string, string> = {
   not_kosher: "לא כשר", kosher: "כשר", mehadrin: "כשר למהדרין", chalak_beit_yosef: "חלק/בית יוסף",
 };
 
+const dietaryLabels: Record<string, string> = {
+  regular: "רגיל", vegetarian: "צמחוני", vegan: "טבעוני", gluten_free: "ללא גלוטן", other: "אחר",
+};
+
 const volunteerTypeLabels: Record<string, string> = {
   farm: "חווה", children_home: "בית ילד", chabad: "בית חב״ד",
   elderly: "בית אבות", military_families: "משפחות מילואים", other: "אחר",
@@ -60,17 +64,30 @@ const ProfileView = ({ profile, detailedProfile, profileType, onEdit }: ProfileV
 
   return (
     <div className="space-y-4">
-      <div className="rounded-2xl border border-border bg-card p-6 shadow-card space-y-1">
-        <div className="flex justify-between items-start">
-          <div>
-            <h2 className="text-xl font-black font-display">{profile.full_name}</h2>
-            {location && (
-              <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
-                <MapPin className="h-3.5 w-3.5" /> {location}
-              </p>
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-card">
+        <div className="flex justify-between items-start gap-4">
+          <div className="flex items-center gap-4 min-w-0">
+            {profileType === "single" && d.profile_image_url ? (
+              <img
+                src={d.profile_image_url}
+                alt={profile.full_name}
+                className="h-16 w-16 rounded-full object-cover border-2 border-border shrink-0"
+              />
+            ) : (
+              <div className="h-16 w-16 rounded-full bg-gradient-to-br from-primary to-[hsl(var(--terracotta))] flex items-center justify-center text-cream text-xl font-black shrink-0">
+                {profile.full_name?.charAt(0)}
+              </div>
             )}
+            <div className="min-w-0">
+              <h2 className="text-xl font-black font-display truncate">{profile.full_name}</h2>
+              {location && (
+                <p className="text-sm text-muted-foreground flex items-center gap-1 mt-1">
+                  <MapPin className="h-3.5 w-3.5" /> {location}
+                </p>
+              )}
+            </div>
           </div>
-          <Button variant="outline" size="sm" onClick={onEdit} className="rounded-full gap-1">
+          <Button variant="outline" size="sm" onClick={onEdit} className="rounded-full gap-1 shrink-0">
             <Edit className="h-3.5 w-3.5" /> עריכה
           </Button>
         </div>
@@ -83,6 +100,8 @@ const ProfileView = ({ profile, detailedProfile, profileType, onEdit }: ProfileV
             <InfoRow label="גיל" value={d.age?.toString()} />
             <InfoRow label="מגדר" value={d.gender ? genderLabels[d.gender] || d.gender : null} />
             <InfoRow label="רמה דתית" value={d.religious_level ? religiousLabels[d.religious_level] : null} />
+            <InfoRow label="העדפת כשרות" value={d.kashrut_preference ? kashrutLabels[d.kashrut_preference] : null} />
+            <InfoRow label="העדפות תזונה" value={d.dietary_preference ? dietaryLabels[d.dietary_preference] : null} />
             {d.about_me && (
               <div className="pt-3">
                 <p className="text-sm text-muted-foreground mb-1">קצת עלי:</p>
