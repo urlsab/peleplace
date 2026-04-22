@@ -476,7 +476,7 @@ const Auth = () => {
               <Button
                 type="submit"
                 className="w-full rounded-full font-bold h-11"
-                disabled={loading || !termsAccepted || !gender || !dateOfBirth}
+                disabled={loading || !termsAccepted || !gender || !dateOfBirth || !recommenderName.trim() || !recommenderPhone.trim()}
               >
                 {loading ? "נרשם..." : "הצטרפות לפל״א"}
               </Button>
