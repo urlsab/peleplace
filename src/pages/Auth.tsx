@@ -397,6 +397,40 @@ const Auth = () => {
                 </RadioGroup>
               </div>
 
+              {/* Recommender */}
+              <div className="rounded-xl border border-border bg-accent/30 p-3 space-y-3">
+                <div>
+                  <Label className="text-xs font-bold">פרטי ממליץ/ה *</Label>
+                  <p className="text-[11px] text-muted-foreground mt-0.5 leading-relaxed">
+                    אדם/אישה שמכיר/ה אותך ויכול/ה להעיד עליך — חבר/ה, רב/נית קהילה, מדריך/ה וכו׳
+                  </p>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="rec-name" className="text-xs">שם הממליץ/ה</Label>
+                  <Input
+                    id="rec-name"
+                    value={recommenderName}
+                    onChange={(e) => setRecommenderName(e.target.value)}
+                    required
+                    placeholder="שם מלא"
+                    className="h-10 rounded-xl bg-background"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="rec-phone" className="text-xs">טלפון הממליץ/ה</Label>
+                  <Input
+                    id="rec-phone"
+                    type="tel"
+                    value={recommenderPhone}
+                    onChange={(e) => setRecommenderPhone(e.target.value)}
+                    required
+                    placeholder="050-1234567"
+                    dir="ltr"
+                    className="h-10 rounded-xl bg-background"
+                  />
+                </div>
+              </div>
+
               {/* ID Upload */}
               <div className="space-y-1.5">
                 <Label className="text-xs">צילום תעודת זהות</Label>
