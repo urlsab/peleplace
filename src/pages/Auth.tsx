@@ -103,8 +103,8 @@ const Auth = () => {
         gender,
         id_document_url: idDocUrl,
         terms_accepted_at: new Date().toISOString(),
-        recommender_name: "",
-        recommender_phone: "",
+        recommender_name: recommenderName,
+        recommender_phone: recommenderPhone,
       });
       if (profileError) throw profileError;
 
