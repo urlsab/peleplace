@@ -106,6 +106,7 @@ const Auth = () => {
         terms_accepted_at: new Date().toISOString(),
         recommender_name: recommenderName,
         recommender_phone: recommenderPhone,
+        recommender_relationship: recommenderRelationship,
       });
       if (profileError) throw profileError;
 
@@ -211,12 +212,9 @@ const Auth = () => {
               <p className="text-muted-foreground">סיסמה: הסיסמה שבחרת בעת ההרשמה</p>
             </div>
           </div>
-          <div className="flex gap-3 justify-center">
-            <Button onClick={() => navigate("/")} variant="outline" className="rounded-full px-8">
+          <div className="flex justify-center">
+            <Button onClick={() => navigate("/")} className="rounded-full px-8">
               חזרה לעמוד הראשי
-            </Button>
-            <Button onClick={() => navigate("/explore")} className="rounded-full px-8">
-              גלשו באתר
             </Button>
           </div>
         </div>
@@ -400,12 +398,7 @@ const Auth = () => {
 
               {/* Recommender */}
               <div className="rounded-xl border border-border bg-accent/30 p-3 space-y-3">
-                <div>
-                  <Label className="text-xs font-bold">פרטי ממליץ/ה *</Label>
-                  <p className="text-[11px] text-muted-foreground mt-0.5 leading-relaxed">
-                    אדם/אישה שמכיר/ה אותך ויכול/ה להעיד עליך — חבר/ה, רב/נית קהילה, מדריך/ה וכו׳
-                  </p>
-                </div>
+                <Label className="text-xs font-bold">פרטי ממליץ/ה *</Label>
                 <div className="space-y-1.5">
                   <Label htmlFor="rec-name" className="text-xs">שם הממליץ/ה</Label>
                   <Input
@@ -427,6 +420,17 @@ const Auth = () => {
                     required
                     placeholder="050-1234567"
                     dir="ltr"
+                    className="h-10 rounded-xl bg-background"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="rec-rel" className="text-xs">מה הקשר של הממליץ/ה אליך?</Label>
+                  <Input
+                    id="rec-rel"
+                    value={recommenderRelationship}
+                    onChange={(e) => setRecommenderRelationship(e.target.value)}
+                    required
+                    placeholder="לדוגמה: חבר/ה, רב/נית, מדריך/ה, בן/בת משפחה..."
                     className="h-10 rounded-xl bg-background"
                   />
                 </div>
@@ -477,7 +481,7 @@ const Auth = () => {
               <Button
                 type="submit"
                 className="w-full rounded-full font-bold h-11"
-                disabled={loading || !termsAccepted || !gender || !dateOfBirth || !recommenderName.trim() || !recommenderPhone.trim()}
+                disabled={loading || !termsAccepted || !gender || !dateOfBirth || !recommenderName.trim() || !recommenderPhone.trim() || !recommenderRelationship.trim()}
               >
                 {loading ? "נרשם..." : "הצטרפות לפל״א"}
               </Button>
