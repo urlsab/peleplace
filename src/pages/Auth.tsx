@@ -26,6 +26,7 @@ const Auth = () => {
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [recommenderName, setRecommenderName] = useState("");
   const [recommenderPhone, setRecommenderPhone] = useState("");
+  const [recommenderRelationship, setRecommenderRelationship] = useState("");
   const [idFile, setIdFile] = useState<File | null>(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
