@@ -63,12 +63,11 @@ const Navbar = () => {
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button size="sm" variant="outline" className="rounded-full gap-2 h-9 pr-2 pl-3">
+                <Button size="sm" variant="outline" className="rounded-full gap-2 h-9 pl-2 pr-3" aria-label="פתח תפריט">
+                  <Menu className="h-4 w-4" />
                   <div className="h-6 w-6 rounded-full bg-gradient-to-br from-primary to-[hsl(var(--terracotta))] flex items-center justify-center text-cream text-xs font-bold">
                     {displayName.charAt(0)}
                   </div>
-                  <span className="text-sm font-medium hidden sm:block">שלום, {displayName}</span>
-                  <ChevronDown className="h-3.5 w-3.5 text-muted-foreground" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 rounded-2xl p-2">
