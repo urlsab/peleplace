@@ -539,8 +539,14 @@ export type Database = {
           banner_image_url: string | null
           city: string | null
           created_at: string
+          dietary_preference:
+            | Database["public"]["Enums"]["dietary_preference"]
+            | null
           gender: Database["public"]["Enums"]["gender_preference"] | null
           id: string
+          kashrut_preference:
+            | Database["public"]["Enums"]["kashrut_level"]
+            | null
           profile_image_url: string | null
           region: Database["public"]["Enums"]["region"] | null
           religious_level: Database["public"]["Enums"]["religious_level"] | null
@@ -553,8 +559,14 @@ export type Database = {
           banner_image_url?: string | null
           city?: string | null
           created_at?: string
+          dietary_preference?:
+            | Database["public"]["Enums"]["dietary_preference"]
+            | null
           gender?: Database["public"]["Enums"]["gender_preference"] | null
           id?: string
+          kashrut_preference?:
+            | Database["public"]["Enums"]["kashrut_level"]
+            | null
           profile_image_url?: string | null
           region?: Database["public"]["Enums"]["region"] | null
           religious_level?:
@@ -569,8 +581,14 @@ export type Database = {
           banner_image_url?: string | null
           city?: string | null
           created_at?: string
+          dietary_preference?:
+            | Database["public"]["Enums"]["dietary_preference"]
+            | null
           gender?: Database["public"]["Enums"]["gender_preference"] | null
           id?: string
+          kashrut_preference?:
+            | Database["public"]["Enums"]["kashrut_level"]
+            | null
           profile_image_url?: string | null
           region?: Database["public"]["Enums"]["region"] | null
           religious_level?:
@@ -663,6 +681,12 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user"
+      dietary_preference:
+        | "regular"
+        | "vegetarian"
+        | "vegan"
+        | "gluten_free"
+        | "other"
       gender_preference: "men" | "women" | "mixed"
       host_type:
         | "family"
@@ -817,6 +841,13 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user"],
+      dietary_preference: [
+        "regular",
+        "vegetarian",
+        "vegan",
+        "gluten_free",
+        "other",
+      ],
       gender_preference: ["men", "women", "mixed"],
       host_type: [
         "family",
