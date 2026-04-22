@@ -57,11 +57,32 @@ const Auth = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
     if (error) {
       toast({ title: "שגיאה בהתחברות", description: error.message, variant: "destructive" });
+      setLoading(false);
+      return;
     }
-    // redirect handled by useEffect
+
+    const signedInUser = data.user;
+    if (signedInUser) {
+      const { data: existingProfile } = await supabase
+        .from("profiles")
+        .select("registration_status")
+        .eq("user_id", signedInUser.id)
+        .maybeSingle();
+
+      if (existingProfile?.registration_status === "pending") {
+        navigate("/profile");
+      } else if (existingProfile?.registration_status === "approved") {
+        navigate("/explore");
+      } else if (existingProfile?.registration_status === "rejected") {
+        navigate("/profile");
+      }
+    }
+
     setLoading(false);
   };
 
