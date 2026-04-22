@@ -63,28 +63,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) setLoading(false);
+      // Safety: ensure loading flips off even if onAuthStateChange is slow
+      setTimeout(() => setLoading((l) => (l ? false : l)), 2000);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
   const signOut = async () => {
+    // 1. Clear local React state IMMEDIATELY so UI updates
+    setUser(null);
+    setSession(null);
+    setProfile(null);
+    setIsAdmin(false);
+
+    // 2. Aggressively clear all supabase auth keys from storage
+    try {
+      Object.keys(localStorage)
+        .filter((k) => k.startsWith("sb-") || k.includes("supabase.auth"))
+        .forEach((k) => localStorage.removeItem(k));
+      Object.keys(sessionStorage)
+        .filter((k) => k.startsWith("sb-") || k.includes("supabase.auth"))
+        .forEach((k) => sessionStorage.removeItem(k));
+    } catch {}
+
+    // 3. Tell supabase to sign out (locally) — fire & forget
     try {
       await supabase.auth.signOut({ scope: "local" });
     } catch (err) {
       console.warn("signOut error (ignored):", err);
     }
-    // Force-clear local state regardless of server response
-    setUser(null);
-    setSession(null);
-    setProfile(null);
-    setIsAdmin(false);
-    // Clear any leftover supabase auth keys from storage
-    try {
-      Object.keys(localStorage)
-        .filter((k) => k.startsWith("sb-") && k.includes("-auth-token"))
-        .forEach((k) => localStorage.removeItem(k));
-    } catch {}
   };
 
   return (
