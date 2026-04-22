@@ -103,7 +103,27 @@
   }
 
   .pattern-dots {
-    background-image: radial-gradient(hsl(155 30% 45% / 0.06) 1px, transparent 1px);
-    background-size: 24px 24px;
+    position: relative;
+    background-image:
+      radial-gradient(hsl(155 30% 45% / 0.06) 1px, transparent 1px),
+      url('/src/assets/warm-pattern-bg.jpg');
+    background-size: 24px 24px, cover;
+    background-position: 0 0, center;
+    background-repeat: repeat, no-repeat;
+    background-attachment: scroll, fixed;
+  }
+
+  .pattern-dots::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: hsl(var(--background) / 0.88);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .pattern-dots > * {
+    position: relative;
+    z-index: 1;
   }
 }
