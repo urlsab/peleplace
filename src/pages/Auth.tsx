@@ -132,6 +132,15 @@ const Auth = () => {
   };
 
   const handleGoogleSignIn = async () => {
+    // Google sign-in is only allowed for users who already registered (Login tab).
+    if (!isLogin) {
+      toast({
+        title: "הרשמה עם Google אינה זמינה",
+        description: "כדי להצטרף לפל״א יש למלא את טופס ההרשמה. לאחר שהבקשה תאושר, תוכל/י להתחבר עם Google.",
+        variant: "destructive",
+      });
+      return;
+    }
     setGoogleLoading(true);
     try {
       const result = await lovable.auth.signInWithOAuth("google", {
@@ -139,9 +148,33 @@ const Auth = () => {
       });
       if (result.error) {
         toast({ title: "שגיאה בהתחברות עם Google", description: String(result.error), variant: "destructive" });
+        setGoogleLoading(false);
+        return;
       }
       if (result.redirected) return;
-      // Session set — redirect will happen via useEffect
+
+      // Session set — verify a profile exists for this user. If not, sign them out and redirect to registration.
+      const { data: { user: signedInUser } } = await supabase.auth.getUser();
+      if (signedInUser) {
+        const { data: existingProfile } = await supabase
+          .from("profiles")
+          .select("id")
+          .eq("user_id", signedInUser.id)
+          .maybeSingle();
+
+        if (!existingProfile) {
+          await supabase.auth.signOut();
+          toast({
+            title: "עוד לא נרשמת לפל״א",
+            description: "כדי להמשיך, יש למלא את טופס ההצטרפות. לאחר אישור, תוכל/י להתחבר עם Google.",
+            variant: "destructive",
+          });
+          setIsLogin(false);
+          setGoogleLoading(false);
+          return;
+        }
+      }
+      // Profile exists — redirect handled by useEffect
     } catch (error: any) {
       toast({ title: "שגיאה", description: error.message, variant: "destructive" });
     } finally {
