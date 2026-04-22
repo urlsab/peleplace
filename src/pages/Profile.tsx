@@ -454,6 +454,21 @@ const Profile = () => {
               {isSingle ? (
                 <form onSubmit={handleSingleProfile} className="space-y-5 rounded-2xl border border-border bg-card p-8 shadow-card">
                   <h2 className="text-xl font-bold font-display text-center">🙋 פרופיל רווק/ה</h2>
+
+                  {/* Profile image */}
+                  <div className="space-y-2">
+                    <Label htmlFor="profileImage">תמונת פרופיל (אופציונלי)</Label>
+                    {detailedProfile?.profile_image_url && (
+                      <img
+                        src={detailedProfile.profile_image_url}
+                        alt="תמונת פרופיל"
+                        className="h-24 w-24 rounded-full object-cover border-2 border-border"
+                      />
+                    )}
+                    <Input id="profileImage" name="profileImage" type="file" accept="image/*" className="cursor-pointer" />
+                    <p className="text-xs text-muted-foreground">תמונה אישית תעזור למארחים להכיר אותך</p>
+                  </div>
+
                   <div className="space-y-2">
                     <Label htmlFor="age">גיל</Label>
                     <Input id="age" name="age" type="number" min={18} max={99} placeholder="25" defaultValue={detailedProfile?.age || ""} />
@@ -477,6 +492,24 @@ const Profile = () => {
                     <Label htmlFor="city">עיר / יישוב</Label>
                     <Input id="city" name="city" placeholder="תל אביב" defaultValue={detailedProfile?.city || ""} />
                   </div>
+
+                  {/* Food preferences */}
+                  <div className="space-y-2">
+                    <Label>העדפת כשרות</Label>
+                    <KashrutSelect name="kashrutPref" defaultValue={detailedProfile?.kashrut_preference || undefined} />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>העדפות תזונה</Label>
+                    <Select name="dietaryPref" defaultValue={detailedProfile?.dietary_preference || undefined}>
+                      <SelectTrigger><SelectValue placeholder="בחרו" /></SelectTrigger>
+                      <SelectContent>
+                        {Object.entries(dietaryLabels).map(([value, label]) => (
+                          <SelectItem key={value} value={value}>{label}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
                   <div className="space-y-2">
                     <Label htmlFor="aboutMe">קצת עלי</Label>
                     <Textarea id="aboutMe" name="aboutMe" placeholder="ספרו קצת על עצמכם..." className="min-h-[100px]" defaultValue={detailedProfile?.about_me || ""} />
