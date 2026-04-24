@@ -88,9 +88,11 @@ const ProfileView = ({ profile, detailedProfile, profileType, onEdit, previewMod
               )}
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={onEdit} className="rounded-full gap-1 shrink-0">
-            <Edit className="h-3.5 w-3.5" /> עריכה
-          </Button>
+          {!previewMode && (
+            <Button variant="outline" size="sm" onClick={onEdit} className="rounded-full gap-1 shrink-0">
+              <Edit className="h-3.5 w-3.5" /> עריכה
+            </Button>
+          )}
         </div>
       </div>
 
