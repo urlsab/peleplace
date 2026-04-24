@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import DynamicBackground from "@/components/DynamicBackground";
 
 const categoryConfig: Record<string, { label: string; icon: any; color: string }> = {
   family: { label: "אירוח משפחתי", icon: Home, color: "bg-[hsl(var(--terracotta))]" },
@@ -103,7 +104,8 @@ const ShabbatCalendar = () => {
 
   if (!isApproved) {
     return (
-      <div className="min-h-screen bg-cream">
+      <div className="min-h-screen">
+        <DynamicBackground variant="vineyard" />
         <Navbar />
         <div className="container mx-auto px-6 pt-32 text-center">
           <CalendarRange className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
@@ -116,7 +118,8 @@ const ShabbatCalendar = () => {
   }
 
   return (
-    <div className="min-h-screen bg-cream">
+    <div className="min-h-screen">
+      <DynamicBackground variant="vineyard" />
       <Navbar />
       <div className="container mx-auto px-4 sm:px-6 pt-24 pb-12 max-w-5xl">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
