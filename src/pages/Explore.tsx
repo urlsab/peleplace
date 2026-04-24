@@ -52,6 +52,7 @@ type OpportunityItem = {
   region: string | null;
   religiousLevel: string | null;
   availableDates: string[] | null;
+  alwaysAvailable: boolean;
   details: Record<string, unknown>;
 };
 
@@ -132,6 +133,7 @@ const Explore = () => {
         region: p.region,
         religiousLevel: p.religious_level,
         availableDates: p.available_dates,
+        alwaysAvailable: (p as any).always_available || false,
         details: { aboutUs: p.about_us, guestPreference: p.guest_preference },
       })
     );
@@ -146,6 +148,7 @@ const Explore = () => {
         region: p.region,
         religiousLevel: null,
         availableDates: p.available_dates,
+        alwaysAvailable: (p as any).always_available || false,
         details: {
           jobDescription: p.job_description,
           payment: p.payment,
@@ -165,6 +168,7 @@ const Explore = () => {
         region: p.region,
         religiousLevel: null,
         availableDates: null,
+        alwaysAvailable: true, // Volunteer roles have no specific dates
         details: {
           volunteerType: p.volunteer_type,
           providesMeals: p.provides_meals,
@@ -183,6 +187,7 @@ const Explore = () => {
         region: p.region,
         religiousLevel: p.religious_level,
         availableDates: p.available_dates,
+        alwaysAvailable: (p as any).always_available || false,
         details: {
           description: p.description,
           groupSize: p.group_size,
@@ -203,6 +208,7 @@ const Explore = () => {
         region: p.region,
         religiousLevel: p.religious_level,
         availableDates: p.available_dates,
+        alwaysAvailable: (p as any).always_available || false,
         details: {
           shabbatType: p.shabbat_type,
           description: p.description,
@@ -415,6 +421,12 @@ const Explore = () => {
                             <span>{religiousLabels[item.religiousLevel] || item.religiousLevel}</span>
                           </div>
                         )}
+                        {item.alwaysAvailable && (
+                          <div className="flex items-center gap-2">
+                            <Sparkles className="h-3.5 w-3.5 shrink-0 text-primary" />
+                            <span className="font-semibold text-primary">תמיד פנוי לארח</span>
+                          </div>
+                        )}
                         {item.availableDates && item.availableDates.length > 0 && (
                           <div className="space-y-1.5 pt-1">
                             <div className="flex items-center gap-2">
@@ -521,7 +533,8 @@ const Explore = () => {
           hostUserId={bookingTarget.userId}
           hostType={bookingTarget.type}
           hostTitle={bookingTarget.title}
-          eventDate={bookingTarget.availableDates?.[0]}
+          availableDates={bookingTarget.availableDates}
+          alwaysAvailable={bookingTarget.alwaysAvailable}
         />
       )}
     </div>

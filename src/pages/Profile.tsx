@@ -14,7 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import ProfileView from "@/components/profile/ProfileView";
-import JewishDatePicker from "@/components/profile/JewishDatePicker";
+import HostDatePicker from "@/components/profile/HostDatePicker";
 import DynamicBackground from "@/components/DynamicBackground";
 
 const regionLabels: Record<string, string> = {
@@ -50,6 +50,7 @@ const Profile = () => {
   const [profileType, setProfileType] = useState<"single" | "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat" | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [availableDates, setAvailableDates] = useState<string[]>([]);
+  const [alwaysAvailable, setAlwaysAvailable] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/auth");
@@ -80,6 +81,7 @@ const Profile = () => {
           setProfileType("family");
           setHostType("family");
           setAvailableDates(family.available_dates || []);
+          setAlwaysAvailable((family as any).always_available || false);
           setLoadingProfile(false);
           return;
         }
@@ -88,6 +90,8 @@ const Profile = () => {
           setDetailedProfile(work);
           setProfileType("work");
           setHostType("work");
+          setAvailableDates((work as any).available_dates || []);
+          setAlwaysAvailable((work as any).always_available || false);
           setLoadingProfile(false);
           return;
         }
@@ -105,6 +109,7 @@ const Profile = () => {
           setProfileType("singles_group");
           setHostType("singles_group");
           setAvailableDates(singlesGroup.available_dates || []);
+          setAlwaysAvailable((singlesGroup as any).always_available || false);
           setLoadingProfile(false);
           return;
         }
@@ -114,6 +119,7 @@ const Profile = () => {
           setProfileType("organized_shabbat");
           setHostType("organized_shabbat");
           setAvailableDates(organized.available_dates || []);
+          setAlwaysAvailable((organized as any).always_available || false);
           setLoadingProfile(false);
           return;
         }
@@ -197,9 +203,12 @@ const Profile = () => {
       const { data } = await supabase.from("host_family_profiles").select("*").eq("user_id", user.id).maybeSingle();
       setDetailedProfile(data);
       setAvailableDates(data?.available_dates || []);
+      setAlwaysAvailable((data as any)?.always_available || false);
     } else if (profileType === "work") {
       const { data } = await supabase.from("host_work_profiles").select("*").eq("user_id", user.id).maybeSingle();
       setDetailedProfile(data);
+      setAvailableDates((data as any)?.available_dates || []);
+      setAlwaysAvailable((data as any)?.always_available || false);
     } else if (profileType === "volunteer") {
       const { data } = await supabase.from("host_volunteer_profiles").select("*").eq("user_id", user.id).maybeSingle();
       setDetailedProfile(data);
@@ -207,10 +216,12 @@ const Profile = () => {
       const { data } = await supabase.from("host_singles_group_profiles").select("*").eq("user_id", user.id).maybeSingle();
       setDetailedProfile(data);
       setAvailableDates(data?.available_dates || []);
+      setAlwaysAvailable((data as any)?.always_available || false);
     } else if (profileType === "organized_shabbat") {
       const { data } = await supabase.from("host_organized_shabbat_profiles").select("*").eq("user_id", user.id).maybeSingle();
       setDetailedProfile(data);
       setAvailableDates(data?.available_dates || []);
+      setAlwaysAvailable((data as any)?.always_available || false);
     }
     setMode("view");
   };
@@ -271,7 +282,8 @@ const Profile = () => {
       guest_preference: form.get("guestPref") as any || null,
       region: form.get("region") as any || null,
       city: form.get("city") as string || null,
-      available_dates: availableDates.length > 0 ? availableDates : null,
+      available_dates: alwaysAvailable ? null : (availableDates.length > 0 ? availableDates : null),
+      always_available: alwaysAvailable,
     };
     const { error } = await supabase.from("host_family_profiles").upsert(data, { onConflict: "user_id" });
     if (error) {
@@ -299,6 +311,8 @@ const Profile = () => {
       gender_preference: form.get("genderPref") as any || null,
       team_size: parseInt(form.get("teamSize") as string) || null,
       special_requirements: form.get("specialReq") as string || null,
+      available_dates: alwaysAvailable ? null : (availableDates.length > 0 ? availableDates : null),
+      always_available: alwaysAvailable,
     };
     const { error } = await supabase.from("host_work_profiles").upsert(data, { onConflict: "user_id" });
     if (error) {
@@ -351,7 +365,8 @@ const Profile = () => {
       guest_preference: form.get("guestPref") as any || null,
       age_range_min: parseInt(form.get("ageMin") as string) || null,
       age_range_max: parseInt(form.get("ageMax") as string) || null,
-      available_dates: availableDates.length > 0 ? availableDates : null,
+      available_dates: alwaysAvailable ? null : (availableDates.length > 0 ? availableDates : null),
+      always_available: alwaysAvailable,
     };
     const { error } = await supabase.from("host_singles_group_profiles").upsert(data, { onConflict: "user_id" });
     if (error) {
@@ -379,7 +394,8 @@ const Profile = () => {
       cost: form.get("cost") as string || null,
       registration_link: form.get("regLink") as string || null,
       target_audience: form.get("targetAudience") as string || null,
-      available_dates: availableDates.length > 0 ? availableDates : null,
+      available_dates: alwaysAvailable ? null : (availableDates.length > 0 ? availableDates : null),
+      always_available: alwaysAvailable,
     };
     const { error } = await supabase.from("host_organized_shabbat_profiles").upsert(data, { onConflict: "user_id" });
     if (error) {
@@ -609,7 +625,12 @@ const Profile = () => {
                       </div>
                       <div className="space-y-2">
                         <Label>תאריכים פנויים לאירוח</Label>
-                        <JewishDatePicker selectedDates={availableDates} onChange={setAvailableDates} />
+                        <HostDatePicker
+                          selectedDates={availableDates}
+                          onChange={setAvailableDates}
+                          alwaysAvailable={alwaysAvailable}
+                          onAlwaysAvailableChange={setAlwaysAvailable}
+                        />
                       </div>
                       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>
                         {saving ? "שומר..." : "שמירת פרופיל"}
@@ -644,6 +665,15 @@ const Profile = () => {
                       </div>
                       <div className="space-y-2"><Label htmlFor="teamSize">מספר אנשי צוות נדרשים</Label><Input id="teamSize" name="teamSize" type="number" min={1} placeholder="3" defaultValue={detailedProfile?.team_size || ""} /></div>
                       <div className="space-y-2"><Label htmlFor="specialReq">דרישות מיוחדות</Label><Textarea id="specialReq" name="specialReq" placeholder="תואר, רישיון לנשק, ניסיון..." defaultValue={detailedProfile?.special_requirements || ""} /></div>
+                      <div className="space-y-2">
+                        <Label>תאריכים פנויים</Label>
+                        <HostDatePicker
+                          selectedDates={availableDates}
+                          onChange={setAvailableDates}
+                          alwaysAvailable={alwaysAvailable}
+                          onAlwaysAvailableChange={setAlwaysAvailable}
+                        />
+                      </div>
                       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>{saving ? "שומר..." : "שמירת פרופיל"}</Button>
                     </form>
                   ) : hostType === "volunteer" ? (
@@ -705,7 +735,12 @@ const Profile = () => {
                       </div>
                       <div className="space-y-2">
                         <Label>תאריכי שבתות</Label>
-                        <JewishDatePicker selectedDates={availableDates} onChange={setAvailableDates} />
+                        <HostDatePicker
+                          selectedDates={availableDates}
+                          onChange={setAvailableDates}
+                          alwaysAvailable={alwaysAvailable}
+                          onAlwaysAvailableChange={setAlwaysAvailable}
+                        />
                       </div>
                       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>{saving ? "שומר..." : "שמירת פרופיל"}</Button>
                     </form>
@@ -736,7 +771,12 @@ const Profile = () => {
                       <div className="space-y-2"><Label htmlFor="regLink">קישור להרשמה</Label><Input id="regLink" name="regLink" type="url" placeholder="https://..." defaultValue={detailedProfile?.registration_link || ""} /></div>
                       <div className="space-y-2">
                         <Label>תאריכי שבתות</Label>
-                        <JewishDatePicker selectedDates={availableDates} onChange={setAvailableDates} />
+                        <HostDatePicker
+                          selectedDates={availableDates}
+                          onChange={setAvailableDates}
+                          alwaysAvailable={alwaysAvailable}
+                          onAlwaysAvailableChange={setAlwaysAvailable}
+                        />
                       </div>
                       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>{saving ? "שומר..." : "שמירת פרופיל"}</Button>
                     </form>
