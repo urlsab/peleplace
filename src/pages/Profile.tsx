@@ -14,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import ProfileView from "@/components/profile/ProfileView";
 import JewishDatePicker from "@/components/profile/JewishDatePicker";
+import DynamicBackground from "@/components/DynamicBackground";
 
 const regionLabels: Record<string, string> = {
   north: "צפון", haifa: "חיפה", sharon: "שרון", center: "מרכז",

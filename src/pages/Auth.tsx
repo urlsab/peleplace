@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { Upload, CheckCircle2, Eye, EyeOff } from "lucide-react";
+import DynamicBackground from "@/components/DynamicBackground";
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -210,7 +211,8 @@ const Auth = () => {
   // Success screen
   if (submitted) {
     return (
-      <div className="min-h-screen bg-background pattern-dots flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4">
+        <DynamicBackground variant="candles" />
         <div className="mx-auto max-w-md text-center space-y-6">
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
             <CheckCircle2 className="h-10 w-10 text-primary" />
@@ -244,7 +246,8 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background pattern-dots flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen flex items-center justify-center px-4 py-8">
+      <DynamicBackground variant="candles" />
       <div className="w-full max-w-md space-y-6">
         {/* Logo */}
         <div className="text-center">

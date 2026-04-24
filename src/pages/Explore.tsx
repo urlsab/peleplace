@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
 import BookingRequestDialog from "@/components/BookingRequestDialog";
+import DynamicBackground from "@/components/DynamicBackground";
 
 const regionLabels: Record<string, string> = {
   north: "צפון",

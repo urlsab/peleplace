@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import ProfileView from "@/components/profile/ProfileView";
+import DynamicBackground from "@/components/DynamicBackground";
 
 /**
  * עמוד תצוגה מקדימה (דמו) של פרופיל משתמש מאושר.

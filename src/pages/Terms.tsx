@@ -1,10 +1,12 @@
 import Navbar from "@/components/Navbar";
 import { motion } from "framer-motion";
 import { ScrollText } from "lucide-react";
+import DynamicBackground from "@/components/DynamicBackground";
 
 const Terms = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
+      <DynamicBackground variant="vineyard" />
       <Navbar />
       <div className="container mx-auto px-6 py-16 max-w-3xl" dir="rtl">
         <motion.div

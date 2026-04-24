@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { KeyRound, Mail, Trash2, ArrowRight } from "lucide-react";
+import DynamicBackground from "@/components/DynamicBackground";
 import {
   AlertDialog,
   AlertDialogAction,
