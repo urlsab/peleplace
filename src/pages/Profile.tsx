@@ -14,7 +14,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } f
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
 import ProfileView from "@/components/profile/ProfileView";
-import JewishDatePicker from "@/components/profile/JewishDatePicker";
+import HostDatePicker from "@/components/profile/HostDatePicker";
 import DynamicBackground from "@/components/DynamicBackground";
 
 const regionLabels: Record<string, string> = {
@@ -50,6 +50,7 @@ const Profile = () => {
   const [profileType, setProfileType] = useState<"single" | "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat" | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
   const [availableDates, setAvailableDates] = useState<string[]>([]);
+  const [alwaysAvailable, setAlwaysAvailable] = useState(false);
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/auth");
