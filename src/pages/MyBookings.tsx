@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import RatingDialog from "@/components/RatingDialog";
 import { useToast } from "@/hooks/use-toast";
+import DynamicBackground from "@/components/DynamicBackground";
 
 const statusConfig: Record<string, { label: string; color: string; icon: typeof Clock }> = {
   pending: { label: "ממתין לאישור", color: "bg-amber-soft/15 text-amber-soft", icon: Clock },
