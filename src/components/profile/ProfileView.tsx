@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Edit, MapPin, Heart, Star, Users, Utensils } from "lucide-react";
+import { labelHebrewDate } from "@/lib/hebrewDates";
 
 const regionLabels: Record<string, string> = {
   north: "צפון", haifa: "חיפה", sharon: "שרון", center: "מרכז",
@@ -132,7 +133,7 @@ const ProfileView = ({ profile, detailedProfile, profileType, onEdit, previewMod
                 <div className="flex flex-wrap gap-1">
                   {d.available_dates.sort().map((date: string) => (
                     <Badge key={date} variant="secondary" className="text-xs">
-                      {new Date(date + "T00:00:00").toLocaleDateString("he-IL", { day: "numeric", month: "short" })}
+                      {labelHebrewDate(date)}
                     </Badge>
                   ))}
                 </div>
@@ -184,7 +185,7 @@ const ProfileView = ({ profile, detailedProfile, profileType, onEdit, previewMod
                 <div className="flex flex-wrap gap-1">
                   {d.available_dates.sort().map((date: string) => (
                     <Badge key={date} variant="secondary" className="text-xs">
-                      {new Date(date + "T00:00:00").toLocaleDateString("he-IL", { day: "numeric", month: "short" })}
+                      {labelHebrewDate(date)}
                     </Badge>
                   ))}
                 </div>
@@ -219,7 +220,7 @@ const ProfileView = ({ profile, detailedProfile, profileType, onEdit, previewMod
                 <div className="flex flex-wrap gap-1">
                   {d.available_dates.sort().map((date: string) => (
                     <Badge key={date} variant="secondary" className="text-xs">
-                      {new Date(date + "T00:00:00").toLocaleDateString("he-IL", { day: "numeric", month: "short" })}
+                      {labelHebrewDate(date)}
                     </Badge>
                   ))}
                 </div>
