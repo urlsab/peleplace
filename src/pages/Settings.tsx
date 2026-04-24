@@ -87,7 +87,8 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pattern-dots">
+    <div className="min-h-screen">
+      <DynamicBackground variant="sea" />
       <Navbar />
       <div className="pt-24 pb-12 px-4">
         <div className="mx-auto max-w-lg space-y-6">

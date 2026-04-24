@@ -105,7 +105,8 @@ const MyBookings = () => {
   const isGuest = (b: any) => user?.id === b.guest_user_id;
 
   return (
-    <div className="min-h-screen bg-background pattern-dots" dir="rtl">
+    <div className="min-h-screen" dir="rtl">
+      <DynamicBackground variant="shabbat-table" />
       <Navbar />
       <div className="pt-24 pb-12 px-4">
         <div className="mx-auto max-w-2xl">

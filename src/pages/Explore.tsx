@@ -242,7 +242,8 @@ const Explore = () => {
   // Block unapproved (or unauthenticated) users from searching shabbatot
   if (!user || !isApproved) {
     return (
-      <div className="min-h-screen bg-background pattern-dots" dir="rtl">
+      <div className="min-h-screen" dir="rtl">
+        <DynamicBackground variant="fields" />
         <Navbar />
         <div className="pt-28 pb-16 px-6">
           <div className="mx-auto max-w-md text-center rounded-3xl border border-border bg-card p-8 shadow-card space-y-5">
@@ -276,7 +277,8 @@ const Explore = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background pattern-dots" dir="rtl">
+    <div className="min-h-screen" dir="rtl">
+      <DynamicBackground variant="fields" />
       <Navbar />
       <div className="pt-20 pb-12">
         {/* Header */}
