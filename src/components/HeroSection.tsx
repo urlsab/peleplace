@@ -17,15 +17,16 @@ const HeroSection = () => {
 
   return (
     <section id="hero" className="relative min-h-[92vh] flex items-center overflow-hidden">
-      {/* Extra dark gradient on text side */}
-      <div className="absolute inset-0 z-[1]" style={{ background: "linear-gradient(to left, hsla(210,18%,5%,0.5) 20%, hsla(210,18%,5%,0.25) 50%, transparent 80%)" }} />
+      {/* Extra dark gradient on text side - stronger on mobile for readability */}
+      <div className="absolute inset-0 z-[1] md:hidden" style={{ background: "linear-gradient(to bottom, hsla(210,18%,5%,0.55), hsla(210,18%,5%,0.35) 50%, hsla(210,18%,5%,0.55))" }} />
+      <div className="absolute inset-0 z-[1] hidden md:block" style={{ background: "linear-gradient(to left, hsla(210,18%,5%,0.5) 20%, hsla(210,18%,5%,0.25) 50%, transparent 80%)" }} />
 
       {/* Decorative elements */}
       <div className="absolute top-20 left-10 h-72 w-72 rounded-full bg-primary/10 blur-[100px]" />
       <div className="absolute bottom-20 right-10 h-60 w-60 rounded-full bg-secondary/10 blur-[80px]" />
 
       <div className="container relative z-10 mx-auto px-6 py-20">
-        <div className="max-w-2xl">
+        <div className="max-w-2xl rounded-3xl p-5 md:p-0 md:bg-transparent bg-[hsla(210,18%,8%,0.45)] md:backdrop-blur-0 backdrop-blur-sm">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}

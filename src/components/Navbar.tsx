@@ -30,11 +30,11 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 right-0 left-0 z-50 bg-cream/80 backdrop-blur-xl border-b border-border/40">
       <div className="container mx-auto flex items-center justify-between px-6 py-3.5">
-        <button onClick={() => navigate("/")} className="group flex items-center gap-1.5">
-          <span className="text-2xl font-black font-display tracking-tight">
+        <button onClick={() => navigate("/")} className="group flex items-center gap-1.5 min-w-0">
+          <span className="text-2xl font-black font-display tracking-tight shrink-0">
             פל<span className="text-gradient-warm">״</span>א
           </span>
-          <span className="hidden sm:block text-[11px] text-muted-foreground font-medium mt-0.5">פשוט לבחור איפה</span>
+          <span className="text-[10px] sm:text-[11px] text-muted-foreground font-medium mt-0.5 truncate">— פשוט לבחור איפה</span>
         </button>
 
         {/* Desktop quick links */}
