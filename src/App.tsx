@@ -12,6 +12,7 @@ import Admin from "./pages/Admin.tsx";
 import Explore from "./pages/Explore.tsx";
 import MyBookings from "./pages/MyBookings.tsx";
 import ShabbatCalendar from "./pages/ShabbatCalendar.tsx";
+import CalendarDate from "./pages/CalendarDate.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import Unsubscribe from "./pages/Unsubscribe.tsx";
 import Terms from "./pages/Terms.tsx";
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/admin" element={<Admin />} />
             <Route path="/my-bookings" element={<MyBookings />} />
             <Route path="/calendar" element={<ShabbatCalendar />} />
+            <Route path="/calendar/:date" element={<CalendarDate />} />
             <Route path="/unsubscribe" element={<Unsubscribe />} />
             <Route path="/terms" element={<Terms />} />
             <Route path="/settings" element={<Settings />} />
