@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
 import BookingRequestDialog from "@/components/BookingRequestDialog";
 import DynamicBackground from "@/components/DynamicBackground";
+import { labelHebrewDate, sortDateStrings } from "@/lib/hebrewDates";
 
 const regionLabels: Record<string, string> = {
   north: "צפון",
@@ -415,9 +416,29 @@ const Explore = () => {
                           </div>
                         )}
                         {item.availableDates && item.availableDates.length > 0 && (
-                          <div className="flex items-center gap-2">
-                            <Calendar className="h-3.5 w-3.5 shrink-0" />
-                            <span>{item.availableDates.length} תאריכים זמינים</span>
+                          <div className="space-y-1.5 pt-1">
+                            <div className="flex items-center gap-2">
+                              <Calendar className="h-3.5 w-3.5 shrink-0" />
+                              <span className="font-semibold text-foreground/80">
+                                {item.availableDates.length} תאריכים זמינים
+                              </span>
+                            </div>
+                            <div className="flex flex-wrap gap-1">
+                              {sortDateStrings(item.availableDates).slice(0, 6).map((d) => (
+                                <Badge
+                                  key={d}
+                                  variant="outline"
+                                  className="text-[10px] font-medium border-primary/30 bg-primary/5 text-foreground/80"
+                                >
+                                  {labelHebrewDate(d)}
+                                </Badge>
+                              ))}
+                              {item.availableDates.length > 6 && (
+                                <Badge variant="outline" className="text-[10px] font-medium">
+                                  +{item.availableDates.length - 6} עוד
+                                </Badge>
+                              )}
+                            </div>
                           </div>
                         )}
                         {item.type === "work" && (item.details as any).payment && (
