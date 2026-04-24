@@ -9,8 +9,30 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, CheckCircle2, Eye, EyeOff } from "lucide-react";
+import { Upload, CheckCircle2, Eye, EyeOff, UserRound, Home, HandHeart, Calendar, Briefcase, Users, ArrowRight } from "lucide-react";
 import DynamicBackground from "@/components/DynamicBackground";
+
+type RegistrationCategory =
+  | "single"
+  | "host_family"
+  | "host_volunteer"
+  | "host_organized_shabbat"
+  | "host_work"
+  | "host_singles_group";
+
+const CATEGORIES: {
+  value: RegistrationCategory;
+  label: string;
+  description: string;
+  icon: typeof UserRound;
+}[] = [
+  { value: "single", label: "רווק / רווקה", description: "מחפש/ת מקום לשבת או חג", icon: UserRound },
+  { value: "host_family", label: "משפחה מארחת", description: "מארחים בבית לארוחות שבת וחג", icon: Home },
+  { value: "host_organized_shabbat", label: "ארגון לשבתות", description: "מארגנים שבתות קבוצתיות", icon: Calendar },
+  { value: "host_singles_group", label: "קבוצת רווקים", description: "מפעילים קהילה לרווקים", icon: Users },
+  { value: "host_volunteer", label: "מקום להתנדבות", description: "מציעים התנדבות בשבת/חג", icon: HandHeart },
+  { value: "host_work", label: "מקום עבודה", description: "מציעים עבודה בשבת/חג", icon: Briefcase },
+];
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
