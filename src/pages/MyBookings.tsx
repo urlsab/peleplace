@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { CalendarCheck, CheckCircle, XCircle, Clock, Star, MessageSquare } from "lucide-react";
+import { CalendarCheck, CheckCircle, XCircle, Clock, Star, MessageSquare, Phone, Mail, User as UserIcon, Heart, AlarmClock } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/Navbar";
@@ -12,10 +12,13 @@ import RatingDialog from "@/components/RatingDialog";
 import { useToast } from "@/hooks/use-toast";
 import DynamicBackground from "@/components/DynamicBackground";
 
-const statusConfig: Record<string, { label: string; color: string; icon: typeof Clock }> = {
-  pending: { label: "ממתין לאישור", color: "bg-amber-soft/15 text-amber-soft", icon: Clock },
+const statusConfig: Record<string, { label: string; guestLabel?: string; color: string; icon: typeof Clock }> = {
+  pending: { label: "ממתין למענה", color: "bg-amber-soft/15 text-amber-soft", icon: Clock },
   approved: { label: "אושר ✓", color: "bg-primary/15 text-primary", icon: CheckCircle },
-  rejected: { label: "נדחה", color: "bg-destructive/15 text-destructive", icon: XCircle },
+  // shown to host as "not available", to guest as "not available this time" (soft language)
+  not_available: { label: "לא זמין הפעם", guestLabel: "המארח לא זמין הפעם 💛", color: "bg-muted text-muted-foreground", icon: Heart },
+  expired: { label: "פג תוקף", guestLabel: "לא התקבל מענה בזמן", color: "bg-muted text-muted-foreground", icon: AlarmClock },
+  rejected: { label: "לא זמין הפעם", guestLabel: "המארח לא זמין הפעם 💛", color: "bg-muted text-muted-foreground", icon: Heart },
   completed: { label: "הושלם", color: "bg-primary/15 text-primary", icon: CalendarCheck },
   cancelled: { label: "בוטל", color: "bg-muted text-muted-foreground", icon: XCircle },
 };
@@ -24,6 +27,8 @@ const hostTypeLabels: Record<string, string> = {
   family: "אירוח",
   work: "עבודה",
   volunteer: "התנדבות",
+  singles_group: "חבורת רווקים",
+  organized_shabbat: "שבת מאורגנת",
 };
 
 const MyBookings = () => {
@@ -36,11 +41,13 @@ const MyBookings = () => {
     reviewedUserId: string;
     reviewedName?: string;
   } | null>(null);
-  // Guard: only approved users
+  const [contactByBooking, setContactByBooking] = useState<Record<string, { full_name: string; phone: string; email: string }>>({});
+  const [loadingContactFor, setLoadingContactFor] = useState<string | null>(null);
+
   useEffect(() => {
     if (!user) { navigate("/auth"); return; }
     if (profile && profile.registration_status !== "approved") { navigate("/profile"); }
-  }, [user, profile]);
+  }, [user, profile, navigate]);
 
   const { data: bookings, isLoading } = useQuery({
     queryKey: ["my-bookings", user?.id],
@@ -88,21 +95,75 @@ const MyBookings = () => {
     },
   });
 
-  const handleStatusUpdate = async (bookingId: string, status: string) => {
+  const sendStatusEmail = async (booking: any, newStatus: "approved" | "not_available") => {
+    // Fetch both parties' profiles for email
+    const { data: guestP } = await supabase
+      .from("profiles")
+      .select("email, full_name")
+      .eq("user_id", booking.guest_user_id)
+      .maybeSingle();
+    if (!guestP?.email) return;
+
+    const hostName = profiles?.[booking.host_user_id] || "המארח";
+    const templateName = newStatus === "approved" ? "booking-approved" : "booking-not-available";
+    await supabase.functions.invoke("send-transactional-email", {
+      body: {
+        templateName,
+        recipientEmail: guestP.email,
+        idempotencyKey: `booking-${newStatus}-${booking.id}`,
+        templateData: {
+          guestName: guestP.full_name || "אורח/ת",
+          hostTitle: hostName,
+          eventDate: booking.event_date || "",
+          hostType: booking.host_type,
+        },
+      },
+    }).catch(console.error);
+  };
+
+  const handleStatusUpdate = async (booking: any, status: string) => {
+    const updates: any = { status };
+    if (status === "approved" || status === "not_available") {
+      updates.responded_at = new Date().toISOString();
+    }
     const { error } = await supabase
       .from("bookings")
-      .update({ status })
-      .eq("id", bookingId);
+      .update(updates)
+      .eq("id", booking.id);
     if (error) {
       toast({ title: "שגיאה בעדכון", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: status === "approved" ? "הבקשה אושרה! ✅" : status === "completed" ? "סומן כהושלם ⭐" : "הבקשה נדחתה" });
-      queryClient.invalidateQueries({ queryKey: ["my-bookings"] });
+      return;
     }
+    if (status === "approved") {
+      toast({ title: "הבקשה אושרה! ✅", description: "האורח יקבל הודעה ופרטי הקשר ייחשפו" });
+      sendStatusEmail(booking, "approved");
+    } else if (status === "not_available") {
+      toast({ title: "הודענו לאורח 💛", description: "ההודעה נשלחה בנימה רכה עם הצעות חלופיות" });
+      sendStatusEmail(booking, "not_available");
+    } else if (status === "completed") {
+      toast({ title: "סומן כהושלם ⭐" });
+    }
+    queryClient.invalidateQueries({ queryKey: ["my-bookings"] });
+  };
+
+  const revealContact = async (bookingId: string) => {
+    if (contactByBooking[bookingId]) return;
+    setLoadingContactFor(bookingId);
+    const { data, error } = await supabase.rpc("get_booking_contact", { _booking_id: bookingId });
+    setLoadingContactFor(null);
+    if (error || !data || data.length === 0) {
+      toast({
+        title: "לא ניתן להציג פרטי קשר",
+        description: error?.message || "פרטי הקשר נחשפים רק אחרי שהבקשה אושרה",
+        variant: "destructive",
+      });
+      return;
+    }
+    const c = data[0];
+    setContactByBooking((prev) => ({ ...prev, [bookingId]: c }));
   };
 
   const isHost = (b: any) => user?.id === b.host_user_id;
-  const isGuest = (b: any) => user?.id === b.guest_user_id;
 
   return (
     <div className="min-h-screen" dir="rtl">
@@ -132,6 +193,8 @@ const MyBookings = () => {
                 const otherUserId = isHost(booking) ? booking.guest_user_id : booking.host_user_id;
                 const otherName = profiles?.[otherUserId] || "משתמש";
                 const alreadyRated = myRatings?.has(booking.id);
+                const showLabel = !isHost(booking) && config.guestLabel ? config.guestLabel : config.label;
+                const contact = contactByBooking[booking.id];
 
                 return (
                   <motion.div
@@ -141,18 +204,18 @@ const MyBookings = () => {
                     transition={{ delay: i * 0.05 }}
                     className="rounded-2xl border border-border bg-card p-5 shadow-card"
                   >
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <h3 className="font-bold font-display text-lg">
+                    <div className="flex items-start justify-between mb-3 gap-3">
+                      <div className="min-w-0">
+                        <h3 className="font-bold font-display text-lg truncate">
                           {isHost(booking) ? `בקשה מ${otherName}` : `בקשה ל${otherName}`}
                         </h3>
                         <p className="text-sm text-muted-foreground">
                           {hostTypeLabels[booking.host_type] || booking.host_type} · {booking.event_date}
                         </p>
                       </div>
-                      <Badge className={`${config.color} border-0 gap-1`}>
+                      <Badge className={`${config.color} border-0 gap-1 shrink-0`}>
                         <StatusIcon className="h-3 w-3" />
-                        {config.label}
+                        {showLabel}
                       </Badge>
                     </div>
 
@@ -162,20 +225,73 @@ const MyBookings = () => {
                       </p>
                     )}
 
+                    {/* Soft message for guest when host declined / expired */}
+                    {!isHost(booking) && (booking.status === "not_available" || booking.status === "rejected") && (
+                      <div className="rounded-xl bg-primary/5 border border-primary/15 p-3 mb-3 text-sm text-foreground">
+                        <Heart className="h-4 w-4 text-primary inline ml-1" />
+                        אל דאגה — יש עוד הרבה אפשרויות נהדרות.
+                        <Button variant="link" className="px-1 h-auto text-primary" onClick={() => navigate("/explore")}>
+                          לראות הצעות אחרות
+                        </Button>
+                      </div>
+                    )}
+                    {!isHost(booking) && booking.status === "expired" && (
+                      <div className="rounded-xl bg-muted/40 border border-border p-3 mb-3 text-sm text-foreground">
+                        <AlarmClock className="h-4 w-4 inline ml-1" />
+                        לא התקבל מענה בזמן. אפשר לנסות מארח אחר —
+                        <Button variant="link" className="px-1 h-auto text-primary" onClick={() => navigate("/explore")}>
+                          חיפוש הזדמנויות
+                        </Button>
+                      </div>
+                    )}
+
+                    {/* Contact info — only when approved */}
+                    {(booking.status === "approved" || booking.status === "completed") && (
+                      <div className="rounded-xl bg-primary/5 border border-primary/15 p-3 mb-3">
+                        {contact ? (
+                          <div className="space-y-1.5 text-sm">
+                            <div className="flex items-center gap-2">
+                              <UserIcon className="h-3.5 w-3.5 text-primary" />
+                              <span className="font-semibold">{contact.full_name}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Phone className="h-3.5 w-3.5 text-primary" />
+                              <a href={`tel:${contact.phone}`} className="text-primary underline">{contact.phone}</a>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Mail className="h-3.5 w-3.5 text-primary" />
+                              <a href={`mailto:${contact.email}`} className="text-primary underline truncate">{contact.email}</a>
+                            </div>
+                          </div>
+                        ) : (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="rounded-full gap-1"
+                            onClick={() => revealContact(booking.id)}
+                            disabled={loadingContactFor === booking.id}
+                          >
+                            <Phone className="h-3.5 w-3.5" />
+                            {loadingContactFor === booking.id ? "טוען..." : "הצגת פרטי קשר"}
+                          </Button>
+                        )}
+                      </div>
+                    )}
+
                     <div className="flex flex-wrap gap-2">
                       {/* Host actions */}
                       {isHost(booking) && booking.status === "pending" && (
                         <>
-                          <Button size="sm" className="rounded-full gap-1" onClick={() => handleStatusUpdate(booking.id, "approved")}>
+                          <Button size="sm" className="rounded-full gap-1" onClick={() => handleStatusUpdate(booking, "approved")}>
                             <CheckCircle className="h-3.5 w-3.5" /> אשר
                           </Button>
-                          <Button size="sm" variant="outline" className="rounded-full gap-1" onClick={() => handleStatusUpdate(booking.id, "rejected")}>
-                            <XCircle className="h-3.5 w-3.5" /> דחה
+                          <Button size="sm" variant="outline" className="rounded-full gap-1" onClick={() => handleStatusUpdate(booking, "not_available")}>
+                            <Heart className="h-3.5 w-3.5" /> לא זמין הפעם
                           </Button>
                         </>
                       )}
                       {isHost(booking) && booking.status === "approved" && (
-                        <Button size="sm" className="rounded-full gap-1" onClick={() => handleStatusUpdate(booking.id, "completed")}>
+                        <Button size="sm" className="rounded-full gap-1" onClick={() => handleStatusUpdate(booking, "completed")}>
                           <CalendarCheck className="h-3.5 w-3.5" /> סמן כהושלם
                         </Button>
                       )}
