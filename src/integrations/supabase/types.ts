@@ -206,6 +206,7 @@ export type Database = {
       host_family_profiles: {
         Row: {
           about_us: string | null
+          always_available: boolean
           available_dates: string[] | null
           city: string | null
           created_at: string
@@ -221,6 +222,7 @@ export type Database = {
         }
         Insert: {
           about_us?: string | null
+          always_available?: boolean
           available_dates?: string[] | null
           city?: string | null
           created_at?: string
@@ -238,6 +240,7 @@ export type Database = {
         }
         Update: {
           about_us?: string | null
+          always_available?: boolean
           available_dates?: string[] | null
           city?: string | null
           created_at?: string
@@ -257,6 +260,7 @@ export type Database = {
       }
       host_organized_shabbat_profiles: {
         Row: {
+          always_available: boolean
           available_dates: string[] | null
           city: string | null
           cost: string | null
@@ -273,6 +277,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          always_available?: boolean
           available_dates?: string[] | null
           city?: string | null
           cost?: string | null
@@ -291,6 +296,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          always_available?: boolean
           available_dates?: string[] | null
           city?: string | null
           cost?: string | null
@@ -314,6 +320,7 @@ export type Database = {
         Row: {
           age_range_max: number | null
           age_range_min: number | null
+          always_available: boolean
           available_dates: string[] | null
           city: string | null
           created_at: string
@@ -332,6 +339,7 @@ export type Database = {
         Insert: {
           age_range_max?: number | null
           age_range_min?: number | null
+          always_available?: boolean
           available_dates?: string[] | null
           city?: string | null
           created_at?: string
@@ -352,6 +360,7 @@ export type Database = {
         Update: {
           age_range_max?: number | null
           age_range_min?: number | null
+          always_available?: boolean
           available_dates?: string[] | null
           city?: string | null
           created_at?: string
@@ -415,6 +424,7 @@ export type Database = {
       }
       host_work_profiles: {
         Row: {
+          always_available: boolean
           available_dates: string[] | null
           city: string | null
           created_at: string
@@ -433,6 +443,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          always_available?: boolean
           available_dates?: string[] | null
           city?: string | null
           created_at?: string
@@ -451,6 +462,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          always_available?: boolean
           available_dates?: string[] | null
           city?: string | null
           created_at?: string
