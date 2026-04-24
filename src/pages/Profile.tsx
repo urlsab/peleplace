@@ -665,6 +665,15 @@ const Profile = () => {
                       </div>
                       <div className="space-y-2"><Label htmlFor="teamSize">מספר אנשי צוות נדרשים</Label><Input id="teamSize" name="teamSize" type="number" min={1} placeholder="3" defaultValue={detailedProfile?.team_size || ""} /></div>
                       <div className="space-y-2"><Label htmlFor="specialReq">דרישות מיוחדות</Label><Textarea id="specialReq" name="specialReq" placeholder="תואר, רישיון לנשק, ניסיון..." defaultValue={detailedProfile?.special_requirements || ""} /></div>
+                      <div className="space-y-2">
+                        <Label>תאריכים פנויים</Label>
+                        <HostDatePicker
+                          selectedDates={availableDates}
+                          onChange={setAvailableDates}
+                          alwaysAvailable={alwaysAvailable}
+                          onAlwaysAvailableChange={setAlwaysAvailable}
+                        />
+                      </div>
                       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>{saving ? "שומר..." : "שמירת פרופיל"}</Button>
                     </form>
                   ) : hostType === "volunteer" ? (
