@@ -38,36 +38,64 @@ const BookingRequestDialog = ({
       return;
     }
     setSending(true);
-    const { error } = await supabase.from("bookings").insert({
-      guest_user_id: user.id,
-      host_user_id: hostUserId,
-      host_type: hostType,
-      event_date: eventDate || "לא צוין",
-      message: message.trim() || null,
-    });
+    const { data: inserted, error } = await supabase
+      .from("bookings")
+      .insert({
+        guest_user_id: user.id,
+        host_user_id: hostUserId,
+        host_type: hostType,
+        event_date: eventDate || "לא צוין",
+        message: message.trim() || null,
+      })
+      .select("id")
+      .single();
     setSending(false);
 
     if (error) {
       toast({ title: "שגיאה בשליחת הבקשה", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "הבקשה נשלחה בהצלחה! ✨", description: "המארח יקבל הודעה ויחזור אליך" });
-      // Send confirmation email to guest
-      supabase.functions.invoke("send-transactional-email", {
+      return;
+    }
+
+    toast({ title: "הבקשה נשלחה בהצלחה! ✨", description: "המארח יקבל הודעה ויחזור אליך תוך 5 ימים" });
+
+    const guestName = user.user_metadata?.full_name || "אורח/ת";
+
+    // 1. Confirmation email to guest
+    supabase.functions.invoke("send-transactional-email", {
+      body: {
+        templateName: "booking-confirmation",
+        recipientEmail: user.email,
+        idempotencyKey: `booking-confirm-${inserted?.id}`,
+        templateData: { guestName, hostTitle, eventDate: eventDate || "", hostType },
+      },
+    }).catch(console.error);
+
+    // 2. Notification email to host
+    (async () => {
+      const { data: hostProfile } = await supabase
+        .from("profiles")
+        .select("email, full_name")
+        .eq("user_id", hostUserId)
+        .maybeSingle();
+      if (!hostProfile?.email) return;
+      await supabase.functions.invoke("send-transactional-email", {
         body: {
-          templateName: "booking-confirmation",
-          recipientEmail: user.email,
+          templateName: "booking-request-received",
+          recipientEmail: hostProfile.email,
+          idempotencyKey: `booking-request-${inserted?.id}`,
           templateData: {
-            guestName: user.user_metadata?.full_name || "אורח/ת",
-            hostTitle,
+            hostName: hostProfile.full_name || "מארח/ת",
+            guestName,
             eventDate: eventDate || "",
-            hostType,
+            message: message.trim() || "",
           },
         },
-      }).catch(console.error);
-      setMessage("");
-      onOpenChange(false);
-      onSuccess?.();
-    }
+      });
+    })().catch(console.error);
+
+    setMessage("");
+    onOpenChange(false);
+    onSuccess?.();
   };
 
   return (

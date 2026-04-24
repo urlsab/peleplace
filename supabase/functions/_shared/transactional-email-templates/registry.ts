@@ -25,3 +25,9 @@ TEMPLATES['registration-approved'] = registrationApproved
 
 import { template as registrationReceived } from './registration-received.tsx'
 TEMPLATES['registration-received'] = registrationReceived
+
+import { template as bookingNotAvailable } from './booking-not-available.tsx'
+TEMPLATES['booking-not-available'] = bookingNotAvailable
+
+import { template as bookingRequestReceived } from './booking-request-received.tsx'
+TEMPLATES['booking-request-received'] = bookingRequestReceived
