@@ -350,10 +350,62 @@ const Auth = () => {
                 {loading ? "מתחבר..." : "התחברות"}
               </Button>
             </form>
+          ) : !category ? (
+            /* CATEGORY SELECTION STEP */
+            <div className="space-y-3">
+              <div className="text-center space-y-1">
+                <h2 className="text-base font-bold font-display">איך תרצו להצטרף?</h2>
+                <p className="text-xs text-muted-foreground">בחרו את הסוג שמתאים לכם</p>
+              </div>
+              <div className="grid grid-cols-1 gap-2">
+                {CATEGORIES.map((c) => {
+                  const Icon = c.icon;
+                  return (
+                    <button
+                      key={c.value}
+                      type="button"
+                      onClick={() => setCategory(c.value)}
+                      className="flex items-center gap-3 rounded-xl border-2 border-border bg-background p-3 text-right transition-all hover:border-primary hover:shadow-sm"
+                    >
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-bold text-sm font-display">{c.label}</div>
+                        <div className="text-[11px] text-muted-foreground truncate">{c.description}</div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           ) : (
             /* REGISTRATION FORM */
             <form onSubmit={handleRegister} className="space-y-4">
-              {/* Full name */}
+              {/* Selected category banner */}
+              <div className="flex items-center justify-between gap-2 rounded-xl bg-accent/60 px-3 py-2">
+                <div className="flex items-center gap-2 min-w-0">
+                  {(() => {
+                    const c = CATEGORIES.find((x) => x.value === category)!;
+                    const Icon = c.icon;
+                    return (
+                      <>
+                        <Icon className="h-4 w-4 text-primary shrink-0" />
+                        <span className="text-xs font-bold truncate">{c.label}</span>
+                      </>
+                    );
+                  })()}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setCategory(null)}
+                  className="flex items-center gap-1 text-[11px] text-primary hover:underline shrink-0"
+                >
+                  שינוי
+                  <ArrowRight className="h-3 w-3" />
+                </button>
+              </div>
+
               <div className="space-y-1.5">
                 <Label htmlFor="reg-name" className="text-xs">שם ומשפחה *</Label>
                 <Input
