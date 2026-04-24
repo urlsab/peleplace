@@ -127,8 +127,8 @@ const ShabbatCalendar = () => {
   const monthHebRange = (() => {
     const first = new HDate(new Date(viewMonth.getFullYear(), viewMonth.getMonth(), 1));
     const last = new HDate(new Date(viewMonth.getFullYear(), viewMonth.getMonth() + 1, 0));
-    const firstM = first.getMonthName("h");
-    const lastM = last.getMonthName("h");
+    const firstM = first.getMonthName();
+    const lastM = last.getMonthName();
     return firstM === lastM ? `${firstM} ${first.getFullYear()}` : `${firstM}–${lastM} ${last.getFullYear()}`;
   })();
 
