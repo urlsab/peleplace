@@ -2,6 +2,7 @@ import { LogOut, User, Shield, Search, CalendarCheck, Menu, FileText, Mail, Cale
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import logoPele from "@/assets/logo-pele.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,11 +31,18 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 right-0 left-0 z-50 bg-cream/80 backdrop-blur-xl border-b border-border/40">
       <div className="container mx-auto flex items-center justify-between px-6 py-3.5">
-        <button onClick={() => navigate("/")} className="group flex items-center gap-1.5 min-w-0">
+        <button onClick={() => navigate("/")} className="group flex items-center gap-2 min-w-0">
+          <img
+            src={logoPele}
+            alt="פל״א"
+            width={36}
+            height={36}
+            className="h-9 w-9 shrink-0 object-contain transition-transform group-hover:scale-105 group-hover:rotate-[-4deg]"
+          />
           <span className="text-2xl font-black font-display tracking-tight shrink-0">
             פל<span className="text-gradient-warm">״</span>א
           </span>
-          <span className="text-[10px] sm:text-[11px] text-muted-foreground font-medium mt-0.5 truncate">— פשוט לבחור איפה</span>
+          <span className="hidden sm:inline text-[11px] text-muted-foreground font-medium mt-0.5 truncate">— פשוט לבחור איפה</span>
         </button>
 
         {/* Desktop quick links */}

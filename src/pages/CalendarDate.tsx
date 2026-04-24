@@ -67,8 +67,16 @@ const CalendarDate = () => {
 
   const dateInfo = useMemo(() => {
     if (!date) return null;
+    // Validate date format YYYY-MM-DD
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return null;
     const d = new Date(date + "T00:00:00");
-    const hd = new HDate(d);
+    if (isNaN(d.getTime())) return null;
+    let hd: HDate;
+    try {
+      hd = new HDate(d);
+    } catch {
+      return null;
+    }
     const events = HebrewCalendar.calendar({ start: d, end: d, il: true }).filter((ev) => {
       const f = ev.getFlags();
       return (f & flags.CHAG) || (f & flags.CHOL_HAMOED) || (f & flags.MINOR_HOLIDAY) ||
