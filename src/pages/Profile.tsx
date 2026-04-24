@@ -81,6 +81,7 @@ const Profile = () => {
           setProfileType("family");
           setHostType("family");
           setAvailableDates(family.available_dates || []);
+          setAlwaysAvailable((family as any).always_available || false);
           setLoadingProfile(false);
           return;
         }
@@ -89,6 +90,8 @@ const Profile = () => {
           setDetailedProfile(work);
           setProfileType("work");
           setHostType("work");
+          setAvailableDates((work as any).available_dates || []);
+          setAlwaysAvailable((work as any).always_available || false);
           setLoadingProfile(false);
           return;
         }
@@ -106,6 +109,7 @@ const Profile = () => {
           setProfileType("singles_group");
           setHostType("singles_group");
           setAvailableDates(singlesGroup.available_dates || []);
+          setAlwaysAvailable((singlesGroup as any).always_available || false);
           setLoadingProfile(false);
           return;
         }
@@ -115,6 +119,7 @@ const Profile = () => {
           setProfileType("organized_shabbat");
           setHostType("organized_shabbat");
           setAvailableDates(organized.available_dates || []);
+          setAlwaysAvailable((organized as any).always_available || false);
           setLoadingProfile(false);
           return;
         }
