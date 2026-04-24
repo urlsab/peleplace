@@ -625,7 +625,12 @@ const Profile = () => {
                       </div>
                       <div className="space-y-2">
                         <Label>תאריכים פנויים לאירוח</Label>
-                        <JewishDatePicker selectedDates={availableDates} onChange={setAvailableDates} />
+                        <HostDatePicker
+                          selectedDates={availableDates}
+                          onChange={setAvailableDates}
+                          alwaysAvailable={alwaysAvailable}
+                          onAlwaysAvailableChange={setAlwaysAvailable}
+                        />
                       </div>
                       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>
                         {saving ? "שומר..." : "שמירת פרופיל"}
@@ -721,7 +726,12 @@ const Profile = () => {
                       </div>
                       <div className="space-y-2">
                         <Label>תאריכי שבתות</Label>
-                        <JewishDatePicker selectedDates={availableDates} onChange={setAvailableDates} />
+                        <HostDatePicker
+                          selectedDates={availableDates}
+                          onChange={setAvailableDates}
+                          alwaysAvailable={alwaysAvailable}
+                          onAlwaysAvailableChange={setAlwaysAvailable}
+                        />
                       </div>
                       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>{saving ? "שומר..." : "שמירת פרופיל"}</Button>
                     </form>
@@ -752,7 +762,12 @@ const Profile = () => {
                       <div className="space-y-2"><Label htmlFor="regLink">קישור להרשמה</Label><Input id="regLink" name="regLink" type="url" placeholder="https://..." defaultValue={detailedProfile?.registration_link || ""} /></div>
                       <div className="space-y-2">
                         <Label>תאריכי שבתות</Label>
-                        <JewishDatePicker selectedDates={availableDates} onChange={setAvailableDates} />
+                        <HostDatePicker
+                          selectedDates={availableDates}
+                          onChange={setAvailableDates}
+                          alwaysAvailable={alwaysAvailable}
+                          onAlwaysAvailableChange={setAlwaysAvailable}
+                        />
                       </div>
                       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>{saving ? "שומר..." : "שמירת פרופיל"}</Button>
                     </form>
