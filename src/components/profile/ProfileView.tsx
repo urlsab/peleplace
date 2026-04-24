@@ -133,7 +133,7 @@ const ProfileView = ({ profile, detailedProfile, profileType, onEdit, previewMod
                 <div className="flex flex-wrap gap-1">
                   {d.available_dates.sort().map((date: string) => (
                     <Badge key={date} variant="secondary" className="text-xs">
-                      {new Date(date + "T00:00:00").toLocaleDateString("he-IL", { day: "numeric", month: "short" })}
+                      {labelHebrewDate(date)}
                     </Badge>
                   ))}
                 </div>
@@ -185,7 +185,7 @@ const ProfileView = ({ profile, detailedProfile, profileType, onEdit, previewMod
                 <div className="flex flex-wrap gap-1">
                   {d.available_dates.sort().map((date: string) => (
                     <Badge key={date} variant="secondary" className="text-xs">
-                      {new Date(date + "T00:00:00").toLocaleDateString("he-IL", { day: "numeric", month: "short" })}
+                      {labelHebrewDate(date)}
                     </Badge>
                   ))}
                 </div>
@@ -220,7 +220,7 @@ const ProfileView = ({ profile, detailedProfile, profileType, onEdit, previewMod
                 <div className="flex flex-wrap gap-1">
                   {d.available_dates.sort().map((date: string) => (
                     <Badge key={date} variant="secondary" className="text-xs">
-                      {new Date(date + "T00:00:00").toLocaleDateString("he-IL", { day: "numeric", month: "short" })}
+                      {labelHebrewDate(date)}
                     </Badge>
                   ))}
                 </div>
