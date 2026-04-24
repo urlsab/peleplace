@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, Eye, Shield } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Navbar from "@/components/Navbar";
+import DynamicBackground from "@/components/DynamicBackground";
 
 const statusLabels: Record<string, { label: string; variant: "default" | "secondary" | "destructive" }> = {
   pending: { label: "ממתין", variant: "default" },
@@ -89,7 +90,8 @@ const Admin = () => {
   if (!isAdmin) return null;
 
   return (
-    <div className="min-h-screen bg-background pattern-dots">
+    <div className="min-h-screen">
+      <DynamicBackground variant="vineyard" />
       <Navbar />
       <div className="pt-24 pb-12 px-4">
         <div className="mx-auto max-w-4xl">
