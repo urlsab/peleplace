@@ -112,7 +112,7 @@ const Auth = () => {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!termsAccepted || !gender || !dateOfBirth || !recommenderName.trim() || !recommenderPhone.trim() || !recommenderRelationship.trim()) return;
+    if (!category || !termsAccepted || !gender || !dateOfBirth || !recommenderName.trim() || !recommenderPhone.trim() || !recommenderRelationship.trim()) return;
     setLoading(true);
 
     try {
@@ -139,12 +139,13 @@ const Auth = () => {
       }
 
       // 3. Create profile with pending status
+      const userType = category === "single" ? "single" : "host";
       const { error: profileError } = await supabase.from("profiles").insert({
         user_id: userId,
         full_name: fullName,
         email,
         phone,
-        user_type: "single" as const,
+        user_type: userType as "single" | "host",
         date_of_birth: dateOfBirth,
         gender,
         id_document_url: idDocUrl,
@@ -154,6 +155,13 @@ const Auth = () => {
         recommender_relationship: recommenderRelationship,
       });
       if (profileError) throw profileError;
+
+      // Remember host subtype for profile-building step (not a profiles column)
+      if (category !== "single") {
+        try {
+          localStorage.setItem(`pela_host_subtype_${userId}`, category);
+        } catch {}
+      }
 
       // 4. Send registration-received email
       try {
