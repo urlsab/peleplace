@@ -45,6 +45,7 @@ const Profile = () => {
   const [hostType, setHostType] = useState<HostType>(null);
   const [saving, setSaving] = useState(false);
   const [mode, setMode] = useState<"view" | "edit">("view");
+  const [previewOpen, setPreviewOpen] = useState(false);
   const [detailedProfile, setDetailedProfile] = useState<any>(null);
   const [profileType, setProfileType] = useState<"single" | "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat" | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(true);
