@@ -35,6 +35,7 @@ interface ProfileViewProps {
   detailedProfile: any;
   profileType: "single" | "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat";
   onEdit: () => void;
+  previewMode?: boolean;
 }
 
 const InfoRow = ({ label, value }: { label: string; value?: string | null }) => {
@@ -47,7 +48,7 @@ const InfoRow = ({ label, value }: { label: string; value?: string | null }) => 
   );
 };
 
-const ProfileView = ({ profile, detailedProfile, profileType, onEdit }: ProfileViewProps) => {
+const ProfileView = ({ profile, detailedProfile, profileType, onEdit, previewMode = false }: ProfileViewProps) => {
   if (!detailedProfile) {
     return (
       <div className="text-center space-y-4 rounded-2xl border border-border bg-card p-8 shadow-card">
@@ -87,9 +88,11 @@ const ProfileView = ({ profile, detailedProfile, profileType, onEdit }: ProfileV
               )}
             </div>
           </div>
-          <Button variant="outline" size="sm" onClick={onEdit} className="rounded-full gap-1 shrink-0">
-            <Edit className="h-3.5 w-3.5" /> עריכה
-          </Button>
+          {!previewMode && (
+            <Button variant="outline" size="sm" onClick={onEdit} className="rounded-full gap-1 shrink-0">
+              <Edit className="h-3.5 w-3.5" /> עריכה
+            </Button>
+          )}
         </div>
       </div>
 
