@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import RatingDialog from "@/components/RatingDialog";
 import { useToast } from "@/hooks/use-toast";
+import DynamicBackground from "@/components/DynamicBackground";
 
 const statusConfig: Record<string, { label: string; color: string; icon: typeof Clock }> = {
   pending: { label: "ממתין לאישור", color: "bg-amber-soft/15 text-amber-soft", icon: Clock },
@@ -104,7 +105,8 @@ const MyBookings = () => {
   const isGuest = (b: any) => user?.id === b.guest_user_id;
 
   return (
-    <div className="min-h-screen bg-background pattern-dots" dir="rtl">
+    <div className="min-h-screen" dir="rtl">
+      <DynamicBackground variant="shabbat-table" />
       <Navbar />
       <div className="pt-24 pb-12 px-4">
         <div className="mx-auto max-w-2xl">

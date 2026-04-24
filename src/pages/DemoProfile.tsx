@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import ProfileView from "@/components/profile/ProfileView";
+import DynamicBackground from "@/components/DynamicBackground";
 
 /**
  * עמוד תצוגה מקדימה (דמו) של פרופיל משתמש מאושר.
@@ -28,7 +29,8 @@ const DemoProfile = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pattern-dots">
+    <div className="min-h-screen">
+      <DynamicBackground variant="jerusalem" />
       <Navbar />
       <div className="pt-24 pb-12 px-4">
         <div className="mx-auto max-w-2xl space-y-4">

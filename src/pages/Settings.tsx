@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { KeyRound, Mail, Trash2, ArrowRight } from "lucide-react";
+import DynamicBackground from "@/components/DynamicBackground";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -86,7 +87,8 @@ const Settings = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background pattern-dots">
+    <div className="min-h-screen">
+      <DynamicBackground variant="sea" />
       <Navbar />
       <div className="pt-24 pb-12 px-4">
         <div className="mx-auto max-w-lg space-y-6">
