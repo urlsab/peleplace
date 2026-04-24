@@ -203,9 +203,12 @@ const Profile = () => {
       const { data } = await supabase.from("host_family_profiles").select("*").eq("user_id", user.id).maybeSingle();
       setDetailedProfile(data);
       setAvailableDates(data?.available_dates || []);
+      setAlwaysAvailable((data as any)?.always_available || false);
     } else if (profileType === "work") {
       const { data } = await supabase.from("host_work_profiles").select("*").eq("user_id", user.id).maybeSingle();
       setDetailedProfile(data);
+      setAvailableDates((data as any)?.available_dates || []);
+      setAlwaysAvailable((data as any)?.always_available || false);
     } else if (profileType === "volunteer") {
       const { data } = await supabase.from("host_volunteer_profiles").select("*").eq("user_id", user.id).maybeSingle();
       setDetailedProfile(data);
@@ -213,10 +216,12 @@ const Profile = () => {
       const { data } = await supabase.from("host_singles_group_profiles").select("*").eq("user_id", user.id).maybeSingle();
       setDetailedProfile(data);
       setAvailableDates(data?.available_dates || []);
+      setAlwaysAvailable((data as any)?.always_available || false);
     } else if (profileType === "organized_shabbat") {
       const { data } = await supabase.from("host_organized_shabbat_profiles").select("*").eq("user_id", user.id).maybeSingle();
       setDetailedProfile(data);
       setAvailableDates(data?.available_dates || []);
+      setAlwaysAvailable((data as any)?.always_available || false);
     }
     setMode("view");
   };
@@ -277,7 +282,8 @@ const Profile = () => {
       guest_preference: form.get("guestPref") as any || null,
       region: form.get("region") as any || null,
       city: form.get("city") as string || null,
-      available_dates: availableDates.length > 0 ? availableDates : null,
+      available_dates: alwaysAvailable ? null : (availableDates.length > 0 ? availableDates : null),
+      always_available: alwaysAvailable,
     };
     const { error } = await supabase.from("host_family_profiles").upsert(data, { onConflict: "user_id" });
     if (error) {
@@ -305,6 +311,8 @@ const Profile = () => {
       gender_preference: form.get("genderPref") as any || null,
       team_size: parseInt(form.get("teamSize") as string) || null,
       special_requirements: form.get("specialReq") as string || null,
+      available_dates: alwaysAvailable ? null : (availableDates.length > 0 ? availableDates : null),
+      always_available: alwaysAvailable,
     };
     const { error } = await supabase.from("host_work_profiles").upsert(data, { onConflict: "user_id" });
     if (error) {
@@ -357,7 +365,8 @@ const Profile = () => {
       guest_preference: form.get("guestPref") as any || null,
       age_range_min: parseInt(form.get("ageMin") as string) || null,
       age_range_max: parseInt(form.get("ageMax") as string) || null,
-      available_dates: availableDates.length > 0 ? availableDates : null,
+      available_dates: alwaysAvailable ? null : (availableDates.length > 0 ? availableDates : null),
+      always_available: alwaysAvailable,
     };
     const { error } = await supabase.from("host_singles_group_profiles").upsert(data, { onConflict: "user_id" });
     if (error) {
@@ -385,7 +394,8 @@ const Profile = () => {
       cost: form.get("cost") as string || null,
       registration_link: form.get("regLink") as string || null,
       target_audience: form.get("targetAudience") as string || null,
-      available_dates: availableDates.length > 0 ? availableDates : null,
+      available_dates: alwaysAvailable ? null : (availableDates.length > 0 ? availableDates : null),
+      always_available: alwaysAvailable,
     };
     const { error } = await supabase.from("host_organized_shabbat_profiles").upsert(data, { onConflict: "user_id" });
     if (error) {
