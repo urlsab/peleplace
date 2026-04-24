@@ -433,8 +433,17 @@ const Profile = () => {
         <div className="mx-auto max-w-lg">
           {showView ? (
             <>
-              <div className="text-center mb-6">
+              <div className="text-center mb-6 space-y-3">
                 <h1 className="text-3xl font-black font-display">הפרופיל שלי</h1>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setPreviewOpen(true)}
+                  className="rounded-full gap-2"
+                >
+                  <Eye className="h-4 w-4" />
+                  איך רואים אותי?
+                </Button>
               </div>
               <ProfileView
                 profile={profile}
@@ -442,6 +451,26 @@ const Profile = () => {
                 profileType={profileType!}
                 onEdit={() => setMode("edit")}
               />
+
+              <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+                <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle className="text-center font-display">כך אחרים רואים את הפרופיל שלך</DialogTitle>
+                    <DialogDescription className="text-center text-xs">
+                      תצוגה מקדימה — בדיוק מה שמשתמשים אחרים יראו כשייתקלו בפרופיל שלך באתר
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="pt-2">
+                    <ProfileView
+                      profile={profile}
+                      detailedProfile={detailedProfile}
+                      profileType={profileType!}
+                      onEdit={() => {}}
+                      previewMode
+                    />
+                  </div>
+                </DialogContent>
+              </Dialog>
             </>
           ) : (
             <>
