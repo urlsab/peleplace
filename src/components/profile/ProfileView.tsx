@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Edit, MapPin, Heart, Star, Users, Utensils } from "lucide-react";
+import { labelHebrewDate } from "@/lib/hebrewDates";
 
 const regionLabels: Record<string, string> = {
   north: "צפון", haifa: "חיפה", sharon: "שרון", center: "מרכז",
