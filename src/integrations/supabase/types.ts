@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       bookings: {
         Row: {
+          auto_expire_at: string
           created_at: string
           event_date: string
           guest_user_id: string
@@ -23,10 +24,12 @@ export type Database = {
           host_user_id: string
           id: string
           message: string | null
+          responded_at: string | null
           status: string
           updated_at: string
         }
         Insert: {
+          auto_expire_at?: string
           created_at?: string
           event_date: string
           guest_user_id: string
@@ -34,10 +37,12 @@ export type Database = {
           host_user_id: string
           id?: string
           message?: string | null
+          responded_at?: string | null
           status?: string
           updated_at?: string
         }
         Update: {
+          auto_expire_at?: string
           created_at?: string
           event_date?: string
           guest_user_id?: string
@@ -45,6 +50,7 @@ export type Database = {
           host_user_id?: string
           id?: string
           message?: string | null
+          responded_at?: string | null
           status?: string
           updated_at?: string
         }
@@ -164,6 +170,36 @@ export type Database = {
           id?: string
           token?: string
           used_at?: string | null
+        }
+        Relationships: []
+      }
+      host_decline_alerts: {
+        Row: {
+          created_at: string
+          decline_count: number
+          host_user_id: string
+          id: string
+          last_alerted_at: string | null
+          month_start: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          decline_count?: number
+          host_user_id: string
+          id?: string
+          last_alerted_at?: string | null
+          month_start: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          decline_count?: number
+          host_user_id?: string
+          id?: string
+          last_alerted_at?: string | null
+          month_start?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -656,6 +692,16 @@ export type Database = {
       enqueue_email: {
         Args: { payload: Json; queue_name: string }
         Returns: number
+      }
+      expire_stale_bookings: { Args: never; Returns: number }
+      get_booking_contact: {
+        Args: { _booking_id: string }
+        Returns: {
+          email: string
+          full_name: string
+          phone: string
+          user_id: string
+        }[]
       }
       has_role: {
         Args: {
