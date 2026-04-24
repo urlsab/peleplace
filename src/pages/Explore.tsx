@@ -421,6 +421,12 @@ const Explore = () => {
                             <span>{religiousLabels[item.religiousLevel] || item.religiousLevel}</span>
                           </div>
                         )}
+                        {item.alwaysAvailable && (
+                          <div className="flex items-center gap-2">
+                            <Sparkles className="h-3.5 w-3.5 shrink-0 text-primary" />
+                            <span className="font-semibold text-primary">תמיד פנוי לארח</span>
+                          </div>
+                        )}
                         {item.availableDates && item.availableDates.length > 0 && (
                           <div className="space-y-1.5 pt-1">
                             <div className="flex items-center gap-2">
