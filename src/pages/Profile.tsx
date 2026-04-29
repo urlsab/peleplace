@@ -52,11 +52,25 @@ const Profile = () => {
   const [availableDates, setAvailableDates] = useState<string[]>([]);
   const [alwaysAvailable, setAlwaysAvailable] = useState(false);
 
+  // Active role being viewed/edited. Starts from registered user_type but can be toggled.
+  const [activeRole, setActiveRole] = useState<"single" | "host">(
+    (profile?.user_type as "single" | "host") || "single"
+  );
+  const [hasSingleProfile, setHasSingleProfile] = useState(false);
+  const [hasHostProfile, setHasHostProfile] = useState(false);
+
   useEffect(() => {
     if (!authLoading && !user) navigate("/auth");
   }, [user, authLoading]);
 
-  // Load detailed profile
+  // Sync activeRole when profile loads for the first time
+  useEffect(() => {
+    if (profile?.user_type) {
+      setActiveRole(profile.user_type as "single" | "host");
+    }
+  }, [profile?.user_type]);
+
+  // Load detailed profile based on activeRole
   useEffect(() => {
     if (!user || !profile || profile.registration_status !== "approved") {
       setLoadingProfile(false);
@@ -65,16 +79,31 @@ const Profile = () => {
 
     const loadProfile = async () => {
       setLoadingProfile(true);
-      const isSingle = profile.user_type === "single";
+      setDetailedProfile(null);
+      setProfileType(null);
+      setHostType(null);
+      setAvailableDates([]);
+      setAlwaysAvailable(false);
 
-      if (isSingle) {
+      // Detect existence of both profile sides (independent of activeRole)
+      const [singleCheck, fam, wrk, vol, sg, org] = await Promise.all([
+        supabase.from("single_profiles").select("user_id").eq("user_id", user.id).maybeSingle(),
+        supabase.from("host_family_profiles").select("user_id").eq("user_id", user.id).maybeSingle(),
+        supabase.from("host_work_profiles").select("user_id").eq("user_id", user.id).maybeSingle(),
+        supabase.from("host_volunteer_profiles").select("user_id").eq("user_id", user.id).maybeSingle(),
+        supabase.from("host_singles_group_profiles").select("user_id").eq("user_id", user.id).maybeSingle(),
+        supabase.from("host_organized_shabbat_profiles").select("user_id").eq("user_id", user.id).maybeSingle(),
+      ]);
+      setHasSingleProfile(!!singleCheck.data);
+      setHasHostProfile(!!(fam.data || wrk.data || vol.data || sg.data || org.data));
+
+      if (activeRole === "single") {
         const { data } = await supabase.from("single_profiles").select("*").eq("user_id", user.id).maybeSingle();
         if (data) {
           setDetailedProfile(data);
           setProfileType("single");
         }
       } else {
-        // Try each host type
         const { data: family } = await supabase.from("host_family_profiles").select("*").eq("user_id", user.id).maybeSingle();
         if (family) {
           setDetailedProfile(family);
@@ -127,7 +156,7 @@ const Profile = () => {
       setLoadingProfile(false);
     };
     loadProfile();
-  }, [user, profile]);
+  }, [user, profile, activeRole]);
 
   if (authLoading || loadingProfile) return <div className="min-h-screen flex items-center justify-center">טוען...</div>;
   if (!user) return null;
@@ -192,7 +221,7 @@ const Profile = () => {
   // If we have a detailed profile and are in view mode, show it
   const showView = mode === "view" && detailedProfile && profileType;
 
-  const isSingle = profile.user_type === "single";
+  const isSingle = activeRole === "single";
 
   const afterSave = async () => {
     // Reload profile
@@ -447,6 +476,43 @@ const Profile = () => {
       <Navbar />
       <div className="pt-24 pb-12 px-4">
         <div className="mx-auto max-w-lg">
+          {/* Dual-role toggle */}
+          <div className="mb-6 rounded-full bg-card border border-border p-1 shadow-card flex items-center text-sm font-bold">
+            <button
+              type="button"
+              onClick={() => { setActiveRole("single"); setMode("view"); }}
+              className={`flex-1 rounded-full py-2 px-3 transition-all flex items-center justify-center gap-1.5 ${
+                activeRole === "single" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              🙋 רווק/ה
+              {hasSingleProfile && activeRole !== "single" && (
+                <span className="text-[10px] text-primary">●</span>
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={() => { setActiveRole("host"); setMode("view"); }}
+              className={`flex-1 rounded-full py-2 px-3 transition-all flex items-center justify-center gap-1.5 ${
+                activeRole === "host" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              🏡 מארח/ת
+              {hasHostProfile && activeRole !== "host" && (
+                <span className="text-[10px] text-primary">●</span>
+              )}
+            </button>
+          </div>
+
+          {/* Empty-state hint when current side has no profile yet */}
+          {((activeRole === "single" && !hasSingleProfile) || (activeRole === "host" && !hasHostProfile)) && !loadingProfile && (
+            <div className="mb-5 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-sm text-foreground text-center">
+              {activeRole === "single"
+                ? "עדיין אין לך פרופיל רווק/ה — מלאו את הטופס למטה כדי לחפש מקום לשבת."
+                : "עדיין אין לך פרופיל מארח/ת — מלאו את הטופס למטה כדי לפתוח את הדלת לאורחים."}
+            </div>
+          )}
+
           {showView ? (
             <>
               <div className="text-center mb-6 space-y-3">
