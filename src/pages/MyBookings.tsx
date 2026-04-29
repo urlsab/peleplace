@@ -8,7 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import RatingDialog from "@/components/RatingDialog";
+
 import { useToast } from "@/hooks/use-toast";
 import DynamicBackground from "@/components/DynamicBackground";
 
@@ -36,11 +36,6 @@ const MyBookings = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const [ratingDialog, setRatingDialog] = useState<{
-    bookingId: string;
-    reviewedUserId: string;
-    reviewedName?: string;
-  } | null>(null);
   const [contactByBooking, setContactByBooking] = useState<Record<string, { full_name: string; phone: string; email: string }>>({});
   const [loadingContactFor, setLoadingContactFor] = useState<string | null>(null);
 
