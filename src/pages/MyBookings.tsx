@@ -62,6 +62,24 @@ const MyBookings = () => {
     },
   });
 
+  // Auto-complete approved bookings whose event date has passed (so feedback unlocks)
+  useEffect(() => {
+    if (!bookings || !user) return;
+    const today = new Date().toISOString().split("T")[0];
+    const toComplete = bookings.filter(
+      (b) => b.status === "approved" && b.event_date && b.event_date < today
+    );
+    if (toComplete.length === 0) return;
+    (async () => {
+      const ids = toComplete.map((b) => b.id);
+      const { error } = await supabase
+        .from("bookings")
+        .update({ status: "completed" })
+        .in("id", ids);
+      if (!error) queryClient.invalidateQueries({ queryKey: ["my-bookings"] });
+    })();
+  }, [bookings, user, queryClient]);
+
   const { data: myRatings } = useQuery({
     queryKey: ["my-ratings", user?.id],
     enabled: !!user,
