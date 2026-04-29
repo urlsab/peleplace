@@ -162,6 +162,20 @@ const RegistrationCards = () => {
             />
           ))}
         </div>
+
+        <motion.div
+          {...fadeUp}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-12 flex justify-center"
+        >
+          <Button
+            size="lg"
+            className="rounded-full text-base font-bold px-10 h-12 shadow-lg hover:shadow-xl transition-all"
+            onClick={() => navigate("/auth")}
+          >
+            הירשמו עכשיו
+          </Button>
+        </motion.div>
       </div>
     </section>
   );
