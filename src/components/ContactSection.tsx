@@ -66,18 +66,22 @@ const ContactSection = () => {
       <div className="absolute bottom-0 left-1/3 h-40 w-40 rounded-full bg-primary/8 blur-[60px]" />
 
       <div className="container relative z-10 mx-auto px-6">
-        {/* Editorial header — left aligned, no card */}
-        <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-12 max-w-lg">
-          <span className="mb-4 inline-block rounded-full bg-primary/10 px-3 py-1.5 text-[11px] font-semibold text-primary tracking-[0.15em] uppercase">
-            צרו קשר
-          </span>
-          <h2 className="mb-4 text-4xl md:text-[3.25rem] font-black leading-[1.05] text-right">
-            כתבו <span className="text-gradient-warm italic">לנו.</span>
+        {/* Centered ornamental header — completely different style from About/FAQ */}
+        <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center max-w-2xl mx-auto">
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <span className="h-px w-10 bg-primary/40" />
+            <Mail className="h-5 w-5 text-primary" />
+            <span className="text-[11px] font-bold text-primary tracking-[0.3em] uppercase">Get in touch</span>
+            <Mail className="h-5 w-5 text-primary" />
+            <span className="h-px w-10 bg-primary/40" />
+          </div>
+          <h2 className="text-5xl md:text-6xl font-display font-black leading-[1.1] mb-4">
+            <span className="italic text-gradient-warm">בואו</span>{" "}
+            <span>נדבר.</span>
           </h2>
-          <p className="text-muted-foreground text-base text-right leading-relaxed">
-            השאירו פרטים ואחזור אליכם בהקדם — כל הודעה מקבלת תשובה אישית.
+          <p className="text-muted-foreground text-base leading-relaxed max-w-md mx-auto">
+            השאירו פרטים ואחזור אליכם בהקדם — כל הודעה מקבלת תשובה אישית 💛
           </p>
-          <div className="mt-5 h-[2px] w-20 bg-gradient-to-l from-primary to-transparent" />
         </motion.div>
 
         <motion.div {...fadeUp} transition={{ delay: 0.15, duration: 0.5 }} className="max-w-lg mx-auto">

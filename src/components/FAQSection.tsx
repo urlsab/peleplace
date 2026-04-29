@@ -77,18 +77,25 @@ const FAQSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="md:col-span-5 md:sticky md:top-24 text-right"
+            className="md:col-span-5 md:sticky md:top-24"
           >
-            <span className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1.5 text-[11px] font-semibold text-primary tracking-[0.15em] uppercase">
-              <HelpCircle className="h-3.5 w-3.5" />
-              שאלות נפוצות
-            </span>
-            <h2 className="mb-5 text-4xl md:text-[3.5rem] font-black leading-[1.05]">
-              שאלות
-              <br />
-              <span className="text-gradient-warm italic">ותשובות.</span>
+            {/* Numbered marker — magazine style */}
+            <div className="flex items-baseline gap-4 mb-6 justify-center md:justify-start">
+              <span className="font-display text-7xl md:text-8xl font-black text-primary/20 leading-none">07</span>
+              <span className="text-[10px] font-bold text-muted-foreground tracking-[0.25em] uppercase">FAQ — שאלות נפוצות</span>
+            </div>
+            {/* Centered serif-flavored headline with hand-drawn underline */}
+            <h2 className="mb-6 text-center md:text-right text-3xl md:text-5xl font-black leading-[1.15] font-display">
+              <span className="block">לפני שאתם</span>
+              <span className="relative inline-block mt-2">
+                <span className="text-gradient-warm italic">שואלים —</span>
+                <svg className="absolute -bottom-2 right-0 w-full h-3" viewBox="0 0 200 12" preserveAspectRatio="none">
+                  <path d="M2,8 Q50,2 100,7 T198,5" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" className="text-primary/60" />
+                </svg>
+              </span>
+              <span className="block mt-3">קראו כאן.</span>
             </h2>
-            <p className="text-muted-foreground text-base mb-8 max-w-sm mr-auto">
+            <p className="text-muted-foreground text-sm mb-8 text-center md:text-right max-w-xs mx-auto md:mx-0">
               כל מה שרציתם לדעת על פל״א — במקום אחד, בלי סיבוב.
             </p>
             <div className="relative rounded-[2rem] overflow-hidden shadow-card">
