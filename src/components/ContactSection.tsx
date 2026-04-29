@@ -66,18 +66,18 @@ const ContactSection = () => {
       <div className="absolute bottom-0 left-1/3 h-40 w-40 rounded-full bg-primary/8 blur-[60px]" />
 
       <div className="container relative z-10 mx-auto px-6">
-        <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
-          <div className="inline-block rounded-2xl rotate-[-1deg] px-10 py-7 backdrop-blur-sm border border-primary/20" style={{ background: "linear-gradient(125deg, hsla(155,30%,45%,0.22), hsla(30,50%,58%,0.15))" }}>
-            <span className="mb-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
-              צרו קשר
-            </span>
-            <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
-              כתבו <span className="text-gradient-warm">לנו</span>
-            </h2>
-            <p className="text-muted-foreground text-base max-w-md mx-auto">
-              השאירו פרטים ואחזור אליכם בהקדם
-            </p>
-          </div>
+        {/* Editorial header — left aligned, no card */}
+        <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-12 max-w-lg">
+          <span className="mb-4 inline-block rounded-full bg-primary/10 px-3 py-1.5 text-[11px] font-semibold text-primary tracking-[0.15em] uppercase">
+            צרו קשר
+          </span>
+          <h2 className="mb-4 text-4xl md:text-[3.25rem] font-black leading-[1.05] text-right">
+            כתבו <span className="text-gradient-warm italic">לנו.</span>
+          </h2>
+          <p className="text-muted-foreground text-base text-right leading-relaxed">
+            השאירו פרטים ואחזור אליכם בהקדם — כל הודעה מקבלת תשובה אישית.
+          </p>
+          <div className="mt-5 h-[2px] w-20 bg-gradient-to-l from-primary to-transparent" />
         </motion.div>
 
         <motion.div {...fadeUp} transition={{ delay: 0.15, duration: 0.5 }} className="max-w-lg mx-auto">
