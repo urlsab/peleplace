@@ -122,12 +122,60 @@ const HostDatePicker = ({
     return arr;
   }, [viewMonth]);
 
+  const isSlotComplete = (date: string): boolean => {
+    const s = slots[date];
+    if (!s) return false;
+    // Minimum: capacity + guest_gender
+    if (!s.capacity || !s.guest_gender) return false;
+    return true;
+  };
+
   const toggle = (date: string) => {
     const next = new Set(selectedSet);
     if (next.has(date)) next.delete(date);
     else next.add(date);
     onChange([...next]);
   };
+
+  const openSlotDialog = (date: string) => setDialogDate(date);
+
+  const persistSlots = async (updates: Record<string, SlotDetails>) => {
+    if (!user) return;
+    const rows = Object.entries(updates).map(([date, d]) => ({
+      user_id: user.id,
+      host_type: hostType,
+      event_date: date,
+      capacity: d.capacity,
+      guest_gender: d.guest_gender,
+      arrangement: d.arrangement,
+      requires_experience: d.requires_experience,
+      requires_driving_license: d.requires_driving_license,
+      requires_weapon_license: d.requires_weapon_license,
+      requires_first_aid: d.requires_first_aid,
+      requires_physical_fitness: d.requires_physical_fitness,
+      extra_requirement: d.extra_requirement,
+      notes: d.notes,
+    }));
+    const { error } = await supabase
+      .from("host_availability_slots")
+      .upsert(rows, { onConflict: "user_id,host_type,event_date" });
+    if (error) {
+      toast({ title: "שגיאה בשמירת פרטי תאריך", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "הפרטים נשמרו ✨" });
+    }
+  };
+
+  const handleSaveSlot = async (details: SlotDetails, applyToAll: boolean) => {
+    if (!dialogDate) return;
+    const updates: Record<string, SlotDetails> = applyToAll
+      ? Object.fromEntries(selectedDates.map((d) => [d, details]))
+      : { [dialogDate]: details };
+    setSlots((prev) => ({ ...prev, ...updates }));
+    await persistSlots(updates);
+  };
+
+  const incompleteCount = selectedDates.filter((d) => !isSlotComplete(d)).length;
 
   // Quick action: select all upcoming Shabbatot for N months
   const selectAllShabbatot = (months: number) => {
