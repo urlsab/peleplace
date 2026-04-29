@@ -1,12 +1,16 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronRight, ChevronLeft, Sparkles, CalendarCheck, X } from "lucide-react";
+import { ChevronRight, ChevronLeft, Sparkles, CalendarCheck, X, Pencil, AlertCircle, CheckCircle2 } from "lucide-react";
 import { HDate, HebrewCalendar, flags } from "@hebcal/core";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { labelHebrewDate } from "@/lib/hebrewDates";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import SlotDetailsDialog, { SlotDetails, SlotHostType, emptySlot } from "./SlotDetailsDialog";
 
 const HEBREW_MONTHS = ["ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"];
 const HEBREW_DAYS = ["א'", "ב'", "ג'", "ד'", "ה'", "ו'", "ש'"];
@@ -19,6 +23,7 @@ interface HostDatePickerProps {
   onChange: (dates: string[]) => void;
   alwaysAvailable: boolean;
   onAlwaysAvailableChange: (value: boolean) => void;
+  hostType: SlotHostType;
 }
 
 const HostDatePicker = ({
@@ -26,9 +31,44 @@ const HostDatePicker = ({
   onChange,
   alwaysAvailable,
   onAlwaysAvailableChange,
+  hostType,
 }: HostDatePickerProps) => {
+  const { user } = useAuth();
+  const { toast } = useToast();
   const today = new Date();
   const [viewMonth, setViewMonth] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
+  const [slots, setSlots] = useState<Record<string, SlotDetails>>({});
+  const [dialogDate, setDialogDate] = useState<string | null>(null);
+
+  // Load existing slot details for this host on mount / hostType change
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const { data } = await supabase
+        .from("host_availability_slots")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("host_type", hostType);
+      if (data) {
+        const map: Record<string, SlotDetails> = {};
+        data.forEach((row: any) => {
+          map[row.event_date] = {
+            capacity: row.capacity,
+            guest_gender: row.guest_gender,
+            arrangement: row.arrangement,
+            requires_experience: row.requires_experience,
+            requires_driving_license: row.requires_driving_license,
+            requires_weapon_license: row.requires_weapon_license,
+            requires_first_aid: row.requires_first_aid,
+            requires_physical_fitness: row.requires_physical_fitness,
+            extra_requirement: row.extra_requirement,
+            notes: row.notes,
+          };
+        });
+        setSlots(map);
+      }
+    })();
+  }, [user, hostType]);
 
   const selectedSet = useMemo(() => new Set(selectedDates), [selectedDates]);
 
@@ -82,12 +122,60 @@ const HostDatePicker = ({
     return arr;
   }, [viewMonth]);
 
+  const isSlotComplete = (date: string): boolean => {
+    const s = slots[date];
+    if (!s) return false;
+    // Minimum: capacity + guest_gender
+    if (!s.capacity || !s.guest_gender) return false;
+    return true;
+  };
+
   const toggle = (date: string) => {
     const next = new Set(selectedSet);
     if (next.has(date)) next.delete(date);
     else next.add(date);
     onChange([...next]);
   };
+
+  const openSlotDialog = (date: string) => setDialogDate(date);
+
+  const persistSlots = async (updates: Record<string, SlotDetails>) => {
+    if (!user) return;
+    const rows = Object.entries(updates).map(([date, d]) => ({
+      user_id: user.id,
+      host_type: hostType,
+      event_date: date,
+      capacity: d.capacity,
+      guest_gender: d.guest_gender,
+      arrangement: d.arrangement,
+      requires_experience: d.requires_experience,
+      requires_driving_license: d.requires_driving_license,
+      requires_weapon_license: d.requires_weapon_license,
+      requires_first_aid: d.requires_first_aid,
+      requires_physical_fitness: d.requires_physical_fitness,
+      extra_requirement: d.extra_requirement,
+      notes: d.notes,
+    }));
+    const { error } = await supabase
+      .from("host_availability_slots")
+      .upsert(rows, { onConflict: "user_id,host_type,event_date" });
+    if (error) {
+      toast({ title: "שגיאה בשמירת פרטי תאריך", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "הפרטים נשמרו ✨" });
+    }
+  };
+
+  const handleSaveSlot = async (details: SlotDetails, applyToAll: boolean) => {
+    if (!dialogDate) return;
+    const updates: Record<string, SlotDetails> = applyToAll
+      ? Object.fromEntries(selectedDates.map((d) => [d, details]))
+      : { [dialogDate]: details };
+    setSlots((prev) => ({ ...prev, ...updates }));
+    await persistSlots(updates);
+  };
+
+  const incompleteCount = selectedDates.filter((d) => !isSlotComplete(d)).length;
 
   // Quick action: select all upcoming Shabbatot for N months
   const selectAllShabbatot = (months: number) => {
@@ -247,23 +335,72 @@ const HostDatePicker = ({
                     {c.isShabbat && !c.holiday && (
                       <span className={`text-[7px] leading-none ${selected ? "text-primary-foreground/80" : "text-primary/70"}`}>שבת</span>
                     )}
+                    {selected && (
+                      <span className="absolute top-0.5 left-0.5">
+                        {isSlotComplete(c.date) ? (
+                          <CheckCircle2 className="h-3 w-3 text-primary-foreground/90" />
+                        ) : (
+                          <AlertCircle className="h-3 w-3 text-[hsl(var(--terracotta))]" />
+                        )}
+                      </span>
+                    )}
                   </button>
                 );
               })}
             </div>
           </div>
 
+          {/* Reminder banner for incomplete slots */}
+          {incompleteCount > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-start gap-3 rounded-2xl border-2 border-[hsl(var(--terracotta))]/40 bg-[hsl(var(--terracotta))]/10 p-3"
+            >
+              <AlertCircle className="h-5 w-5 text-[hsl(var(--terracotta))] shrink-0 mt-0.5" />
+              <div className="flex-1 text-xs">
+                <div className="font-bold text-foreground">
+                  חסרים פרטים ל־{incompleteCount} תאריכים
+                </div>
+                <div className="text-muted-foreground">
+                  לחצו על תאריך ברשימה למטה כדי להוסיף מספר מקומות, מגדר, ודרישות.
+                </div>
+              </div>
+            </motion.div>
+          )}
+
           {/* Selected list */}
           {selectedDates.length > 0 && (
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">נבחרו {selectedDates.length} תאריכים:</Label>
-              <div className="flex flex-wrap gap-1 max-h-32 overflow-y-auto">
-                {[...selectedDates].sort().map((d) => (
-                  <Badge key={d} variant="secondary" className="text-[10px] gap-1">
-                    {labelHebrewDate(d)}
-                    <X className="h-3 w-3 cursor-pointer" onClick={() => toggle(d)} />
-                  </Badge>
-                ))}
+              <Label className="text-xs text-muted-foreground">
+                נבחרו {selectedDates.length} תאריכים — לחצו על תאריך לערוך פרטים:
+              </Label>
+              <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto">
+                {[...selectedDates].sort().map((d) => {
+                  const complete = isSlotComplete(d);
+                  return (
+                    <Badge
+                      key={d}
+                      variant={complete ? "secondary" : "outline"}
+                      className={`text-[10px] gap-1 cursor-pointer transition-colors ${
+                        complete
+                          ? "border-primary/30"
+                          : "border-[hsl(var(--terracotta))]/50 bg-[hsl(var(--terracotta))]/10 text-[hsl(var(--terracotta))]"
+                      }`}
+                      onClick={() => openSlotDialog(d)}
+                    >
+                      {complete ? <CheckCircle2 className="h-3 w-3" /> : <Pencil className="h-3 w-3" />}
+                      {labelHebrewDate(d)}
+                      <X
+                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggle(d);
+                        }}
+                      />
+                    </Badge>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -279,6 +416,15 @@ const HostDatePicker = ({
           ✨ הצוות שלך מוצג כתמיד זמין — מבקשים יוכלו לבחור כל תאריך
         </motion.div>
       )}
+
+      <SlotDetailsDialog
+        open={!!dialogDate}
+        onOpenChange={(o) => !o && setDialogDate(null)}
+        hostType={hostType}
+        date={dialogDate}
+        initial={dialogDate ? (slots[dialogDate] || emptySlot) : emptySlot}
+        onSave={handleSaveSlot}
+      />
     </div>
   );
 };
