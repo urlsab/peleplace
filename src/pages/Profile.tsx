@@ -696,6 +696,7 @@ const Profile = () => {
                           onChange={setAvailableDates}
                           alwaysAvailable={alwaysAvailable}
                           onAlwaysAvailableChange={setAlwaysAvailable}
+                          hostType="family"
                         />
                       </div>
                       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>
