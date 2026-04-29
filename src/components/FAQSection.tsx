@@ -101,14 +101,14 @@ const FAQSection = () => {
             </div>
             {/* Centered serif-flavored headline with hand-drawn underline */}
             <h2 className="mb-6 text-center md:text-right text-3xl md:text-5xl font-black leading-[1.15] font-display">
-              <span className="block">לפני שאתם</span>
+              <span className="block">כל מה ש</span>
               <span className="relative inline-block mt-2">
-                <span className="text-gradient-warm italic">שואלים —</span>
+                <span className="text-gradient-warm italic">רציתם לדעת</span>
                 <svg className="absolute -bottom-2 right-0 w-full h-3" viewBox="0 0 200 12" preserveAspectRatio="none">
                   <path d="M2,8 Q50,2 100,7 T198,5" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" className="text-primary/60" />
                 </svg>
               </span>
-              <span className="block mt-3">קראו כאן.</span>
+              <span className="block mt-3">על פל״א.</span>
             </h2>
             <p className="text-muted-foreground text-sm mb-8 text-center md:text-right max-w-xs mx-auto md:mx-0">
               כל מה שרציתם לדעת על פל״א — במקום אחד, בלי סיבוב.
