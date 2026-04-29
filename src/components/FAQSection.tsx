@@ -111,7 +111,7 @@ const FAQSection = () => {
               <span className="block mt-3">על פל״א.</span>
             </h2>
             <p className="text-muted-foreground text-sm mb-8 text-center md:text-right max-w-xs mx-auto md:mx-0">
-              כל מה שרציתם לדעת על פל״א — במקום אחד, בלי סיבוב.
+              כל מה שרציתם לדעת על פל״א — במקום אחד.
             </p>
             <div className="relative rounded-[2rem] overflow-hidden shadow-card">
               <img
@@ -123,9 +123,6 @@ const FAQSection = () => {
                 className="w-full h-[280px] md:h-[360px] object-cover"
               />
               <div className="absolute inset-0" style={{ background: "linear-gradient(to top, hsla(210,18%,8%,0.4), transparent 60%)" }} />
-              <p className="absolute bottom-5 right-5 text-cream font-display font-bold text-sm drop-shadow-lg">
-                הדלת תמיד פתוחה.
-              </p>
             </div>
           </motion.div>
 
