@@ -138,22 +138,12 @@ const FAQSection = () => {
             className="md:col-span-7"
           >
             <Accordion type="single" collapsible className="space-y-3">
-              {faqs.map((faq, i) => {
-                const bgColors = [
-                  "hsl(155 30% 75%)",
-                  "hsl(20 40% 80%)",
-                  "hsl(30 40% 78%)",
-                  "hsl(155 25% 77%)",
-                  "hsl(20 35% 79%)",
-                  "hsl(155 20% 78%)",
-                  "hsl(30 35% 78%)",
-                ];
-                return (
+              {faqs.map((faq, i) => (
                 <AccordionItem
                   key={i}
                   value={`faq-${i}`}
                   className="rounded-2xl border border-border/50 px-6 shadow-card data-[state=open]:shadow-hover transition-shadow"
-                  style={{ backgroundColor: bgColors[i % bgColors.length] }}
+                  style={{ backgroundColor: "hsl(30 40% 88%)" }}
                 >
                   <AccordionTrigger className="text-right font-bold font-display text-sm py-5 hover:no-underline [&>svg]:shrink-0">
                     {faq.question}
@@ -162,8 +152,7 @@ const FAQSection = () => {
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
-                );
-              })}
+              ))}
             </Accordion>
           </motion.div>
         </div>
