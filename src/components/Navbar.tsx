@@ -2,7 +2,7 @@ import { LogOut, User, Shield, Search, CalendarCheck, Menu, FileText, Mail, Cale
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import logoPele from "@/assets/logo-pele.png";
+import logoPele from "@/assets/logo-pela.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,13 +35,10 @@ const Navbar = () => {
           <img
             src={logoPele}
             alt="פל״א"
-            width={36}
-            height={36}
-            className="h-9 w-9 shrink-0 object-contain transition-transform group-hover:scale-105 group-hover:rotate-[-4deg]"
+            width={120}
+            height={48}
+            className="h-11 w-auto shrink-0 object-contain transition-transform group-hover:scale-105"
           />
-          <span className="text-2xl font-black font-display tracking-tight shrink-0">
-            פל<span className="text-gradient-warm">״</span>א
-          </span>
           <span className="hidden sm:inline text-[11px] text-muted-foreground font-medium mt-0.5 truncate">— פשוט לבחור איפה</span>
         </button>
 
