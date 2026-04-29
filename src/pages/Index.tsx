@@ -51,8 +51,8 @@ const Index = () => {
         {/* Registration Cards */}
         <RegistrationCards />
 
-        {/* About Us */}
-        <section id="about" className="relative py-24 overflow-hidden">
+        {/* About — asymmetric editorial layout */}
+        <section id="about" className="relative py-28 overflow-hidden">
           {/* Floating decorative elements */}
           <div className="absolute top-20 right-[8%] animate-float-slow opacity-[0.07]">
             <Heart className="h-16 w-16 text-secondary" />
@@ -60,73 +60,85 @@ const Index = () => {
           <div className="absolute bottom-24 left-[6%] animate-float-reverse opacity-[0.06]">
             <Home className="h-14 w-14 text-primary" />
           </div>
-          <div className="absolute top-1/3 left-[3%] animate-drift opacity-[0.05]">
-            <Sparkles className="h-10 w-10 text-terracotta" />
-          </div>
-
-          {/* Warm blurred orbs */}
-          <div className="absolute top-0 left-1/4 h-72 w-72 rounded-full bg-secondary/10 blur-[100px]" />
-          <div className="absolute bottom-0 right-1/4 h-56 w-56 rounded-full bg-primary/8 blur-[80px]" />
 
           <div className="container relative z-10 mx-auto px-6">
-            <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
-              <div className="inline-block rounded-3xl px-10 py-7 backdrop-blur-sm border border-primary/15" style={{ background: "linear-gradient(160deg, hsla(155,30%,45%,0.2), hsla(155,25%,60%,0.12))" }}>
-                <span className="mb-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
-                  קצת עלינו
-                </span>
-                <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
-                  הסיפור <span className="text-gradient-warm">שלנו</span>
-                </h2>
-              </div>
+            {/* Section label — top right, no card */}
+            <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-12 text-right max-w-3xl mr-auto">
+              <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-[11px] font-semibold text-primary tracking-[0.15em] uppercase">
+                קצת עלינו
+              </span>
+              <h2 className="text-4xl md:text-[3.5rem] font-black leading-[1.05]">
+                הסיפור <span className="text-gradient-warm italic">שלנו</span>
+              </h2>
+              <div className="mt-4 h-[2px] w-24 bg-gradient-to-l from-primary to-transparent mr-auto" />
             </motion.div>
-            <div className="grid gap-10 md:grid-cols-2 items-start max-w-5xl mx-auto">
-              {/* Personal story */}
-              <motion.div {...fadeUp} transition={{ delay: 0.1, duration: 0.5 }} className="space-y-5 text-right backdrop-blur-sm rounded-3xl p-6 border border-primary/10" style={{ background: "linear-gradient(180deg, hsla(155,30%,45%,0.15), hsla(60,20%,97%,0.7))" }}>
-                <img
-                  src={founderPhoto}
-                  alt="אודיה, יוסף חיים ופלא — המשפחה מאחורי הפרויקט"
-                  className="w-full rounded-2xl shadow-card mb-2 object-cover max-h-[400px]"
-                  loading="lazy"
-                  width={800}
-                  height={600}
-                />
-                <p className="text-muted-foreground leading-[1.85] text-[15px]">
-                  שלום, אני <strong className="text-foreground">אודיה עמרוסי</strong>, בת 32, נשואה ליוסף חיים ואמא לפלא בן 9 חודשים.
-                  התחתנתי בגיל 30 — אחרי שנים ארוכות של שבתות וחגים שבהם הרגשתי קצת בודדה בתוך ההמולה המשפחתית.
-                </p>
-                <p className="text-muted-foreground leading-[1.85] text-[15px]">
-                  כשאחים שלי — הגדול ממני אבל גם קטנים ממני — התחתנו, הקושי רק גדל.
-                  העדפתי כל שבת וחג להתארח אצל חברים או לעבוד כאחות בבית חולים, רק כדי לא להרגיש את החלל.
-                </p>
-                <p className="text-muted-foreground leading-[1.85] text-[15px]">
-                  הקמתי את <strong className="text-foreground">פל״א</strong> כדי לתת לרווקים ורווקות את מה שהייתי צריכה — <em>בחירה</em>.
-                  בחירה אם להישאר אצל ההורים, או למצוא מקום אחר להיות בו. כי המטרה פשוטה:
-                </p>
-                <p className="text-lg font-bold font-display text-foreground leading-relaxed">
-                  שכל אחד ירגיש שתמיד יש לו איפה להיות. ❤️
-                </p>
+
+            {/* Asymmetric layout: large image left, text overflowing right */}
+            <div className="grid gap-10 md:grid-cols-12 items-start max-w-6xl mx-auto">
+              {/* Image column — large, no frame */}
+              <motion.div {...fadeUp} transition={{ delay: 0.1, duration: 0.6 }} className="md:col-span-5 md:sticky md:top-24">
+                <div className="relative">
+                  <img
+                    src={founderPhoto}
+                    alt="אודיה, יוסף חיים ופלא — המשפחה מאחורי הפרויקט"
+                    className="w-full rounded-[2rem] shadow-card object-cover aspect-[4/5]"
+                    loading="lazy"
+                    width={800}
+                    height={1000}
+                  />
+                  {/* Caption tag floating over image */}
+                  <div className="absolute -bottom-4 -right-4 bg-cream rounded-full px-5 py-2.5 shadow-card border border-border/40">
+                    <span className="text-xs font-bold text-foreground">אודיה, יוסף חיים ופלא 💛</span>
+                  </div>
+                </div>
               </motion.div>
 
-              {/* The need from both sides */}
-              <motion.div {...fadeUp} transition={{ delay: 0.2, duration: 0.5 }} className="space-y-4 backdrop-blur-sm rounded-[1.5rem] p-6 border border-secondary/15" style={{ background: "linear-gradient(170deg, hsla(20,50%,70%,0.18), hsla(60,20%,97%,0.65))" }}>
-                <h3 className="font-bold font-display text-lg mb-4 text-right">הצורך הוא דו-צדדי</h3>
-                {[
-                  { emoji: "💛", title: "רווקים ורווקות", desc: "מחפשים מקום חם ומשמעותי להיות בו בשבתות ובחגים" },
-                  { emoji: "🏡", title: "זוגות ומשפחות", desc: "רוצים להרגיש חלק, לפתוח את הדלת ולהכיל — גם כשאין יכולת לשדך" },
-                  { emoji: "🌱", title: "חוות ונוער בסיכון", desc: "ארגונים שזקוקים לעזרה בהתנדבות — עם לב ורצון לתת" },
-                  { emoji: "💼", title: "מקומות עבודה", desc: "בתי מלון, בתי אבות ובתי הארחה שמחפשים עובדים טובים ואמינים" },
-                ].map((item) => (
-                  <div
-                    key={item.title}
-                    className="flex items-start gap-4 rounded-2xl bg-card/70 backdrop-blur-sm border border-border/40 p-5 shadow-card text-right"
-                  >
-                    <div className="text-2xl mt-0.5 shrink-0">{item.emoji}</div>
-                    <div>
-                      <div className="font-bold font-display text-sm mb-1">{item.title}</div>
-                      <div className="text-xs text-muted-foreground leading-relaxed">{item.desc}</div>
-                    </div>
+              {/* Text column — flowing, no card background */}
+              <motion.div {...fadeUp} transition={{ delay: 0.2, duration: 0.6 }} className="md:col-span-7 space-y-6 text-right">
+                <p className="text-2xl md:text-[1.6rem] font-display font-bold leading-[1.4] text-foreground">
+                  שלום, אני <span className="text-gradient-warm">אודיה עמרוסי</span> — בת 32, נשואה ליוסף חיים ואמא לפלא בן 9 חודשים.
+                </p>
+
+                <p className="text-base text-muted-foreground leading-[1.95]">
+                  התחתנתי בגיל 30 — אחרי שנים ארוכות של שבתות וחגים שבהם הרגשתי קצת בודדה בתוך ההמולה המשפחתית. כשאחים שלי — הגדול ממני אבל גם קטנים ממני — התחתנו, הקושי רק גדל.
+                </p>
+
+                {/* Pulled quote — typographic accent, no card */}
+                <blockquote className="border-r-4 border-primary pr-6 my-8">
+                  <p className="text-lg md:text-xl font-display italic text-foreground leading-relaxed">
+                    העדפתי כל שבת וחג להתארח אצל חברים או לעבוד כאחות בבית חולים, רק כדי לא להרגיש את החלל.
+                  </p>
+                </blockquote>
+
+                <p className="text-base text-muted-foreground leading-[1.95]">
+                  הקמתי את <strong className="text-foreground">פל״א</strong> כדי לתת לרווקים ורווקות את מה שהייתי צריכה — <em className="text-primary not-italic font-semibold">בחירה</em>. בחירה אם להישאר אצל ההורים, או למצוא מקום אחר להיות בו.
+                </p>
+
+                <p className="text-2xl md:text-[1.75rem] font-display font-black text-foreground leading-[1.3] pt-2">
+                  שכל אחד ירגיש שתמיד <br />
+                  יש לו איפה להיות. <span className="inline-block animate-float">❤️</span>
+                </p>
+
+                {/* The need — minimal inline list, no boxes */}
+                <div className="pt-8 mt-8 border-t border-border/40">
+                  <h3 className="font-display font-bold text-sm text-primary tracking-[0.15em] uppercase mb-5">הצורך הוא דו-צדדי</h3>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {[
+                      { emoji: "💛", title: "רווקים ורווקות", desc: "מקום חם בשבתות וחגים" },
+                      { emoji: "🏡", title: "זוגות ומשפחות", desc: "לפתוח את הדלת ולהכיל" },
+                      { emoji: "🌱", title: "חוות והתנדבות", desc: "עזרה עם לב ומשמעות" },
+                      { emoji: "💼", title: "מקומות עבודה", desc: "עובדים אמינים לשבתות" },
+                    ].map((item) => (
+                      <div key={item.title} className="flex items-start gap-3 group">
+                        <span className="text-2xl mt-0.5 shrink-0 group-hover:scale-110 transition-transform">{item.emoji}</span>
+                        <div>
+                          <div className="font-bold font-display text-sm">{item.title}</div>
+                          <div className="text-xs text-muted-foreground mt-0.5">{item.desc}</div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </motion.div>
             </div>
           </div>
