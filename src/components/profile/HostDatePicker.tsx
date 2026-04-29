@@ -335,23 +335,72 @@ const HostDatePicker = ({
                     {c.isShabbat && !c.holiday && (
                       <span className={`text-[7px] leading-none ${selected ? "text-primary-foreground/80" : "text-primary/70"}`}>שבת</span>
                     )}
+                    {selected && (
+                      <span className="absolute top-0.5 left-0.5">
+                        {isSlotComplete(c.date) ? (
+                          <CheckCircle2 className="h-3 w-3 text-primary-foreground/90" />
+                        ) : (
+                          <AlertCircle className="h-3 w-3 text-[hsl(var(--terracotta))]" />
+                        )}
+                      </span>
+                    )}
                   </button>
                 );
               })}
             </div>
           </div>
 
+          {/* Reminder banner for incomplete slots */}
+          {incompleteCount > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-start gap-3 rounded-2xl border-2 border-[hsl(var(--terracotta))]/40 bg-[hsl(var(--terracotta))]/10 p-3"
+            >
+              <AlertCircle className="h-5 w-5 text-[hsl(var(--terracotta))] shrink-0 mt-0.5" />
+              <div className="flex-1 text-xs">
+                <div className="font-bold text-foreground">
+                  חסרים פרטים ל־{incompleteCount} תאריכים
+                </div>
+                <div className="text-muted-foreground">
+                  לחצו על תאריך ברשימה למטה כדי להוסיף מספר מקומות, מגדר, ודרישות.
+                </div>
+              </div>
+            </motion.div>
+          )}
+
           {/* Selected list */}
           {selectedDates.length > 0 && (
             <div className="space-y-2">
-              <Label className="text-xs text-muted-foreground">נבחרו {selectedDates.length} תאריכים:</Label>
-              <div className="flex flex-wrap gap-1 max-h-32 overflow-y-auto">
-                {[...selectedDates].sort().map((d) => (
-                  <Badge key={d} variant="secondary" className="text-[10px] gap-1">
-                    {labelHebrewDate(d)}
-                    <X className="h-3 w-3 cursor-pointer" onClick={() => toggle(d)} />
-                  </Badge>
-                ))}
+              <Label className="text-xs text-muted-foreground">
+                נבחרו {selectedDates.length} תאריכים — לחצו על תאריך לערוך פרטים:
+              </Label>
+              <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto">
+                {[...selectedDates].sort().map((d) => {
+                  const complete = isSlotComplete(d);
+                  return (
+                    <Badge
+                      key={d}
+                      variant={complete ? "secondary" : "outline"}
+                      className={`text-[10px] gap-1 cursor-pointer transition-colors ${
+                        complete
+                          ? "border-primary/30"
+                          : "border-[hsl(var(--terracotta))]/50 bg-[hsl(var(--terracotta))]/10 text-[hsl(var(--terracotta))]"
+                      }`}
+                      onClick={() => openSlotDialog(d)}
+                    >
+                      {complete ? <CheckCircle2 className="h-3 w-3" /> : <Pencil className="h-3 w-3" />}
+                      {labelHebrewDate(d)}
+                      <X
+                        className="h-3 w-3 cursor-pointer hover:text-destructive"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggle(d);
+                        }}
+                      />
+                    </Badge>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -367,6 +416,15 @@ const HostDatePicker = ({
           ✨ הצוות שלך מוצג כתמיד זמין — מבקשים יוכלו לבחור כל תאריך
         </motion.div>
       )}
+
+      <SlotDetailsDialog
+        open={!!dialogDate}
+        onOpenChange={(o) => !o && setDialogDate(null)}
+        hostType={hostType}
+        date={dialogDate}
+        initial={dialogDate ? (slots[dialogDate] || emptySlot) : emptySlot}
+        onSave={handleSaveSlot}
+      />
     </div>
   );
 };
