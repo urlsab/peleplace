@@ -380,19 +380,6 @@ const MyBookings = () => {
         </div>
       </div>
 
-      {ratingDialog && (
-        <RatingDialog
-          open={!!ratingDialog}
-          onOpenChange={(open) => !open && setRatingDialog(null)}
-          bookingId={ratingDialog.bookingId}
-          reviewedUserId={ratingDialog.reviewedUserId}
-          reviewedName={ratingDialog.reviewedName}
-          onSuccess={() => {
-            queryClient.invalidateQueries({ queryKey: ["my-ratings"] });
-            setRatingDialog(null);
-          }}
-        />
-      )}
     </div>
   );
 };
