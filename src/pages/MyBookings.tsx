@@ -189,11 +189,52 @@ const MyBookings = () => {
       <Navbar />
       <div className="pt-24 pb-12 px-4">
         <div className="mx-auto max-w-2xl">
-          <div className="text-center mb-10">
+          <div className="text-center mb-8">
             <CalendarCheck className="mx-auto h-10 w-10 text-primary mb-3" />
             <h1 className="text-3xl font-black font-display">ההזמנות שלי</h1>
             <p className="text-muted-foreground mt-1">בקשות, אישורים ודירוגים</p>
           </div>
+
+          {/* Pending feedback banner */}
+          {bookings && myRatings && (() => {
+            const pendingFeedback = bookings.filter(
+              (b) => b.status === "completed" && !myRatings.has(b.id)
+            );
+            if (pendingFeedback.length === 0) return null;
+            const first = pendingFeedback[0];
+            const otherUserId = isHost(first) ? first.guest_user_id : first.host_user_id;
+            const otherName = profiles?.[otherUserId] || "המארח/אורח";
+            return (
+              <motion.div
+                initial={{ opacity: 0, y: -8 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 rounded-2xl border border-amber-soft/40 bg-gradient-to-l from-amber-soft/15 to-primary/10 p-5 shadow-card"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="shrink-0 rounded-full bg-amber-soft/20 p-2.5">
+                    <Star className="h-5 w-5 text-amber-soft fill-amber-soft" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold font-display text-base mb-1">
+                      איך הייתה השבת עם {otherName}?
+                    </h3>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      {pendingFeedback.length === 1
+                        ? "המשוב שלך עוזר לקהילה לשמור על איכות וחום."
+                        : `יש לך ${pendingFeedback.length} משובים ממתינים — כל אחד חשוב.`}
+                    </p>
+                    <Button
+                      size="sm"
+                      className="rounded-full gap-1.5"
+                      onClick={() => navigate(`/feedback/${first.id}`)}
+                    >
+                      <Star className="h-3.5 w-3.5" /> כתיבת משוב
+                    </Button>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })()}
 
           {isLoading ? (
             <p className="text-center text-muted-foreground">טוען...</p>
