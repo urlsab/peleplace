@@ -173,6 +173,63 @@ export type Database = {
         }
         Relationships: []
       }
+      host_availability_slots: {
+        Row: {
+          arrangement: string | null
+          capacity: number | null
+          created_at: string
+          event_date: string
+          extra_requirement: string | null
+          guest_gender: string | null
+          host_type: string
+          id: string
+          notes: string | null
+          requires_driving_license: boolean
+          requires_experience: boolean
+          requires_first_aid: boolean
+          requires_physical_fitness: boolean
+          requires_weapon_license: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          arrangement?: string | null
+          capacity?: number | null
+          created_at?: string
+          event_date: string
+          extra_requirement?: string | null
+          guest_gender?: string | null
+          host_type: string
+          id?: string
+          notes?: string | null
+          requires_driving_license?: boolean
+          requires_experience?: boolean
+          requires_first_aid?: boolean
+          requires_physical_fitness?: boolean
+          requires_weapon_license?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          arrangement?: string | null
+          capacity?: number | null
+          created_at?: string
+          event_date?: string
+          extra_requirement?: string | null
+          guest_gender?: string | null
+          host_type?: string
+          id?: string
+          notes?: string | null
+          requires_driving_license?: boolean
+          requires_experience?: boolean
+          requires_first_aid?: boolean
+          requires_physical_fitness?: boolean
+          requires_weapon_license?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       host_decline_alerts: {
         Row: {
           created_at: string
