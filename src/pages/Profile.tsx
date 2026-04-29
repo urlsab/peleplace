@@ -476,6 +476,43 @@ const Profile = () => {
       <Navbar />
       <div className="pt-24 pb-12 px-4">
         <div className="mx-auto max-w-lg">
+          {/* Dual-role toggle */}
+          <div className="mb-6 rounded-full bg-card border border-border p-1 shadow-card flex items-center text-sm font-bold">
+            <button
+              type="button"
+              onClick={() => { setActiveRole("single"); setMode("view"); }}
+              className={`flex-1 rounded-full py-2 px-3 transition-all flex items-center justify-center gap-1.5 ${
+                activeRole === "single" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              🙋 רווק/ה
+              {hasSingleProfile && activeRole !== "single" && (
+                <span className="text-[10px] text-primary">●</span>
+              )}
+            </button>
+            <button
+              type="button"
+              onClick={() => { setActiveRole("host"); setMode("view"); }}
+              className={`flex-1 rounded-full py-2 px-3 transition-all flex items-center justify-center gap-1.5 ${
+                activeRole === "host" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              🏡 מארח/ת
+              {hasHostProfile && activeRole !== "host" && (
+                <span className="text-[10px] text-primary">●</span>
+              )}
+            </button>
+          </div>
+
+          {/* Empty-state hint when current side has no profile yet */}
+          {((activeRole === "single" && !hasSingleProfile) || (activeRole === "host" && !hasHostProfile)) && !loadingProfile && (
+            <div className="mb-5 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-sm text-foreground text-center">
+              {activeRole === "single"
+                ? "עדיין אין לך פרופיל רווק/ה — מלאו את הטופס למטה כדי לחפש מקום לשבת."
+                : "עדיין אין לך פרופיל מארח/ת — מלאו את הטופס למטה כדי לפתוח את הדלת לאורחים."}
+            </div>
+          )}
+
           {showView ? (
             <>
               <div className="text-center mb-6 space-y-3">
