@@ -361,20 +361,14 @@ const MyBookings = () => {
                           size="sm"
                           variant="outline"
                           className="rounded-full gap-1 border-amber-soft/40 text-amber-soft hover:bg-amber-soft/10"
-                          onClick={() =>
-                            setRatingDialog({
-                              bookingId: booking.id,
-                              reviewedUserId: otherUserId,
-                              reviewedName: otherName,
-                            })
-                          }
+                          onClick={() => navigate(`/feedback/${booking.id}`)}
                         >
-                          <Star className="h-3.5 w-3.5" /> דרגו את השבת
+                          <Star className="h-3.5 w-3.5" /> כתיבת משוב
                         </Button>
                       )}
                       {booking.status === "completed" && alreadyRated && (
                         <span className="text-xs text-muted-foreground flex items-center gap-1">
-                          <Star className="h-3 w-3 fill-amber-soft text-amber-soft" /> דירגת
+                          <Star className="h-3 w-3 fill-amber-soft text-amber-soft" /> משוב נשלח
                         </span>
                       )}
                     </div>
