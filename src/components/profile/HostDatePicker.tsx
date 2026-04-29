@@ -1,12 +1,16 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronRight, ChevronLeft, Sparkles, CalendarCheck, X } from "lucide-react";
+import { ChevronRight, ChevronLeft, Sparkles, CalendarCheck, X, Pencil, AlertCircle, CheckCircle2 } from "lucide-react";
 import { HDate, HebrewCalendar, flags } from "@hebcal/core";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { labelHebrewDate } from "@/lib/hebrewDates";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
+import SlotDetailsDialog, { SlotDetails, SlotHostType, emptySlot } from "./SlotDetailsDialog";
 
 const HEBREW_MONTHS = ["ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני", "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר"];
 const HEBREW_DAYS = ["א'", "ב'", "ג'", "ד'", "ה'", "ו'", "ש'"];
