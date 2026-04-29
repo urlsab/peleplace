@@ -45,6 +45,21 @@ const faqs = [
     answer:
       "כן! לאחר שהאירוח הושלם, תוכלו לדרג את החוויה בשלושה קטגוריות: אירוח, אוכל ואווירה. הדירוגים עוזרים לנו לשמור על רמה גבוהה ולסנן מתארחים או מארחים שלא עומדים בתקנון ובנהלים של הקהילה.",
   },
+  {
+    question: "מה קורה אם בקשה שלי נדחית?",
+    answer:
+      "לא נורא — לכל מארח יש שיקולים משלו (כמות מקומות, התאמה משפחתית וכו׳). תוכלו לשלוח בקשות נוספות להזדמנויות אחרות באותה שבת. הצוות שלנו דואג שתמיד יהיו מספיק אפשרויות פתוחות.",
+  },
+  {
+    question: "מתי כדאי להירשם לשבת מסוימת?",
+    answer:
+      "ככל שמוקדם יותר — טוב יותר. מומלץ לשלוח בקשות עד יום שלישי שלפני השבת, כדי לאפשר למארחים זמן להיערך. בקשות של הרגע האחרון אפשריות, אבל הסיכוי קטן יותר.",
+  },
+  {
+    question: "האם אני יכול/ה להירשם גם כאורח/ת וגם כמארח/ת?",
+    answer:
+      "בהחלט! הרבה מהמשתמשים שלנו מארחים בחלק מהשבתות ומתארחים באחרות. בפרופיל שלכם תוכלו להגדיר את שתי האופציות ולעבור ביניהן בקלות.",
+  },
 ];
 
 const FAQSection = () => {
@@ -86,14 +101,14 @@ const FAQSection = () => {
             </div>
             {/* Centered serif-flavored headline with hand-drawn underline */}
             <h2 className="mb-6 text-center md:text-right text-3xl md:text-5xl font-black leading-[1.15] font-display">
-              <span className="block">לפני שאתם</span>
+              <span className="block">כל מה ש</span>
               <span className="relative inline-block mt-2">
-                <span className="text-gradient-warm italic">שואלים —</span>
+                <span className="text-gradient-warm italic">רציתם לדעת</span>
                 <svg className="absolute -bottom-2 right-0 w-full h-3" viewBox="0 0 200 12" preserveAspectRatio="none">
                   <path d="M2,8 Q50,2 100,7 T198,5" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" className="text-primary/60" />
                 </svg>
               </span>
-              <span className="block mt-3">קראו כאן.</span>
+              <span className="block mt-3">על פל״א.</span>
             </h2>
             <p className="text-muted-foreground text-sm mb-8 text-center md:text-right max-w-xs mx-auto md:mx-0">
               כל מה שרציתם לדעת על פל״א — במקום אחד, בלי סיבוב.
@@ -123,22 +138,12 @@ const FAQSection = () => {
             className="md:col-span-7"
           >
             <Accordion type="single" collapsible className="space-y-3">
-              {faqs.map((faq, i) => {
-                const bgColors = [
-                  "hsl(155 30% 75%)",
-                  "hsl(20 40% 80%)",
-                  "hsl(30 40% 78%)",
-                  "hsl(155 25% 77%)",
-                  "hsl(20 35% 79%)",
-                  "hsl(155 20% 78%)",
-                  "hsl(30 35% 78%)",
-                ];
-                return (
+              {faqs.map((faq, i) => (
                 <AccordionItem
                   key={i}
                   value={`faq-${i}`}
                   className="rounded-2xl border border-border/50 px-6 shadow-card data-[state=open]:shadow-hover transition-shadow"
-                  style={{ backgroundColor: bgColors[i % bgColors.length] }}
+                  style={{ backgroundColor: "hsl(30 40% 88%)" }}
                 >
                   <AccordionTrigger className="text-right font-bold font-display text-sm py-5 hover:no-underline [&>svg]:shrink-0">
                     {faq.question}
@@ -147,8 +152,7 @@ const FAQSection = () => {
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>
-                );
-              })}
+              ))}
             </Accordion>
           </motion.div>
         </div>
