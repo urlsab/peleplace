@@ -221,7 +221,7 @@ const Profile = () => {
   // If we have a detailed profile and are in view mode, show it
   const showView = mode === "view" && detailedProfile && profileType;
 
-  const isSingle = profile.user_type === "single";
+  const isSingle = activeRole === "single";
 
   const afterSave = async () => {
     // Reload profile
