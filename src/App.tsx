@@ -19,6 +19,7 @@ import Terms from "./pages/Terms.tsx";
 import Settings from "./pages/Settings.tsx";
 import DemoProfile from "./pages/DemoProfile.tsx";
 import Accessibility from "./pages/Accessibility.tsx";
+import Feedback from "./pages/Feedback.tsx";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,7 @@ const App = () => (
             <Route path="/settings" element={<Settings />} />
             <Route path="/demo/profile" element={<DemoProfile />} />
             <Route path="/accessibility" element={<Accessibility />} />
+            <Route path="/feedback/:bookingId" element={<Feedback />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
