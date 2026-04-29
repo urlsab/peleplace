@@ -52,11 +52,25 @@ const Profile = () => {
   const [availableDates, setAvailableDates] = useState<string[]>([]);
   const [alwaysAvailable, setAlwaysAvailable] = useState(false);
 
+  // Active role being viewed/edited. Starts from registered user_type but can be toggled.
+  const [activeRole, setActiveRole] = useState<"single" | "host">(
+    (profile?.user_type as "single" | "host") || "single"
+  );
+  const [hasSingleProfile, setHasSingleProfile] = useState(false);
+  const [hasHostProfile, setHasHostProfile] = useState(false);
+
   useEffect(() => {
     if (!authLoading && !user) navigate("/auth");
   }, [user, authLoading]);
 
-  // Load detailed profile
+  // Sync activeRole when profile loads for the first time
+  useEffect(() => {
+    if (profile?.user_type) {
+      setActiveRole(profile.user_type as "single" | "host");
+    }
+  }, [profile?.user_type]);
+
+  // Load detailed profile based on activeRole
   useEffect(() => {
     if (!user || !profile || profile.registration_status !== "approved") {
       setLoadingProfile(false);
@@ -65,16 +79,31 @@ const Profile = () => {
 
     const loadProfile = async () => {
       setLoadingProfile(true);
-      const isSingle = profile.user_type === "single";
+      setDetailedProfile(null);
+      setProfileType(null);
+      setHostType(null);
+      setAvailableDates([]);
+      setAlwaysAvailable(false);
 
-      if (isSingle) {
+      // Detect existence of both profile sides (independent of activeRole)
+      const [singleCheck, fam, wrk, vol, sg, org] = await Promise.all([
+        supabase.from("single_profiles").select("user_id").eq("user_id", user.id).maybeSingle(),
+        supabase.from("host_family_profiles").select("user_id").eq("user_id", user.id).maybeSingle(),
+        supabase.from("host_work_profiles").select("user_id").eq("user_id", user.id).maybeSingle(),
+        supabase.from("host_volunteer_profiles").select("user_id").eq("user_id", user.id).maybeSingle(),
+        supabase.from("host_singles_group_profiles").select("user_id").eq("user_id", user.id).maybeSingle(),
+        supabase.from("host_organized_shabbat_profiles").select("user_id").eq("user_id", user.id).maybeSingle(),
+      ]);
+      setHasSingleProfile(!!singleCheck.data);
+      setHasHostProfile(!!(fam.data || wrk.data || vol.data || sg.data || org.data));
+
+      if (activeRole === "single") {
         const { data } = await supabase.from("single_profiles").select("*").eq("user_id", user.id).maybeSingle();
         if (data) {
           setDetailedProfile(data);
           setProfileType("single");
         }
       } else {
-        // Try each host type
         const { data: family } = await supabase.from("host_family_profiles").select("*").eq("user_id", user.id).maybeSingle();
         if (family) {
           setDetailedProfile(family);
@@ -127,7 +156,7 @@ const Profile = () => {
       setLoadingProfile(false);
     };
     loadProfile();
-  }, [user, profile]);
+  }, [user, profile, activeRole]);
 
   if (authLoading || loadingProfile) return <div className="min-h-screen flex items-center justify-center">טוען...</div>;
   if (!user) return null;
