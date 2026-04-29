@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
+import sceneChallah from "@/assets/scene-challah-hands.jpg";
 import cardFarm from "@/assets/card-farm.jpg";
 import cardGuesthouse from "@/assets/card-guesthouse.jpg";
 import cardHosting from "@/assets/card-hosting.jpg";
@@ -136,20 +137,33 @@ const RegistrationCards = () => {
 
   return (
     <section id="opportunities" className="relative py-24 overflow-hidden">
-      <div className="container relative z-10 mx-auto px-6">
-        <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center">
-          <div className="inline-block rounded-[2rem] px-10 py-7 backdrop-blur-sm border border-secondary/20" style={{ background: "linear-gradient(135deg, hsla(20,50%,70%,0.25), hsla(30,50%,58%,0.2))" }}>
-            <span className="mb-3 inline-block rounded-full bg-secondary/10 px-3 py-1 text-[11px] font-semibold text-secondary tracking-wide">
+      {/* Wide image banner with overlaid title — no card */}
+      <motion.div {...fadeUp} transition={{ duration: 0.7 }} className="container mx-auto px-6 mb-16">
+        <div className="relative h-[260px] md:h-[340px] rounded-[2rem] overflow-hidden shadow-card">
+          <img
+            src={sceneChallah}
+            alt="ידיים מעבירות חלה בשולחן שבת"
+            loading="lazy"
+            width={1280}
+            height={896}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to top, hsla(210,18%,8%,0.85) 10%, hsla(210,18%,8%,0.35) 50%, hsla(210,18%,8%,0.1) 100%)" }} />
+          <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-14 text-right">
+            <span className="mb-3 inline-block self-end rounded-full bg-cream/15 backdrop-blur-md px-3 py-1 text-[11px] font-semibold text-cream tracking-wide w-fit border border-cream/20">
               הצטרפו אלינו
             </span>
-            <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
-              מי <span className="text-gradient-warm">אתם?</span>
+            <h2 className="mb-2 text-3xl md:text-[3rem] font-black leading-[1.05] text-cream drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
+              מי <span className="bg-gradient-to-l from-[hsl(20,55%,80%)] to-[hsl(155,30%,65%)] bg-clip-text text-transparent">אתם?</span>
             </h2>
-            <p className="text-muted-foreground text-base max-w-md mx-auto">
-              בחרו את הקטגוריה שמתאימה לכם והירשמו — זה חינם ולוקח דקה
+            <p className="text-cream-deep text-sm md:text-base max-w-md md:self-end drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
+              בחרו את הקטגוריה שמתאימה לכם — זה חינם ולוקח דקה
             </p>
           </div>
-        </motion.div>
+        </div>
+      </motion.div>
+
+      <div className="container relative z-10 mx-auto px-6">
 
         <div className="grid gap-6 sm:grid-cols-2">
           {registrationCards.map((card, i) => (
