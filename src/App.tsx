@@ -18,6 +18,7 @@ import Unsubscribe from "./pages/Unsubscribe.tsx";
 import Terms from "./pages/Terms.tsx";
 import Settings from "./pages/Settings.tsx";
 import DemoProfile from "./pages/DemoProfile.tsx";
+import Accessibility from "./pages/Accessibility.tsx";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ const App = () => (
             <Route path="/terms" element={<Terms />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/demo/profile" element={<DemoProfile />} />
+            <Route path="/accessibility" element={<Accessibility />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

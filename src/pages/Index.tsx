@@ -191,6 +191,8 @@ const Index = () => {
               <div className="flex items-center gap-4">
                 <a href="/terms" className="text-xs text-muted-foreground hover:text-primary transition-colors">תקנון</a>
                 <span className="text-border">|</span>
+                <a href="/accessibility" className="text-xs text-muted-foreground hover:text-primary transition-colors">הצהרת נגישות</a>
+                <span className="text-border">|</span>
                 <p className="text-xs text-muted-foreground">
                   © 2026 פל״א — פשוט לבחור איפה. כל הזכויות שמורות
                 </p>
