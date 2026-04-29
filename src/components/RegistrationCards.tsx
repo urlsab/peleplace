@@ -112,19 +112,9 @@ const FlipCard = ({ card, index, onNavigate }: { card: typeof registrationCards[
             <p className="text-base font-semibold text-cream/90 mb-2">
               {card.subtitle}
             </p>
-            <p className="text-sm text-cream-deep/80 mb-5 leading-relaxed max-w-sm">
+            <p className="text-sm text-cream-deep/80 leading-relaxed max-w-sm">
               {card.description}
             </p>
-            <Button
-              size="sm"
-              className="self-start rounded-full text-xs font-bold px-6 h-9 shadow-md hover:shadow-lg transition-all"
-              onClick={(e) => {
-                e.stopPropagation();
-                onNavigate();
-              }}
-            >
-              {card.cta}
-            </Button>
           </div>
         </div>
       </div>
