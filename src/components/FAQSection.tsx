@@ -6,6 +6,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { HelpCircle, Heart, Star, Sun } from "lucide-react";
+import sceneOpenDoor from "@/assets/scene-open-door.jpg";
 
 
 const faqs = [
@@ -69,64 +70,81 @@ const FAQSection = () => {
       <div className="absolute bottom-10 right-1/4 h-48 w-48 rounded-full bg-primary/6 blur-[60px]" />
 
       <div className="container relative z-10 mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="mb-14 text-center"
-        >
-          <div className="inline-block rounded-[2.5rem] px-10 py-7 backdrop-blur-sm border border-terracotta/15" style={{ background: "linear-gradient(140deg, hsla(30,50%,58%,0.22), hsla(20,45%,68%,0.15))" }}>
-            <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
+        <div className="grid gap-12 md:gap-16 md:grid-cols-12 items-start max-w-6xl mx-auto">
+          {/* Left: Image + headline (sticky) */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="md:col-span-5 md:sticky md:top-24 text-right"
+          >
+            <span className="mb-4 inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1.5 text-[11px] font-semibold text-primary tracking-[0.15em] uppercase">
               <HelpCircle className="h-3.5 w-3.5" />
               שאלות נפוצות
             </span>
-            <h2 className="mb-3 text-3xl font-black md:text-[2.75rem] leading-tight">
-              שאלות <span className="text-gradient-warm">ותשובות</span>
+            <h2 className="mb-5 text-4xl md:text-[3.5rem] font-black leading-[1.05]">
+              שאלות
+              <br />
+              <span className="text-gradient-warm italic">ותשובות.</span>
             </h2>
-            <p className="mx-auto max-w-md text-muted-foreground">
-              כל מה שרציתם לדעת על פל״א במקום אחד
+            <p className="text-muted-foreground text-base mb-8 max-w-sm mr-auto">
+              כל מה שרציתם לדעת על פל״א — במקום אחד, בלי סיבוב.
             </p>
-          </div>
-        </motion.div>
+            <div className="relative rounded-[2rem] overflow-hidden shadow-card">
+              <img
+                src={sceneOpenDoor}
+                alt="דלת פתוחה — בית מזמין לשבת"
+                loading="lazy"
+                width={896}
+                height={1280}
+                className="w-full h-[280px] md:h-[360px] object-cover"
+              />
+              <div className="absolute inset-0" style={{ background: "linear-gradient(to top, hsla(210,18%,8%,0.4), transparent 60%)" }} />
+              <p className="absolute bottom-5 right-5 text-cream font-display font-bold text-sm drop-shadow-lg">
+                הדלת תמיד פתוחה.
+              </p>
+            </div>
+          </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.15, duration: 0.5 }}
-          className="mx-auto max-w-2xl"
-        >
-          <Accordion type="single" collapsible className="space-y-3">
-            {faqs.map((faq, i) => {
-              const bgColors = [
-                "hsl(155 30% 75%)",
-                "hsl(20 40% 80%)",
-                "hsl(30 40% 78%)",
-                "hsl(155 25% 77%)",
-                "hsl(20 35% 79%)",
-                "hsl(155 20% 78%)",
-                "hsl(30 35% 78%)",
-              ];
-              return (
-              <AccordionItem
-                key={i}
-                value={`faq-${i}`}
-                className="rounded-2xl border border-border/50 px-6 shadow-card data-[state=open]:shadow-hover transition-shadow"
-                style={{ backgroundColor: bgColors[i % bgColors.length] }}
-              >
-                <AccordionTrigger className="text-right font-bold font-display text-sm py-5 hover:no-underline [&>svg]:shrink-0">
-                  {faq.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground text-sm leading-relaxed pb-5">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-              );
-            })}
-
-          </Accordion>
-        </motion.div>
+          {/* Right: Accordion */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.15, duration: 0.5 }}
+            className="md:col-span-7"
+          >
+            <Accordion type="single" collapsible className="space-y-3">
+              {faqs.map((faq, i) => {
+                const bgColors = [
+                  "hsl(155 30% 75%)",
+                  "hsl(20 40% 80%)",
+                  "hsl(30 40% 78%)",
+                  "hsl(155 25% 77%)",
+                  "hsl(20 35% 79%)",
+                  "hsl(155 20% 78%)",
+                  "hsl(30 35% 78%)",
+                ];
+                return (
+                <AccordionItem
+                  key={i}
+                  value={`faq-${i}`}
+                  className="rounded-2xl border border-border/50 px-6 shadow-card data-[state=open]:shadow-hover transition-shadow"
+                  style={{ backgroundColor: bgColors[i % bgColors.length] }}
+                >
+                  <AccordionTrigger className="text-right font-bold font-display text-sm py-5 hover:no-underline [&>svg]:shrink-0">
+                    {faq.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-foreground/80 text-sm leading-relaxed pb-5">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+                );
+              })}
+            </Accordion>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
