@@ -23,6 +23,7 @@ interface HostDatePickerProps {
   onChange: (dates: string[]) => void;
   alwaysAvailable: boolean;
   onAlwaysAvailableChange: (value: boolean) => void;
+  hostType: SlotHostType;
 }
 
 const HostDatePicker = ({
@@ -30,9 +31,44 @@ const HostDatePicker = ({
   onChange,
   alwaysAvailable,
   onAlwaysAvailableChange,
+  hostType,
 }: HostDatePickerProps) => {
+  const { user } = useAuth();
+  const { toast } = useToast();
   const today = new Date();
   const [viewMonth, setViewMonth] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
+  const [slots, setSlots] = useState<Record<string, SlotDetails>>({});
+  const [dialogDate, setDialogDate] = useState<string | null>(null);
+
+  // Load existing slot details for this host on mount / hostType change
+  useEffect(() => {
+    if (!user) return;
+    (async () => {
+      const { data } = await supabase
+        .from("host_availability_slots")
+        .select("*")
+        .eq("user_id", user.id)
+        .eq("host_type", hostType);
+      if (data) {
+        const map: Record<string, SlotDetails> = {};
+        data.forEach((row: any) => {
+          map[row.event_date] = {
+            capacity: row.capacity,
+            guest_gender: row.guest_gender,
+            arrangement: row.arrangement,
+            requires_experience: row.requires_experience,
+            requires_driving_license: row.requires_driving_license,
+            requires_weapon_license: row.requires_weapon_license,
+            requires_first_aid: row.requires_first_aid,
+            requires_physical_fitness: row.requires_physical_fitness,
+            extra_requirement: row.extra_requirement,
+            notes: row.notes,
+          };
+        });
+        setSlots(map);
+      }
+    })();
+  }, [user, hostType]);
 
   const selectedSet = useMemo(() => new Set(selectedDates), [selectedDates]);
 
