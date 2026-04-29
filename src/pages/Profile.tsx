@@ -739,6 +739,7 @@ const Profile = () => {
                           onChange={setAvailableDates}
                           alwaysAvailable={alwaysAvailable}
                           onAlwaysAvailableChange={setAlwaysAvailable}
+                          hostType="work"
                         />
                       </div>
                       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>{saving ? "שומר..." : "שמירת פרופיל"}</Button>
@@ -807,6 +808,7 @@ const Profile = () => {
                           onChange={setAvailableDates}
                           alwaysAvailable={alwaysAvailable}
                           onAlwaysAvailableChange={setAlwaysAvailable}
+                          hostType="singles_group"
                         />
                       </div>
                       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>{saving ? "שומר..." : "שמירת פרופיל"}</Button>
@@ -843,6 +845,7 @@ const Profile = () => {
                           onChange={setAvailableDates}
                           alwaysAvailable={alwaysAvailable}
                           onAlwaysAvailableChange={setAlwaysAvailable}
+                          hostType="organized_shabbat"
                         />
                       </div>
                       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>{saving ? "שומר..." : "שמירת פרופיל"}</Button>
