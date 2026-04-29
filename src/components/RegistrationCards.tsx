@@ -150,9 +150,6 @@ const RegistrationCards = () => {
           />
           <div className="absolute inset-0" style={{ background: "linear-gradient(to top, hsla(210,18%,8%,0.85) 10%, hsla(210,18%,8%,0.35) 50%, hsla(210,18%,8%,0.1) 100%)" }} />
           <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-14 text-right">
-            <span className="mb-3 inline-block self-end rounded-full bg-cream/15 backdrop-blur-md px-3 py-1 text-[11px] font-semibold text-cream tracking-wide w-fit border border-cream/20">
-              הצטרפו אלינו
-            </span>
             <h2 className="mb-2 text-3xl md:text-[3rem] font-black leading-[1.05] text-cream drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
               מי <span className="bg-gradient-to-l from-[hsl(20,55%,80%)] to-[hsl(155,30%,65%)] bg-clip-text text-transparent">אתם?</span>
             </h2>
