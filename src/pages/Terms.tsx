@@ -18,7 +18,7 @@ const Terms = () => {
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-primary mb-4">
               <ScrollText className="h-6 w-6 text-primary-foreground" />
             </div>
-            <h1 className="text-3xl font-black font-display">תקנון פל״א</h1>
+            <h1 className="text-3xl font-black font-display">תקנון, תנאי שימוש ומדיניות פרטיות</h1>
             <p className="mt-2 text-muted-foreground">עודכן לאחרונה: אפריל 2026</p>
           </div>
 
