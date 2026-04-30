@@ -39,7 +39,7 @@ const Navbar = () => {
             height={48}
             className="h-11 w-auto shrink-0 object-contain transition-transform group-hover:scale-105"
           />
-          <span className="hidden sm:inline text-[11px] text-muted-foreground font-medium mt-0.5 truncate">— פשוט לבחור איפה</span>
+          <span className="text-[11px] text-muted-foreground font-medium mt-0.5 truncate">— פשוט לבחור איפה</span>
         </button>
 
         {/* Desktop quick links */}
