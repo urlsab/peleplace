@@ -52,7 +52,7 @@ const BookingRequestDialog = ({
     setMessage("");
   }, [open]);
 
-  const canRequest = alwaysAvailable || futureDates.length > 0;
+  const canRequest = futureDates.length > 0;
 
   const handleSubmit = async () => {
     if (!user) {
