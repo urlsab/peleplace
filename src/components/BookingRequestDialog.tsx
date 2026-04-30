@@ -63,8 +63,8 @@ const BookingRequestDialog = ({
       toast({ title: "יש לבחור תאריך לבקשה", variant: "destructive" });
       return;
     }
-    // Guard: if not alwaysAvailable, the date must be in the host's list
-    if (!alwaysAvailable && !futureDates.includes(selectedDate)) {
+    // Guard: the date must be in the host's published list
+    if (!futureDates.includes(selectedDate)) {
       toast({ title: "אפשר לבחור רק תאריך שהמארח סימן כפנוי", variant: "destructive" });
       return;
     }
