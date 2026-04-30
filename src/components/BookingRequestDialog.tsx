@@ -52,7 +52,7 @@ const BookingRequestDialog = ({
     setMessage("");
   }, [open]);
 
-  const canRequest = alwaysAvailable || futureDates.length > 0;
+  const canRequest = futureDates.length > 0;
 
   const handleSubmit = async () => {
     if (!user) {
@@ -63,8 +63,8 @@ const BookingRequestDialog = ({
       toast({ title: "יש לבחור תאריך לבקשה", variant: "destructive" });
       return;
     }
-    // Guard: if not alwaysAvailable, the date must be in the host's list
-    if (!alwaysAvailable && !futureDates.includes(selectedDate)) {
+    // Guard: the date must be in the host's published list
+    if (!futureDates.includes(selectedDate)) {
       toast({ title: "אפשר לבחור רק תאריך שהמארח סימן כפנוי", variant: "destructive" });
       return;
     }
@@ -140,7 +140,7 @@ const BookingRequestDialog = ({
 
         {!canRequest ? (
           <div className="rounded-2xl border border-border bg-muted/30 p-5 text-center text-sm text-muted-foreground">
-            המארח עדיין לא סימן תאריכים פנויים. נסו שוב בקרוב או חפשו אפשרות אחרת.
+            המארח עדיין לא פרסם תאריכים פנויים. ניתן לשלוח בקשה רק לתאריכים שהמארח סימן במפורש. נסו שוב בקרוב או חפשו אפשרות אחרת.
           </div>
         ) : (
           <div className="space-y-4 pt-2">
@@ -151,59 +151,25 @@ const BookingRequestDialog = ({
                 בחרו תאריך לבקשה
               </Label>
 
-              {alwaysAvailable && futureDates.length === 0 && (
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2 rounded-lg bg-primary/5 border border-primary/20 px-3 py-2 text-xs">
-                    <Sparkles className="h-3.5 w-3.5 text-primary" />
-                    <span>המארח פתוח לכל תאריך — בחרו את התאריך המבוקש</span>
-                  </div>
-                  <Input
-                    type="date"
-                    min={todayStr()}
-                    value={selectedDate}
-                    onChange={(e) => setSelectedDate(e.target.value)}
-                    className="text-base"
-                  />
-                </div>
-              )}
-
-              {futureDates.length > 0 && (
-                <>
-                  {alwaysAvailable && (
-                    <p className="text-xs text-muted-foreground">המארח הציע גם תאריכים ספציפיים, אבל פתוח לכל תאריך אחר.</p>
-                  )}
-                  <div className="grid grid-cols-1 gap-1.5 max-h-64 overflow-y-auto pr-1">
-                    {futureDates.map((d) => {
-                      const isSelected = selectedDate === d;
-                      return (
-                        <button
-                          key={d}
-                          type="button"
-                          onClick={() => setSelectedDate(d)}
-                          className={`text-right rounded-xl border px-3 py-2.5 text-sm transition-all ${
-                            isSelected
-                              ? "border-primary bg-primary/10 ring-2 ring-primary font-bold"
-                              : "border-border bg-background hover:bg-muted/50"
-                          }`}
-                        >
-                          {labelHebrewDate(d)}
-                        </button>
-                      );
-                    })}
-                  </div>
-                  {alwaysAvailable && (
-                    <div className="pt-2">
-                      <Label className="text-xs text-muted-foreground mb-1 block">או בחרו תאריך אחר:</Label>
-                      <Input
-                        type="date"
-                        min={todayStr()}
-                        value={!futureDates.includes(selectedDate) ? selectedDate : ""}
-                        onChange={(e) => setSelectedDate(e.target.value)}
-                      />
-                    </div>
-                  )}
-                </>
-              )}
+              <div className="grid grid-cols-1 gap-1.5 max-h-64 overflow-y-auto pr-1">
+                {futureDates.map((d) => {
+                  const isSelected = selectedDate === d;
+                  return (
+                    <button
+                      key={d}
+                      type="button"
+                      onClick={() => setSelectedDate(d)}
+                      className={`text-right rounded-xl border px-3 py-2.5 text-sm transition-all ${
+                        isSelected
+                          ? "border-primary bg-primary/10 ring-2 ring-primary font-bold"
+                          : "border-border bg-background hover:bg-muted/50"
+                      }`}
+                    >
+                      {labelHebrewDate(d)}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             <div className="space-y-2">
