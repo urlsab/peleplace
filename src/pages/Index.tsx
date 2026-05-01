@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Briefcase, HandHeart, Home, Star, Heart, Sparkles, Sun } from "lucide-react";
+import { Briefcase, HandHeart, Home, Star, Heart, Sparkles, Sun, ShieldCheck, UserCheck, Lock, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import founderPhoto from "@/assets/founder-photo.png";
@@ -141,6 +141,80 @@ const Index = () => {
                 </div>
               </motion.div>
             </div>
+          </div>
+        </section>
+
+        {/* Trust & Safety — מניעת זיוף זהויות והגנה על המשתמשים */}
+        <section id="trust" className="relative py-24 overflow-hidden">
+          <div className="absolute top-16 left-[10%] animate-float-slow opacity-[0.06]">
+            <ShieldCheck className="h-16 w-16 text-primary" />
+          </div>
+
+          <div className="container relative z-10 mx-auto px-6">
+            <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-12 text-center max-w-2xl mx-auto">
+              <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-[11px] font-semibold text-primary tracking-[0.15em] uppercase">
+                ביטחון ואמון
+              </span>
+              <h2 className="text-3xl md:text-[2.75rem] font-black leading-[1.1]">
+                קהילה <span className="text-gradient-warm italic">מאומתת</span>
+                <br />
+                שאפשר לסמוך עליה
+              </h2>
+              <p className="mt-5 text-base text-muted-foreground leading-[1.85]">
+                כל פרופיל בפל״א עובר תהליך אישור ידני. אנחנו מקפידים על אמיתות הזהויות
+                ועל הגנה מירבית על המידע שלכם — כי שבת חמה מתחילה מתוך תחושת ביטחון.
+              </p>
+            </motion.div>
+
+            <div className="grid gap-5 md:grid-cols-2 max-w-5xl mx-auto">
+              {[
+                {
+                  icon: UserCheck,
+                  title: "אישור ידני לכל הרשמה",
+                  desc: "צוות פל״א בודק כל פרופיל לפני שהוא נכנס לקהילה — שם מלא, טלפון, ממליץ/ה ופרטי זיהוי.",
+                },
+                {
+                  icon: ShieldCheck,
+                  title: "מניעת זיוף זהויות",
+                  desc: "אסור להירשם תחת שם בדוי או להתחזות. הפרת הכלל גוררת חסימה מיידית — ואחריות פלילית לפי החוק.",
+                },
+                {
+                  icon: Lock,
+                  title: "פרטים שנחשפים רק כשצריך",
+                  desc: "מספר הטלפון והכתובת של המארח/ת והאורח/ת נחשפים אך ורק לאחר אישור הדדי של בקשת האירוח.",
+                },
+                {
+                  icon: Eye,
+                  title: "דיווח אנונימי על חשד",
+                  desc: "כל חבר/ת קהילה יכול/ה לדווח על פרופיל חשוד. נבדוק כל דיווח תוך 48 שעות — וזהותך נשמרת חסויה.",
+                },
+              ].map((item) => (
+                <motion.div
+                  key={item.title}
+                  {...fadeUp}
+                  transition={{ duration: 0.5 }}
+                  className="group flex items-start gap-4 rounded-2xl border border-primary/15 bg-card/70 backdrop-blur-sm p-6 hover:border-primary/30 hover:shadow-card transition-all"
+                >
+                  <div className="shrink-0 h-12 w-12 rounded-full flex items-center justify-center bg-gradient-to-br from-primary/15 to-secondary/15 group-hover:scale-110 transition-transform">
+                    <item.icon className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="text-right flex-1">
+                    <h3 className="font-bold font-display text-base mb-1.5">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-[1.75]">{item.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.div {...fadeUp} transition={{ duration: 0.6, delay: 0.2 }} className="mt-10 text-center">
+              <a
+                href="/terms"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+              >
+                קראו עוד על מדיניות האימות וההגנה שלנו
+                <span aria-hidden>←</span>
+              </a>
+            </motion.div>
           </div>
         </section>
 
