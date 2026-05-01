@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowDown, Sparkles, Heart, Users, Target, Sprout } from "lucide-react";
+import { ArrowDown, Sparkles, Heart, Users, Target, Sprout, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -105,87 +105,124 @@ const HeroSection = () => {
       </motion.div>
 
       <Dialog open={communityOpen} onOpenChange={setCommunityOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto" dir="rtl">
-          <DialogHeader className="text-right">
-            <div className="inline-flex items-center gap-2 mb-2">
-              <span className="rounded-full bg-primary/10 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
-                על הקהילה
-              </span>
-            </div>
-            <DialogTitle className="text-2xl font-black font-display text-right leading-tight">
-              פל״א — <span className="text-gradient-warm">פשוט לבחור איפה</span>
-            </DialogTitle>
-            <DialogDescription className="text-right text-sm text-muted-foreground">
-              קהילה שמחברת בין אנשים, לבבות ובתים — בכל שבת וחג
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="space-y-6 mt-4 text-right">
-            {/* החזון */}
-            <div className="rounded-2xl border border-primary/15 p-5" style={{ background: "linear-gradient(160deg, hsla(155,30%,45%,0.12), hsla(60,20%,97%,0.6))" }}>
-              <div className="flex items-center gap-2 mb-3">
-                <Target className="h-5 w-5 text-primary" />
-                <h3 className="font-bold font-display text-base">החזון</h3>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0" dir="rtl">
+          {/* Hero header with gradient */}
+          <div
+            className="relative px-6 pt-8 pb-10 rounded-t-lg overflow-hidden"
+            style={{ background: "linear-gradient(135deg, hsla(25,80%,51%,0.15), hsla(155,30%,45%,0.12) 60%, hsla(20,50%,70%,0.18))" }}
+          >
+            <div className="absolute -top-10 -left-10 w-40 h-40 rounded-full bg-primary/10 blur-3xl" />
+            <div className="absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-secondary/10 blur-3xl" />
+            <DialogHeader className="text-right relative">
+              <div className="inline-flex items-center gap-2 mb-3">
+                <span className="rounded-full bg-primary/15 px-3 py-1 text-[11px] font-semibold text-primary tracking-wide">
+                  ✨ על הקהילה
+                </span>
               </div>
-              <p className="text-sm leading-[1.85] text-muted-foreground">
-                שאף אחד לא ירגיש לבד בשבת או בחג. שלכל אדם — בכל גיל, בכל מצב, בכל מקום בארץ — תהיה
-                <strong className="text-foreground"> בחירה </strong>
-                איפה להיות, עם מי לחגוג, ואיך להרגיש שייך.
-              </p>
-            </div>
+              <DialogTitle className="text-3xl font-black font-display text-right leading-tight">
+                פל״א — <span className="text-gradient-warm">פשוט לבחור איפה</span>
+              </DialogTitle>
+              <DialogDescription className="text-right text-sm text-muted-foreground mt-2">
+                קהילה שמחברת בין אנשים, לבבות ובתים — בכל שבת וחג
+              </DialogDescription>
+            </DialogHeader>
+          </div>
 
-            {/* ההקמה */}
-            <div className="rounded-2xl border border-secondary/15 p-5" style={{ background: "linear-gradient(170deg, hsla(20,50%,70%,0.15), hsla(60,20%,97%,0.6))" }}>
-              <div className="flex items-center gap-2 mb-3">
-                <Sprout className="h-5 w-5 text-secondary" />
-                <h3 className="font-bold font-display text-base">איך זה התחיל</h3>
+          <div className="px-6 pb-6 space-y-8 text-right">
+            {/* ציטוט מודגש - החזון */}
+            <div className="relative pt-4">
+              <Quote className="absolute -top-1 right-0 h-8 w-8 text-primary/20 rotate-180" />
+              <div className="pr-10">
+                <div className="flex items-center gap-2 mb-2">
+                  <Target className="h-4 w-4 text-primary" />
+                  <span className="text-xs font-bold uppercase tracking-widest text-primary">החזון</span>
+                </div>
+                <p className="text-lg font-display leading-[1.7] text-foreground">
+                  שאף אחד לא ירגיש לבד בשבת או בחג.
+                  <br />
+                  שלכל אדם תהיה <span className="text-gradient-warm font-bold">בחירה</span> איפה להיות,
+                  עם מי לחגוג, ואיך להרגיש שייך.
+                </p>
               </div>
-              <p className="text-sm leading-[1.85] text-muted-foreground mb-3">
-                פל״א נולד מתוך חוויה אישית של <strong className="text-foreground">אודיה עמרוסי</strong>, שהכירה מקרוב
-                את הבדידות של רווקות ורווקים בשבתות וחגים. במקום לחכות שמישהו אחר יפתור — היא הקימה את הפלטפורמה שתמיד הייתה צריכה.
-              </p>
-              <p className="text-sm leading-[1.85] text-muted-foreground">
-                היום פל״א הוא בית לקהילה גדלה והולכת של מארחים, מתנדבים, ארגונים ורווקות ורווקים שמחפשים מקום חם.
-              </p>
             </div>
 
-            {/* הערכים */}
-            <div className="rounded-2xl border border-primary/15 p-5 bg-card/60 backdrop-blur-sm">
+            {/* קו מפריד עדין */}
+            <div className="flex items-center gap-3">
+              <div className="h-px flex-1 bg-gradient-to-l from-transparent via-primary/20 to-transparent" />
+              <Sparkles className="h-3 w-3 text-primary/40" />
+              <div className="h-px flex-1 bg-gradient-to-r from-transparent via-primary/20 to-transparent" />
+            </div>
+
+            {/* סיפור - ציר זמן */}
+            <div>
               <div className="flex items-center gap-2 mb-4">
-                <Heart className="h-5 w-5 text-primary" />
-                <h3 className="font-bold font-display text-base">הערכים שלנו</h3>
+                <Sprout className="h-4 w-4 text-secondary" />
+                <span className="text-xs font-bold uppercase tracking-widest text-secondary">איך הכל התחיל</span>
               </div>
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="relative pr-6 border-r-2 border-dashed border-secondary/30 space-y-5">
+                <div className="relative">
+                  <div className="absolute -right-[29px] top-1 h-4 w-4 rounded-full bg-secondary border-4 border-background" />
+                  <p className="text-sm leading-[1.85] text-muted-foreground">
+                    פל״א נולד מתוך חוויה אישית של <strong className="text-foreground">אודיה עמרוסי</strong>,
+                    שהכירה מקרוב את הבדידות של רווקות ורווקים בשבתות וחגים.
+                  </p>
+                </div>
+                <div className="relative">
+                  <div className="absolute -right-[29px] top-1 h-4 w-4 rounded-full bg-primary border-4 border-background" />
+                  <p className="text-sm leading-[1.85] text-muted-foreground">
+                    במקום לחכות שמישהו אחר יפתור — היא הקימה את הפלטפורמה שתמיד הייתה צריכה להתקיים.
+                  </p>
+                </div>
+                <div className="relative">
+                  <div className="absolute -right-[29px] top-1 h-4 w-4 rounded-full bg-accent border-4 border-background" />
+                  <p className="text-sm leading-[1.85] text-muted-foreground">
+                    היום פל״א הוא <strong className="text-foreground">בית לקהילה גדלה והולכת</strong> של
+                    מארחים, מתנדבים, ארגונים ורווקות ורווקים שמחפשים מקום חם.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* הערכים - שורה אופקית של אייקונים גדולים */}
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Heart className="h-4 w-4 text-primary" />
+                <span className="text-xs font-bold uppercase tracking-widest text-primary">הערכים שמובילים אותנו</span>
+              </div>
+              <div className="flex flex-wrap justify-between gap-y-5 gap-x-3">
                 {[
-                  { emoji: "🤝", title: "כבוד הדדי", desc: "כל אדם מתקבל כפי שהוא" },
-                  { emoji: "🏡", title: "חמימות אמיתית", desc: "בית, לא רק כתובת" },
-                  { emoji: "🔒", title: "ביטחון ואמון", desc: "תהליך אישור קפדני" },
-                  { emoji: "✨", title: "פשטות", desc: "שלוש לחיצות עד שבת חמה" },
+                  { emoji: "🤝", title: "כבוד הדדי" },
+                  { emoji: "🏡", title: "חמימות" },
+                  { emoji: "🔒", title: "ביטחון" },
+                  { emoji: "✨", title: "פשטות" },
                 ].map((v) => (
-                  <div key={v.title} className="flex items-start gap-3 rounded-xl bg-background/50 p-3">
-                    <span className="text-xl shrink-0">{v.emoji}</span>
-                    <div>
-                      <div className="font-bold text-sm">{v.title}</div>
-                      <div className="text-xs text-muted-foreground">{v.desc}</div>
+                  <div key={v.title} className="flex flex-col items-center gap-2 flex-1 min-w-[70px]">
+                    <div className="h-14 w-14 rounded-full flex items-center justify-center text-2xl bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/15 shadow-sm">
+                      {v.emoji}
                     </div>
+                    <span className="text-xs font-bold text-foreground text-center">{v.title}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* הקהילה */}
-            <div className="rounded-2xl border border-primary/15 p-5" style={{ background: "linear-gradient(180deg, hsla(155,30%,45%,0.1), hsla(60,20%,97%,0.5))" }}>
+            {/* קו מפריד */}
+            <div className="h-px bg-gradient-to-l from-transparent via-border to-transparent" />
+
+            {/* מי בקהילה - רשימה זורמת */}
+            <div>
               <div className="flex items-center gap-2 mb-3">
-                <Users className="h-5 w-5 text-primary" />
-                <h3 className="font-bold font-display text-base">מי בקהילה</h3>
+                <Users className="h-4 w-4 text-primary" />
+                <span className="text-xs font-bold uppercase tracking-widest text-primary">מי בקהילה</span>
               </div>
-              <ul className="space-y-2 text-sm text-muted-foreground leading-relaxed">
-                <li>💛 <strong className="text-foreground">רווקים ורווקות</strong> — מחפשים מקום חם להיות בו</li>
-                <li>🏡 <strong className="text-foreground">משפחות מארחות</strong> — פותחות את הבית והלב</li>
-                <li>🌱 <strong className="text-foreground">חוות וארגוני התנדבות</strong> — מקומות עם משמעות</li>
-                <li>🕊️ <strong className="text-foreground">ארגוני שבתות</strong> — שבתות מאורגנות ומיוחדות</li>
-                <li>💼 <strong className="text-foreground">מקומות עבודה</strong> — מלונות ובתי הארחה</li>
-              </ul>
+              <p className="text-sm leading-[1.95] text-muted-foreground">
+                הקהילה שלנו מורכבת מ
+                <strong className="text-foreground"> רווקים ורווקות 💛</strong> שמחפשים מקום חם להיות בו,
+                <strong className="text-foreground"> משפחות מארחות 🏡</strong> שפותחות את הבית והלב,
+                <strong className="text-foreground"> חוות וארגוני התנדבות 🌱</strong> שמציעים מקומות עם משמעות,
+                <strong className="text-foreground"> ארגוני שבתות 🕊️</strong> שמפיקים שבתות מאורגנות ומיוחדות, ו
+                <strong className="text-foreground">מקומות עבודה 💼</strong> כמו מלונות ובתי הארחה.
+              </p>
             </div>
 
             {/* CTA */}
