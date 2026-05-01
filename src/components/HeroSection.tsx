@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowDown, Sparkles, Heart, Users, Target, Sprout } from "lucide-react";
+import { ArrowDown, Sparkles, Heart, Users, Target, Sprout, Quote } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
