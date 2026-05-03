@@ -67,11 +67,14 @@ const Admin = () => {
     } else {
       toast({ title: status === "approved" ? "הנרשם אושר ✅" : "הנרשם נדחה ❌" });
 
-      // Send approval email
+      // Send approval email — different template for singles vs hosts
       if (status === "approved" && reg) {
+        const templateName = reg.user_type === "single"
+          ? "registration-approved"
+          : "host-registration-approved";
         supabase.functions.invoke("send-transactional-email", {
           body: {
-            templateName: "registration-approved",
+            templateName,
             recipientEmail: reg.email,
             templateData: { fullName: reg.full_name },
           },
