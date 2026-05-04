@@ -96,7 +96,7 @@ const FAQSection = () => {
           >
             {/* Numbered marker — magazine style */}
             <div className="flex items-baseline gap-4 mb-6 justify-center md:justify-start">
-              <span className="font-display text-7xl md:text-8xl font-black text-primary/20 leading-none">07</span>
+              <span className="font-display text-7xl md:text-8xl font-black text-primary/20 leading-none">10</span>
               <span className="text-[10px] font-bold text-muted-foreground tracking-[0.25em] uppercase">FAQ — שאלות נפוצות</span>
             </div>
             {/* Centered serif-flavored headline with hand-drawn underline */}
