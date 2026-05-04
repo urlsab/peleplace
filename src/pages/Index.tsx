@@ -51,96 +51,21 @@ const Index = () => {
         {/* Registration Cards */}
         <RegistrationCards />
 
-        {/* About — asymmetric editorial layout */}
-        <section id="about" className="relative py-28 overflow-hidden">
-          {/* Floating decorative elements */}
-          <div className="absolute top-20 right-[8%] animate-float-slow opacity-[0.07]">
-            <Heart className="h-16 w-16 text-secondary" />
-          </div>
-          <div className="absolute bottom-24 left-[6%] animate-float-reverse opacity-[0.06]">
-            <Home className="h-14 w-14 text-primary" />
-          </div>
-
+        {/* About — minimal heading + subheading only */}
+        <section id="about" className="relative py-20">
           <div className="container relative z-10 mx-auto px-6">
-            {/* Section label — top right, no card */}
-            <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-12 text-right max-w-3xl mr-auto">
+            <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="text-center max-w-3xl mx-auto">
               <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-[11px] font-semibold text-primary tracking-[0.15em] uppercase">
                 קצת עלינו
               </span>
               <h2 className="text-4xl md:text-[3.5rem] font-black leading-[1.05]">
                 הסיפור <span className="text-gradient-warm italic">שלנו</span>
               </h2>
-              <div className="mt-4 h-[2px] w-24 bg-gradient-to-l from-primary to-transparent mr-auto" />
+              <p className="mt-6 text-lg md:text-xl text-muted-foreground leading-relaxed">
+                פל״א נולד מתוך צורך אישי — לתת לרווקים ורווקות בחירה איפה להיות בשבתות ובחגים,
+                ולחבר בין לבבות פתוחים למי שמחפש מקום חם.
+              </p>
             </motion.div>
-
-            {/* Asymmetric layout: large image left, text overflowing right */}
-            <div className="grid gap-10 md:grid-cols-12 items-start max-w-6xl mx-auto">
-              {/* Image column — large, no frame */}
-              <motion.div {...fadeUp} transition={{ delay: 0.1, duration: 0.6 }} className="md:col-span-5 md:sticky md:top-24">
-                <div className="relative">
-                  <img
-                    src={founderPhoto}
-                    alt="אודיה, יוסף חיים ופלא — המשפחה מאחורי הפרויקט"
-                    className="w-full rounded-[2rem] shadow-card object-cover aspect-[4/5]"
-                    loading="lazy"
-                    width={800}
-                    height={1000}
-                  />
-                  {/* Caption tag floating over image */}
-                  <div className="absolute -bottom-4 -right-4 bg-cream rounded-full px-5 py-2.5 shadow-card border border-border/40">
-                    <span className="text-xs font-bold text-foreground">אודיה, יוסף חיים ופלא 💛</span>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Text column — flowing, no card background */}
-              <motion.div {...fadeUp} transition={{ delay: 0.2, duration: 0.6 }} className="md:col-span-7 space-y-6 text-right">
-                <p className="text-2xl md:text-[1.6rem] font-display font-bold leading-[1.4] text-foreground">
-                  שלום, אני <span className="text-gradient-warm">אודיה עמרוסי</span> — בת 32, נשואה ליוסף חיים ואמא לפלא בן 9 חודשים.
-                </p>
-
-                <p className="text-base text-muted-foreground leading-[1.95]">
-                  התחתנתי בגיל 30 — אחרי שנים ארוכות של שבתות וחגים שבהם הרגשתי קצת בודדה בתוך ההמולה המשפחתית. כשאחים שלי — הגדול ממני אבל גם קטנים ממני — התחתנו, הקושי רק גדל.
-                </p>
-
-                {/* Pulled quote — typographic accent, no card */}
-                <blockquote className="border-r-4 border-primary pr-6 my-8">
-                  <p className="text-lg md:text-xl font-display italic text-foreground leading-relaxed">
-                    העדפתי כל שבת וחג להתארח אצל חברים או לעבוד כאחות בבית חולים, רק כדי לא להרגיש את החלל.
-                  </p>
-                </blockquote>
-
-                <p className="text-base text-muted-foreground leading-[1.95]">
-                  הקמתי את <strong className="text-foreground">פל״א</strong> כדי לתת לרווקים ורווקות את מה שהייתי צריכה — <em className="text-primary not-italic font-semibold">בחירה</em>. בחירה אם להישאר אצל ההורים, או למצוא מקום אחר להיות בו.
-                </p>
-
-                <p className="text-2xl md:text-[1.75rem] font-display font-black text-foreground leading-[1.3] pt-2">
-                  שכל אחד ירגיש שתמיד <br />
-                  יש לו איפה להיות. <span className="inline-block animate-float">❤️</span>
-                </p>
-
-                {/* The need — minimal inline list, no boxes */}
-                <div className="pt-8 mt-8 border-t border-border/40">
-                  <h3 className="font-display font-bold text-sm text-primary tracking-[0.15em] uppercase mb-5">הצורך הוא דו-צדדי</h3>
-                  <div className="grid gap-4 sm:grid-cols-2">
-                    {[
-                      { emoji: "💛", title: "רווקים ורווקות", desc: "מקום חם בשבתות וחגים" },
-                      { emoji: "🏡", title: "זוגות ומשפחות", desc: "לפתוח את הדלת ולהכיל" },
-                      { emoji: "🌱", title: "חוות והתנדבות", desc: "עזרה עם לב ומשמעות" },
-                      { emoji: "💼", title: "מקומות עבודה", desc: "עובדים אמינים לשבתות" },
-                    ].map((item) => (
-                      <div key={item.title} className="flex items-start gap-3 group">
-                        <span className="text-2xl mt-0.5 shrink-0 group-hover:scale-110 transition-transform">{item.emoji}</span>
-                        <div>
-                          <div className="font-bold font-display text-sm">{item.title}</div>
-                          <div className="text-xs text-muted-foreground mt-0.5">{item.desc}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </motion.div>
-            </div>
           </div>
         </section>
 
