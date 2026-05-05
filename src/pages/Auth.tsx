@@ -60,8 +60,10 @@ const Auth = () => {
   // Smart redirect for already logged-in users
   useEffect(() => {
     if (authLoading || !user) return;
+    // Don't auto-redirect while user is in the middle of the registration wizard
+    if (regStep === "profile" || regStep === "done") return;
     redirectByStatus();
-  }, [user, profile, authLoading]);
+  }, [user, profile, authLoading, regStep]);
 
   const redirectByStatus = () => {
     if (!user) return;
