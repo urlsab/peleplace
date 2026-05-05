@@ -11,14 +11,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { Upload, CheckCircle2, Eye, EyeOff, UserRound, Home, HandHeart, Calendar, Briefcase, Users, ArrowRight } from "lucide-react";
 import DynamicBackground from "@/components/DynamicBackground";
+import ProfileFormFields, { type ProfileCategory } from "@/components/profile/ProfileFormFields";
 
-type RegistrationCategory =
-  | "single"
-  | "host_family"
-  | "host_volunteer"
-  | "host_organized_shabbat"
-  | "host_work"
-  | "host_singles_group";
+type RegistrationCategory = ProfileCategory;
 
 const CATEGORIES: {
   value: RegistrationCategory;
@@ -53,6 +48,9 @@ const Auth = () => {
   const [recommenderRelationship, setRecommenderRelationship] = useState("");
   const [idFile, setIdFile] = useState<File | null>(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  // Wizard step within registration: account → profile (after signup) → done
+  const [regStep, setRegStep] = useState<"account" | "profile" | "done">("account");
+  const [registeredUserId, setRegisteredUserId] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
   const navigate = useNavigate();
@@ -62,8 +60,10 @@ const Auth = () => {
   // Smart redirect for already logged-in users
   useEffect(() => {
     if (authLoading || !user) return;
+    // Don't auto-redirect while user is in the middle of the registration wizard
+    if (regStep === "profile" || regStep === "done") return;
     redirectByStatus();
-  }, [user, profile, authLoading]);
+  }, [user, profile, authLoading, regStep]);
 
   const redirectByStatus = () => {
     if (!user) return;
@@ -140,12 +140,14 @@ const Auth = () => {
 
       // 3. Create profile with pending status
       const userType = category === "single" ? "single" : "host";
+      const hostSubtype = category === "single" ? null : category;
       const { error: profileError } = await supabase.from("profiles").insert({
         user_id: userId,
         full_name: fullName,
         email,
         phone,
         user_type: userType as "single" | "host",
+        host_subtype: hostSubtype,
         date_of_birth: dateOfBirth,
         gender,
         id_document_url: idDocUrl,
@@ -153,30 +155,21 @@ const Auth = () => {
         recommender_name: recommenderName,
         recommender_phone: recommenderPhone,
         recommender_relationship: recommenderRelationship,
-      });
+      } as any);
       if (profileError) throw profileError;
 
-      // Remember host subtype for profile-building step (not a profiles column)
-      if (category !== "single") {
-        try {
-          localStorage.setItem(`pela_host_subtype_${userId}`, category);
-        } catch {}
-      }
+      // 4. Send registration-received email (non-blocking)
+      supabase.functions.invoke("send-transactional-email", {
+        body: {
+          templateName: "registration-received",
+          to: email,
+          data: { fullName },
+        },
+      }).catch(() => {});
 
-      // 4. Send registration-received email
-      try {
-        await supabase.functions.invoke("send-transactional-email", {
-          body: {
-            templateName: "registration-received",
-            to: email,
-            data: { fullName },
-          },
-        });
-      } catch {
-        // Don't block registration if email fails
-      }
-
-      setSubmitted(true);
+      // Move to detailed-profile step
+      setRegisteredUserId(userId);
+      setRegStep("profile");
     } catch (error: any) {
       toast({
         title: "שגיאה בהרשמה",
@@ -238,6 +231,43 @@ const Auth = () => {
       setGoogleLoading(false);
     }
   };
+
+  // Wizard step: detailed profile (after account created)
+  if (regStep === "profile" && registeredUserId && category) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4 py-8">
+        <DynamicBackground variant="candles" />
+        <div className="w-full max-w-lg space-y-6">
+          <div className="text-center space-y-1">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 mb-2">
+              <CheckCircle2 className="h-6 w-6 text-primary" />
+            </div>
+            <h1 className="text-2xl font-black font-display">החשבון נוצר! 🎉</h1>
+            <p className="text-sm text-muted-foreground">עוד שלב אחד — נכיר אותך טוב יותר</p>
+          </div>
+          <div className="rounded-2xl border border-border/60 bg-card p-6 sm:p-8 shadow-card">
+            <h2 className="text-lg font-bold font-display text-center mb-1">בניית פרופיל</h2>
+            <p className="text-xs text-muted-foreground text-center mb-5">
+              הפרטים האלה יעזרו לנו להתאים לך את ההזדמנויות הכי טובות
+            </p>
+            <ProfileFormFields
+              category={category}
+              userId={registeredUserId}
+              onSaved={() => { setRegStep("done"); setSubmitted(true); }}
+              submitLabel="סיום הרשמה"
+            />
+            <button
+              type="button"
+              onClick={() => { setRegStep("done"); setSubmitted(true); }}
+              className="mt-4 w-full text-center text-xs text-muted-foreground hover:text-foreground"
+            >
+              דלגו על השלב — אפשר להשלים אחר כך
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Success screen
   if (submitted) {

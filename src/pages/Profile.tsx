@@ -504,12 +504,16 @@ const Profile = () => {
             </button>
           </div>
 
-          {/* Empty-state hint when current side has no profile yet */}
+          {/* Soft block: encourage existing users to complete their detailed profile */}
           {((activeRole === "single" && !hasSingleProfile) || (activeRole === "host" && !hasHostProfile)) && !loadingProfile && (
-            <div className="mb-5 rounded-2xl border border-primary/20 bg-primary/5 p-4 text-sm text-foreground text-center">
-              {activeRole === "single"
-                ? "עדיין אין לך פרופיל רווק/ה — מלאו את הטופס למטה כדי לחפש מקום לשבת."
-                : "עדיין אין לך פרופיל מארח/ת — מלאו את הטופס למטה כדי לפתוח את הדלת לאורחים."}
+            <div className="mb-5 rounded-2xl border-2 border-primary/30 bg-primary/10 p-5 text-center space-y-2">
+              <div className="text-2xl">✨</div>
+              <h3 className="font-black font-display text-lg">השלימו את הפרופיל שלכם</h3>
+              <p className="text-sm text-foreground leading-relaxed">
+                {activeRole === "single"
+                  ? "כדי שנוכל להציע לכם את ההזדמנויות הכי מתאימות — מלאו את פרטי הפרופיל למטה. זה לוקח רק כמה דקות."
+                  : "כדי שאורחים יוכלו למצוא אתכם — מלאו את פרטי המקום למטה. זה לוקח רק כמה דקות."}
+              </p>
             </div>
           )}
 
