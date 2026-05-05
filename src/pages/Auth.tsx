@@ -48,6 +48,9 @@ const Auth = () => {
   const [recommenderRelationship, setRecommenderRelationship] = useState("");
   const [idFile, setIdFile] = useState<File | null>(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  // Wizard step within registration: account → profile (after signup) → done
+  const [regStep, setRegStep] = useState<"account" | "profile" | "done">("account");
+  const [registeredUserId, setRegisteredUserId] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
 
   const navigate = useNavigate();
