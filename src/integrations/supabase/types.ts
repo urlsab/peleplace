@@ -546,6 +546,7 @@ export type Database = {
           email: string
           full_name: string
           gender: string | null
+          host_subtype: string | null
           id: string
           id_document_url: string | null
           phone: string
@@ -564,6 +565,7 @@ export type Database = {
           email: string
           full_name: string
           gender?: string | null
+          host_subtype?: string | null
           id?: string
           id_document_url?: string | null
           phone: string
@@ -582,6 +584,7 @@ export type Database = {
           email?: string
           full_name?: string
           gender?: string | null
+          host_subtype?: string | null
           id?: string
           id_document_url?: string | null
           phone?: string
