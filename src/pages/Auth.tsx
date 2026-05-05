@@ -232,6 +232,43 @@ const Auth = () => {
     }
   };
 
+  // Wizard step: detailed profile (after account created)
+  if (regStep === "profile" && registeredUserId && category) {
+    return (
+      <div className="min-h-screen flex items-center justify-center px-4 py-8">
+        <DynamicBackground variant="candles" />
+        <div className="w-full max-w-lg space-y-6">
+          <div className="text-center space-y-1">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 mb-2">
+              <CheckCircle2 className="h-6 w-6 text-primary" />
+            </div>
+            <h1 className="text-2xl font-black font-display">החשבון נוצר! 🎉</h1>
+            <p className="text-sm text-muted-foreground">עוד שלב אחד — נכיר אותך טוב יותר</p>
+          </div>
+          <div className="rounded-2xl border border-border/60 bg-card p-6 sm:p-8 shadow-card">
+            <h2 className="text-lg font-bold font-display text-center mb-1">בניית פרופיל</h2>
+            <p className="text-xs text-muted-foreground text-center mb-5">
+              הפרטים האלה יעזרו לנו להתאים לך את ההזדמנויות הכי טובות
+            </p>
+            <ProfileFormFields
+              category={category}
+              userId={registeredUserId}
+              onSaved={() => { setRegStep("done"); setSubmitted(true); }}
+              submitLabel="סיום הרשמה"
+            />
+            <button
+              type="button"
+              onClick={() => { setRegStep("done"); setSubmitted(true); }}
+              className="mt-4 w-full text-center text-xs text-muted-foreground hover:text-foreground"
+            >
+              דלגו על השלב — אפשר להשלים אחר כך
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Success screen
   if (submitted) {
     return (
