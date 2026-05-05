@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { Upload, CheckCircle2, Eye, EyeOff, UserRound, Home, HandHeart, Calendar, Briefcase, Users, ArrowRight } from "lucide-react";
 import DynamicBackground from "@/components/DynamicBackground";
+import ProfileFormFields, { type ProfileCategory } from "@/components/profile/ProfileFormFields";
 
 type RegistrationCategory =
   | "single"
