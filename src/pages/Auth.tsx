@@ -13,13 +13,7 @@ import { Upload, CheckCircle2, Eye, EyeOff, UserRound, Home, HandHeart, Calendar
 import DynamicBackground from "@/components/DynamicBackground";
 import ProfileFormFields, { type ProfileCategory } from "@/components/profile/ProfileFormFields";
 
-type RegistrationCategory =
-  | "single"
-  | "host_family"
-  | "host_volunteer"
-  | "host_organized_shabbat"
-  | "host_work"
-  | "host_singles_group";
+type RegistrationCategory = ProfileCategory;
 
 const CATEGORIES: {
   value: RegistrationCategory;
