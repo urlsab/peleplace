@@ -27,6 +27,7 @@ const backgroundLayers = [
   { id: "hero", image: heroImage, overlayStyle: { background: "linear-gradient(to left, hsla(210,18%,6%,0.7) 20%, hsla(210,18%,6%,0.4) 50%, hsla(210,18%,6%,0.15) 100%)" } },
   { id: "opportunities", image: categoriesBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.55)", backdropFilter: "blur(1px)" } },
   { id: "about", image: aboutWarmBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.6)", backdropFilter: "blur(1px)" } },
+  { id: "trust", image: aboutWarmBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.62)", backdropFilter: "blur(1px)" } },
   { id: "faq", image: warmLandscapeBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.55)", backdropFilter: "blur(1px)" } },
   { id: "contact", image: shabbatTableBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.6)", backdropFilter: "blur(1px)" } },
   { id: "cta", image: warmTextureBg, overlayStyle: { backgroundColor: "hsla(155,20%,20%,0.45)", backdropFilter: "blur(1px)" } },
