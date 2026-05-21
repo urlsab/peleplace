@@ -138,9 +138,6 @@ const RegistrationCards = () => {
     <section id="opportunities" className="relative py-24 overflow-hidden">
       {/* Clean text heading — separate from card styling */}
       <motion.div {...fadeUp} transition={{ duration: 0.7 }} className="container mx-auto px-6 mb-16 text-right">
-        <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-[11px] font-semibold text-primary tracking-[0.15em] uppercase">
-          בחרו אתכם
-        </span>
         <h2 className="text-4xl md:text-[3.5rem] font-black leading-[1.05]">
           מי <span className="text-gradient-warm italic">אתם?</span>
         </h2>
