@@ -318,36 +318,49 @@ const HostDatePicker = ({
                 if (!c) return <div key={i} />;
                 const selected = selectedSet.has(c.date);
                 const special = c.isShabbat || !!c.holiday;
+                const booked = bookedDates.has(c.date);
+                const past = c.isPast;
                 return (
                   <button
                     key={i}
                     type="button"
-                    disabled={c.isPast}
+                    disabled={past || booked}
                     onClick={() => toggle(c.date)}
-                    title={c.holiday || (c.isShabbat ? "שבת" : "")}
+                    title={
+                      booked ? "תאריך תפוס — כבר אושרה הזמנה" :
+                      past ? "תאריך שעבר" :
+                      c.holiday || (c.isShabbat ? "שבת" : "")
+                    }
                     className={`
                       relative aspect-square rounded-lg text-xs font-medium transition-all
                       flex flex-col items-center justify-center gap-0.5
-                      ${c.isPast ? "opacity-30 cursor-not-allowed" : "hover:scale-105"}
-                      ${selected
+                      ${past ? "opacity-25 cursor-not-allowed grayscale" : ""}
+                      ${booked && !past ? "cursor-not-allowed bg-[hsl(var(--olive))]/20 border-2 border-[hsl(var(--olive))]/60" : ""}
+                      ${!past && !booked ? "hover:scale-105" : ""}
+                      ${!past && !booked && selected
                         ? "bg-primary text-primary-foreground shadow-md ring-2 ring-primary"
-                        : special
+                        : !past && !booked && special
                           ? "bg-[hsl(var(--amber-soft))]/40 border border-primary/20 hover:bg-primary/10"
-                          : "bg-card border border-border/60 hover:bg-muted"}
+                          : !past && !booked
+                            ? "bg-card border border-border/60 hover:bg-muted"
+                            : ""}
                     `}
                   >
-                    <span className={`text-sm font-bold leading-none ${selected ? "" : special ? "text-foreground" : "text-foreground/70"}`}>
+                    <span className={`text-sm font-bold leading-none ${selected && !booked ? "" : special ? "text-foreground" : "text-foreground/70"}`}>
                       {c.day}
                     </span>
                     {c.holiday && (
-                      <span className={`text-[7px] sm:text-[8px] leading-none truncate max-w-full px-0.5 ${selected ? "text-primary-foreground/90" : "text-[hsl(var(--terracotta))]"}`}>
+                      <span className={`text-[7px] sm:text-[8px] leading-none truncate max-w-full px-0.5 ${selected && !booked ? "text-primary-foreground/90" : "text-[hsl(var(--terracotta))]"}`}>
                         {c.holiday}
                       </span>
                     )}
                     {c.isShabbat && !c.holiday && (
-                      <span className={`text-[7px] leading-none ${selected ? "text-primary-foreground/80" : "text-primary/70"}`}>שבת</span>
+                      <span className={`text-[7px] leading-none ${selected && !booked ? "text-primary-foreground/80" : "text-primary/70"}`}>שבת</span>
                     )}
-                    {selected && (
+                    {booked && (
+                      <span className="absolute top-0.5 left-0.5 text-[9px] font-black text-[hsl(var(--olive))]">✓</span>
+                    )}
+                    {selected && !booked && (
                       <span className="absolute top-0.5 left-0.5">
                         {isSlotComplete(c.date) ? (
                           <CheckCircle2 className="h-3 w-3 text-primary-foreground/90" />
@@ -359,6 +372,22 @@ const HostDatePicker = ({
                   </button>
                 );
               })}
+            </div>
+
+            {/* Legend */}
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 text-[10px] text-muted-foreground border-t border-border/40 pt-2">
+              <span className="flex items-center gap-1">
+                <span className="inline-block h-3 w-3 rounded bg-card border border-border/60" /> פתוח
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="inline-block h-3 w-3 rounded bg-primary" /> נבחר
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="inline-block h-3 w-3 rounded bg-[hsl(var(--olive))]/20 border-2 border-[hsl(var(--olive))]/60" /> תפוס
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="inline-block h-3 w-3 rounded bg-muted opacity-40 grayscale" /> עבר
+              </span>
             </div>
           </div>
 
