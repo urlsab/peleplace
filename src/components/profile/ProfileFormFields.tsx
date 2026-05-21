@@ -244,15 +244,10 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      <ProfileImageUploads existing={existing} />
+
       {category === "single" && (
         <>
-          <div className="space-y-2">
-            <Label htmlFor="profileImage">תמונת פרופיל (אופציונלי)</Label>
-            {existing?.profile_image_url && (
-              <img src={existing.profile_image_url} alt="" className="h-24 w-24 rounded-full object-cover border-2 border-border" />
-            )}
-            <Input id="profileImage" name="profileImage" type="file" accept="image/*" className="cursor-pointer" />
-          </div>
           <div className="space-y-2"><Label htmlFor="age">גיל</Label><Input id="age" name="age" type="number" min={18} max={99} placeholder="25" defaultValue={existing?.age || ""} /></div>
           <div className="space-y-2">
             <Label>מגדר</Label>
