@@ -18,6 +18,8 @@ const ScrollingBackground = ({ layers }: { layers: BackgroundLayer[] }) => {
         const isMobile = window.innerWidth < 768;
         const anchorY = window.innerHeight * (isMobile ? 0.38 : 0.5);
 
+        const fallbackIndex = window.scrollY > window.innerHeight * 0.45 ? Math.min(1, layers.length - 1) : 0;
+
         const nextIndex = layers.reduce((currentIndex, layer, index) => {
           const section = document.getElementById(layer.id);
           if (!section) return currentIndex;
@@ -25,7 +27,7 @@ const ScrollingBackground = ({ layers }: { layers: BackgroundLayer[] }) => {
           const rect = section.getBoundingClientRect();
           const isAtAnchor = rect.top <= anchorY && rect.bottom >= anchorY;
           return isAtAnchor ? index : currentIndex;
-        }, 0);
+        }, fallbackIndex);
 
         setActiveIndex(nextIndex);
       });
