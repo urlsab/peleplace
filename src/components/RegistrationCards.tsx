@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-import sceneChallah from "@/assets/scene-challah-hands.jpg";
+
 import cardFarm from "@/assets/card-farm.jpg";
 import cardGuesthouse from "@/assets/card-guesthouse.jpg";
 import cardHosting from "@/assets/card-hosting.jpg";
@@ -136,27 +136,18 @@ const RegistrationCards = () => {
 
   return (
     <section id="opportunities" className="relative py-24 overflow-hidden">
-      {/* Wide image banner with overlaid title — no card */}
-      <motion.div {...fadeUp} transition={{ duration: 0.7 }} className="container mx-auto px-6 mb-16">
-        <div className="relative h-[260px] md:h-[340px] rounded-[2rem] overflow-hidden shadow-card">
-          <img
-            src={sceneChallah}
-            alt="ידיים מעבירות חלה בשולחן שבת"
-            loading="lazy"
-            width={1280}
-            height={896}
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to top, hsla(210,18%,8%,0.85) 10%, hsla(210,18%,8%,0.35) 50%, hsla(210,18%,8%,0.1) 100%)" }} />
-          <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-14 text-right">
-            <h2 className="mb-2 text-3xl md:text-[3rem] font-black leading-[1.05] text-cream drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]">
-              מי <span className="bg-gradient-to-l from-[hsl(20,55%,80%)] to-[hsl(155,30%,65%)] bg-clip-text text-transparent">אתם?</span>
-            </h2>
-            <p className="text-cream-deep text-sm md:text-base max-w-md md:self-end drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
-              בחרו את הקטגוריה שמתאימה לכם — זה חינם ולוקח דקה
-            </p>
-          </div>
-        </div>
+      {/* Clean text heading — separate from card styling */}
+      <motion.div {...fadeUp} transition={{ duration: 0.7 }} className="container mx-auto px-6 mb-16 text-right">
+        <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-[11px] font-semibold text-primary tracking-[0.15em] uppercase">
+          בחרו אתכם
+        </span>
+        <h2 className="text-4xl md:text-[3.5rem] font-black leading-[1.05]">
+          מי <span className="text-gradient-warm italic">אתם?</span>
+        </h2>
+        <p className="mt-4 text-base text-muted-foreground max-w-md">
+          בחרו את הקטגוריה שמתאימה לכם — זה חינם ולוקח דקה
+        </p>
+        <div className="mt-4 h-[2px] w-24 bg-gradient-to-l from-primary to-transparent" />
       </motion.div>
 
       <div className="container relative z-10 mx-auto px-6">
