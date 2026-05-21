@@ -39,19 +39,28 @@ const HostDatePicker = ({
   const [viewMonth, setViewMonth] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
   const [slots, setSlots] = useState<Record<string, SlotDetails>>({});
   const [dialogDate, setDialogDate] = useState<string | null>(null);
+  const [bookedDates, setBookedDates] = useState<Set<string>>(new Set());
 
-  // Load existing slot details for this host on mount / hostType change
+  // Load existing slot details + approved bookings for this host on mount / hostType change
   useEffect(() => {
     if (!user) return;
     (async () => {
-      const { data } = await supabase
-        .from("host_availability_slots")
-        .select("*")
-        .eq("user_id", user.id)
-        .eq("host_type", hostType);
-      if (data) {
+      const [{ data: slotData }, { data: bookingData }] = await Promise.all([
+        supabase
+          .from("host_availability_slots")
+          .select("*")
+          .eq("user_id", user.id)
+          .eq("host_type", hostType),
+        supabase
+          .from("bookings")
+          .select("event_date,status")
+          .eq("host_user_id", user.id)
+          .eq("host_type", hostType)
+          .in("status", ["approved", "completed"]),
+      ]);
+      if (slotData) {
         const map: Record<string, SlotDetails> = {};
-        data.forEach((row: any) => {
+        slotData.forEach((row: any) => {
           map[row.event_date] = {
             capacity: row.capacity,
             guest_gender: row.guest_gender,
@@ -66,6 +75,9 @@ const HostDatePicker = ({
           };
         });
         setSlots(map);
+      }
+      if (bookingData) {
+        setBookedDates(new Set(bookingData.map((b: any) => b.event_date)));
       }
     })();
   }, [user, hostType]);
