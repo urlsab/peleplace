@@ -826,8 +826,8 @@ const Profile = () => {
                         <div className="space-y-2"><Label htmlFor="ageMin">גיל מינימום</Label><Input id="ageMin" name="ageMin" type="number" min={18} max={99} placeholder="22" defaultValue={detailedProfile?.age_range_min || ""} /></div>
                         <div className="space-y-2"><Label htmlFor="ageMax">גיל מקסימום</Label><Input id="ageMax" name="ageMax" type="number" min={18} max={99} placeholder="35" defaultValue={detailedProfile?.age_range_max || ""} /></div>
                       </div>
-                      <div className="space-y-2">
-                        <Label>תאריכי שבתות</Label>
+                      <div id="dates" className="space-y-2 scroll-mt-24 rounded-2xl bg-primary/5 p-4 border-2 border-primary/20">
+                        <Label className="text-base font-bold">📅 תאריכי שבתות</Label>
                         <HostDatePicker
                           selectedDates={availableDates}
                           onChange={setAvailableDates}
