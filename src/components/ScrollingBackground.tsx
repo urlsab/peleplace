@@ -11,42 +11,35 @@ const ScrollingBackground = ({ layers }: { layers: BackgroundLayer[] }) => {
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
-    const sections = layers.map((l) => document.getElementById(l.id));
+    const updateActiveLayer = () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        // Cancel any pending RAF update
-        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => {
+        const isMobile = window.innerWidth < 768;
+        const anchorY = window.innerHeight * (isMobile ? 0.38 : 0.5);
 
-        rafRef.current = requestAnimationFrame(() => {
-          let bestIndex = activeIndex;
-          let bestRatio = 0;
+        const fallbackIndex = window.scrollY > window.innerHeight * 0.45 ? Math.min(1, layers.length - 1) : 0;
 
-          entries.forEach((entry) => {
-            const idx = layers.findIndex((l) => l.id === entry.target.id);
-            if (idx !== -1 && entry.intersectionRatio > bestRatio) {
-              bestRatio = entry.intersectionRatio;
-              bestIndex = idx;
-            }
-          });
+        const nextIndex = layers.reduce((currentIndex, layer, index) => {
+          const section = document.getElementById(layer.id);
+          if (!section) return currentIndex;
 
-          if (bestRatio > 0.05) {
-            setActiveIndex(bestIndex);
-          }
-        });
-      },
-      {
-        rootMargin: "-35% 0px -35% 0px",
-        threshold: [0, 0.05, 0.1, 0.25, 0.5, 0.75, 1],
-      }
-    );
+          const rect = section.getBoundingClientRect();
+          const isAtAnchor = rect.top <= anchorY && rect.bottom >= anchorY;
+          return isAtAnchor ? index : currentIndex;
+        }, fallbackIndex);
 
-    sections.forEach((el) => {
-      if (el) observer.observe(el);
-    });
+        setActiveIndex(nextIndex);
+      });
+    };
+
+    updateActiveLayer();
+    window.addEventListener("scroll", updateActiveLayer, { passive: true });
+    window.addEventListener("resize", updateActiveLayer);
 
     return () => {
-      observer.disconnect();
+      window.removeEventListener("scroll", updateActiveLayer);
+      window.removeEventListener("resize", updateActiveLayer);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [layers]);
