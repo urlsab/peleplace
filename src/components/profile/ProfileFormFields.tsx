@@ -195,6 +195,25 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
           always_available: alwaysAvailable,
         };
         ({ error } = await supabase.from("host_organized_shabbat_profiles").upsert(data, { onConflict: "user_id" }));
+      } else if (category === "host_reservist") {
+        const helpTypesRaw = form.getAll("helpTypes") as string[];
+        const data = {
+          user_id: userId,
+          about_us: (form.get("aboutUs") as string) || null,
+          religious_level: (form.get("religiousLevel") as any) || null,
+          kashrut_level: (form.get("kashrutLevel") as any) || null,
+          region: (form.get("region") as any) || null,
+          city: (form.get("city") as string) || null,
+          num_children: parseInt(form.get("numChildren") as string) || null,
+          children_ages: (form.get("childrenAges") as string) || null,
+          help_types: helpTypesRaw.length > 0 ? helpTypesRaw : null,
+          guest_preference: (form.get("guestPref") as any) || "women",
+          spouse_status: (form.get("spouseStatus") as string) || null,
+          special_requirements: (form.get("specialReq") as string) || null,
+          available_dates: alwaysAvailable ? null : (availableDates.length > 0 ? availableDates : null),
+          always_available: alwaysAvailable,
+        };
+        ({ error } = await supabase.from("host_reservist_profiles").upsert(data, { onConflict: "user_id" }));
       }
 
       if (error) throw error;
