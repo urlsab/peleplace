@@ -863,8 +863,8 @@ const Profile = () => {
                       <div className="space-y-2"><Label htmlFor="targetAudience">קהל יעד</Label><Input id="targetAudience" name="targetAudience" placeholder="רווקים/ות 25-35, דתיים" defaultValue={detailedProfile?.target_audience || ""} /></div>
                       <div className="space-y-2"><Label htmlFor="cost">עלות</Label><Input id="cost" name="cost" placeholder="450 ₪ לאדם" defaultValue={detailedProfile?.cost || ""} /></div>
                       <div className="space-y-2"><Label htmlFor="regLink">קישור להרשמה</Label><Input id="regLink" name="regLink" type="url" placeholder="https://..." defaultValue={detailedProfile?.registration_link || ""} /></div>
-                      <div className="space-y-2">
-                        <Label>תאריכי שבתות</Label>
+                      <div id="dates" className="space-y-2 scroll-mt-24 rounded-2xl bg-primary/5 p-4 border-2 border-primary/20">
+                        <Label className="text-base font-bold">📅 תאריכי שבתות</Label>
                         <HostDatePicker
                           selectedDates={availableDates}
                           onChange={setAvailableDates}
