@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, CheckCircle2, Eye, EyeOff, UserRound, Home, HandHeart, Calendar, Briefcase, Users, ArrowRight } from "lucide-react";
+import { Upload, CheckCircle2, Eye, EyeOff, UserRound, Home, HandHeart, Calendar, Briefcase, Users, ArrowRight, Shield } from "lucide-react";
 import DynamicBackground from "@/components/DynamicBackground";
 import ProfileFormFields, { type ProfileCategory } from "@/components/profile/ProfileFormFields";
 
@@ -23,6 +23,7 @@ const CATEGORIES: {
 }[] = [
   { value: "single", label: "רווק / רווקה", description: "מחפש/ת מקום לשבת או חג", icon: UserRound },
   { value: "host_family", label: "משפחה מארחת", description: "מארחים בבית לארוחות שבת וחג", icon: Home },
+  { value: "host_reservist", label: "אשת מילואים", description: "נשארת בבית ושמחה לעזרה או חברה של בחורה", icon: Shield },
   { value: "host_organized_shabbat", label: "ארגון לשבתות", description: "מארגנים שבתות קבוצתיות", icon: Calendar },
   { value: "host_singles_group", label: "קבוצת רווקים", description: "מפעילים קהילה לרווקים", icon: Users },
   { value: "host_volunteer", label: "מקום להתנדבות", description: "מציעים התנדבות בשבת/חג", icon: HandHeart },
