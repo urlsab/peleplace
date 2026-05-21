@@ -467,7 +467,7 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
           </div>
         </>
       )}
-
+      <ProfileExtrasFields existing={existing} />
 
 
       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>
