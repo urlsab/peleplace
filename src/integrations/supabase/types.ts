@@ -265,15 +265,23 @@ export type Database = {
           about_us: string | null
           always_available: boolean
           available_dates: string[] | null
+          banner_image_url: string | null
           city: string | null
           created_at: string
+          education: string | null
           guest_preference:
             | Database["public"]["Enums"]["gender_preference"]
             | null
+          hobbies: string[] | null
           id: string
           kashrut_level: Database["public"]["Enums"]["kashrut_level"] | null
+          languages: string[] | null
+          personality_tags: string[] | null
+          profession: string | null
+          profile_image_url: string | null
           region: Database["public"]["Enums"]["region"] | null
           religious_level: Database["public"]["Enums"]["religious_level"] | null
+          shabbat_vibe: string[] | null
           updated_at: string
           user_id: string
         }
@@ -281,17 +289,25 @@ export type Database = {
           about_us?: string | null
           always_available?: boolean
           available_dates?: string[] | null
+          banner_image_url?: string | null
           city?: string | null
           created_at?: string
+          education?: string | null
           guest_preference?:
             | Database["public"]["Enums"]["gender_preference"]
             | null
+          hobbies?: string[] | null
           id?: string
           kashrut_level?: Database["public"]["Enums"]["kashrut_level"] | null
+          languages?: string[] | null
+          personality_tags?: string[] | null
+          profession?: string | null
+          profile_image_url?: string | null
           region?: Database["public"]["Enums"]["region"] | null
           religious_level?:
             | Database["public"]["Enums"]["religious_level"]
             | null
+          shabbat_vibe?: string[] | null
           updated_at?: string
           user_id: string
         }
@@ -299,17 +315,25 @@ export type Database = {
           about_us?: string | null
           always_available?: boolean
           available_dates?: string[] | null
+          banner_image_url?: string | null
           city?: string | null
           created_at?: string
+          education?: string | null
           guest_preference?:
             | Database["public"]["Enums"]["gender_preference"]
             | null
+          hobbies?: string[] | null
           id?: string
           kashrut_level?: Database["public"]["Enums"]["kashrut_level"] | null
+          languages?: string[] | null
+          personality_tags?: string[] | null
+          profession?: string | null
+          profile_image_url?: string | null
           region?: Database["public"]["Enums"]["region"] | null
           religious_level?:
             | Database["public"]["Enums"]["religious_level"]
             | null
+          shabbat_vibe?: string[] | null
           updated_at?: string
           user_id?: string
         }
@@ -319,16 +343,24 @@ export type Database = {
         Row: {
           always_available: boolean
           available_dates: string[] | null
+          banner_image_url: string | null
           city: string | null
           cost: string | null
           created_at: string
           description: string | null
+          education: string | null
+          hobbies: string[] | null
           id: string
+          languages: string[] | null
           organization_name: string
+          personality_tags: string[] | null
+          profession: string | null
+          profile_image_url: string | null
           region: Database["public"]["Enums"]["region"] | null
           registration_link: string | null
           religious_level: Database["public"]["Enums"]["religious_level"] | null
           shabbat_type: string | null
+          shabbat_vibe: string[] | null
           target_audience: string | null
           updated_at: string
           user_id: string
@@ -336,18 +368,26 @@ export type Database = {
         Insert: {
           always_available?: boolean
           available_dates?: string[] | null
+          banner_image_url?: string | null
           city?: string | null
           cost?: string | null
           created_at?: string
           description?: string | null
+          education?: string | null
+          hobbies?: string[] | null
           id?: string
+          languages?: string[] | null
           organization_name: string
+          personality_tags?: string[] | null
+          profession?: string | null
+          profile_image_url?: string | null
           region?: Database["public"]["Enums"]["region"] | null
           registration_link?: string | null
           religious_level?:
             | Database["public"]["Enums"]["religious_level"]
             | null
           shabbat_type?: string | null
+          shabbat_vibe?: string[] | null
           target_audience?: string | null
           updated_at?: string
           user_id: string
@@ -355,18 +395,26 @@ export type Database = {
         Update: {
           always_available?: boolean
           available_dates?: string[] | null
+          banner_image_url?: string | null
           city?: string | null
           cost?: string | null
           created_at?: string
           description?: string | null
+          education?: string | null
+          hobbies?: string[] | null
           id?: string
+          languages?: string[] | null
           organization_name?: string
+          personality_tags?: string[] | null
+          profession?: string | null
+          profile_image_url?: string | null
           region?: Database["public"]["Enums"]["region"] | null
           registration_link?: string | null
           religious_level?:
             | Database["public"]["Enums"]["religious_level"]
             | null
           shabbat_type?: string | null
+          shabbat_vibe?: string[] | null
           target_audience?: string | null
           updated_at?: string
           user_id?: string
@@ -378,18 +426,26 @@ export type Database = {
           about_us: string | null
           always_available: boolean
           available_dates: string[] | null
+          banner_image_url: string | null
           children_ages: string | null
           city: string | null
           created_at: string
+          education: string | null
           guest_preference:
             | Database["public"]["Enums"]["gender_preference"]
             | null
           help_types: string[] | null
+          hobbies: string[] | null
           id: string
           kashrut_level: Database["public"]["Enums"]["kashrut_level"] | null
+          languages: string[] | null
           num_children: number | null
+          personality_tags: string[] | null
+          profession: string | null
+          profile_image_url: string | null
           region: Database["public"]["Enums"]["region"] | null
           religious_level: Database["public"]["Enums"]["religious_level"] | null
+          shabbat_vibe: string[] | null
           special_requirements: string | null
           spouse_status: string | null
           updated_at: string
@@ -399,20 +455,28 @@ export type Database = {
           about_us?: string | null
           always_available?: boolean
           available_dates?: string[] | null
+          banner_image_url?: string | null
           children_ages?: string | null
           city?: string | null
           created_at?: string
+          education?: string | null
           guest_preference?:
             | Database["public"]["Enums"]["gender_preference"]
             | null
           help_types?: string[] | null
+          hobbies?: string[] | null
           id?: string
           kashrut_level?: Database["public"]["Enums"]["kashrut_level"] | null
+          languages?: string[] | null
           num_children?: number | null
+          personality_tags?: string[] | null
+          profession?: string | null
+          profile_image_url?: string | null
           region?: Database["public"]["Enums"]["region"] | null
           religious_level?:
             | Database["public"]["Enums"]["religious_level"]
             | null
+          shabbat_vibe?: string[] | null
           special_requirements?: string | null
           spouse_status?: string | null
           updated_at?: string
@@ -422,20 +486,28 @@ export type Database = {
           about_us?: string | null
           always_available?: boolean
           available_dates?: string[] | null
+          banner_image_url?: string | null
           children_ages?: string | null
           city?: string | null
           created_at?: string
+          education?: string | null
           guest_preference?:
             | Database["public"]["Enums"]["gender_preference"]
             | null
           help_types?: string[] | null
+          hobbies?: string[] | null
           id?: string
           kashrut_level?: Database["public"]["Enums"]["kashrut_level"] | null
+          languages?: string[] | null
           num_children?: number | null
+          personality_tags?: string[] | null
+          profession?: string | null
+          profile_image_url?: string | null
           region?: Database["public"]["Enums"]["region"] | null
           religious_level?:
             | Database["public"]["Enums"]["religious_level"]
             | null
+          shabbat_vibe?: string[] | null
           special_requirements?: string | null
           spouse_status?: string | null
           updated_at?: string
@@ -449,17 +521,25 @@ export type Database = {
           age_range_min: number | null
           always_available: boolean
           available_dates: string[] | null
+          banner_image_url: string | null
           city: string | null
           created_at: string
           description: string | null
+          education: string | null
           group_name: string
           group_size: number | null
           guest_preference:
             | Database["public"]["Enums"]["gender_preference"]
             | null
+          hobbies: string[] | null
           id: string
+          languages: string[] | null
+          personality_tags: string[] | null
+          profession: string | null
+          profile_image_url: string | null
           region: Database["public"]["Enums"]["region"] | null
           religious_level: Database["public"]["Enums"]["religious_level"] | null
+          shabbat_vibe: string[] | null
           updated_at: string
           user_id: string
         }
@@ -468,19 +548,27 @@ export type Database = {
           age_range_min?: number | null
           always_available?: boolean
           available_dates?: string[] | null
+          banner_image_url?: string | null
           city?: string | null
           created_at?: string
           description?: string | null
+          education?: string | null
           group_name: string
           group_size?: number | null
           guest_preference?:
             | Database["public"]["Enums"]["gender_preference"]
             | null
+          hobbies?: string[] | null
           id?: string
+          languages?: string[] | null
+          personality_tags?: string[] | null
+          profession?: string | null
+          profile_image_url?: string | null
           region?: Database["public"]["Enums"]["region"] | null
           religious_level?:
             | Database["public"]["Enums"]["religious_level"]
             | null
+          shabbat_vibe?: string[] | null
           updated_at?: string
           user_id: string
         }
@@ -489,19 +577,27 @@ export type Database = {
           age_range_min?: number | null
           always_available?: boolean
           available_dates?: string[] | null
+          banner_image_url?: string | null
           city?: string | null
           created_at?: string
           description?: string | null
+          education?: string | null
           group_name?: string
           group_size?: number | null
           guest_preference?:
             | Database["public"]["Enums"]["gender_preference"]
             | null
+          hobbies?: string[] | null
           id?: string
+          languages?: string[] | null
+          personality_tags?: string[] | null
+          profession?: string | null
+          profile_image_url?: string | null
           region?: Database["public"]["Enums"]["region"] | null
           religious_level?:
             | Database["public"]["Enums"]["religious_level"]
             | null
+          shabbat_vibe?: string[] | null
           updated_at?: string
           user_id?: string
         }
@@ -509,39 +605,63 @@ export type Database = {
       }
       host_volunteer_profiles: {
         Row: {
+          banner_image_url: string | null
           city: string | null
           created_at: string
+          education: string | null
+          hobbies: string[] | null
           id: string
+          languages: string[] | null
+          personality_tags: string[] | null
           place_name: string
+          profession: string | null
+          profile_image_url: string | null
           provides_accommodation: boolean | null
           provides_meals: boolean | null
           region: Database["public"]["Enums"]["region"] | null
+          shabbat_vibe: string[] | null
           special_requirements: string | null
           updated_at: string
           user_id: string
           volunteer_type: string | null
         }
         Insert: {
+          banner_image_url?: string | null
           city?: string | null
           created_at?: string
+          education?: string | null
+          hobbies?: string[] | null
           id?: string
+          languages?: string[] | null
+          personality_tags?: string[] | null
           place_name: string
+          profession?: string | null
+          profile_image_url?: string | null
           provides_accommodation?: boolean | null
           provides_meals?: boolean | null
           region?: Database["public"]["Enums"]["region"] | null
+          shabbat_vibe?: string[] | null
           special_requirements?: string | null
           updated_at?: string
           user_id: string
           volunteer_type?: string | null
         }
         Update: {
+          banner_image_url?: string | null
           city?: string | null
           created_at?: string
+          education?: string | null
+          hobbies?: string[] | null
           id?: string
+          languages?: string[] | null
+          personality_tags?: string[] | null
           place_name?: string
+          profession?: string | null
+          profile_image_url?: string | null
           provides_accommodation?: boolean | null
           provides_meals?: boolean | null
           region?: Database["public"]["Enums"]["region"] | null
+          shabbat_vibe?: string[] | null
           special_requirements?: string | null
           updated_at?: string
           user_id?: string
@@ -553,17 +673,25 @@ export type Database = {
         Row: {
           always_available: boolean
           available_dates: string[] | null
+          banner_image_url: string | null
           city: string | null
           created_at: string
+          education: string | null
           gender_preference:
             | Database["public"]["Enums"]["gender_preference"]
             | null
+          hobbies: string[] | null
           id: string
           is_permanent: boolean | null
           job_description: string | null
+          languages: string[] | null
           payment: string | null
+          personality_tags: string[] | null
           place_name: string
+          profession: string | null
+          profile_image_url: string | null
           region: Database["public"]["Enums"]["region"] | null
+          shabbat_vibe: string[] | null
           special_requirements: string | null
           team_size: number | null
           updated_at: string
@@ -572,17 +700,25 @@ export type Database = {
         Insert: {
           always_available?: boolean
           available_dates?: string[] | null
+          banner_image_url?: string | null
           city?: string | null
           created_at?: string
+          education?: string | null
           gender_preference?:
             | Database["public"]["Enums"]["gender_preference"]
             | null
+          hobbies?: string[] | null
           id?: string
           is_permanent?: boolean | null
           job_description?: string | null
+          languages?: string[] | null
           payment?: string | null
+          personality_tags?: string[] | null
           place_name: string
+          profession?: string | null
+          profile_image_url?: string | null
           region?: Database["public"]["Enums"]["region"] | null
+          shabbat_vibe?: string[] | null
           special_requirements?: string | null
           team_size?: number | null
           updated_at?: string
@@ -591,17 +727,25 @@ export type Database = {
         Update: {
           always_available?: boolean
           available_dates?: string[] | null
+          banner_image_url?: string | null
           city?: string | null
           created_at?: string
+          education?: string | null
           gender_preference?:
             | Database["public"]["Enums"]["gender_preference"]
             | null
+          hobbies?: string[] | null
           id?: string
           is_permanent?: boolean | null
           job_description?: string | null
+          languages?: string[] | null
           payment?: string | null
+          personality_tags?: string[] | null
           place_name?: string
+          profession?: string | null
+          profile_image_url?: string | null
           region?: Database["public"]["Enums"]["region"] | null
+          shabbat_vibe?: string[] | null
           special_requirements?: string | null
           team_size?: number | null
           updated_at?: string
@@ -723,14 +867,20 @@ export type Database = {
           dietary_preference:
             | Database["public"]["Enums"]["dietary_preference"]
             | null
+          education: string | null
           gender: Database["public"]["Enums"]["gender_preference"] | null
+          hobbies: string[] | null
           id: string
           kashrut_preference:
             | Database["public"]["Enums"]["kashrut_level"]
             | null
+          languages: string[] | null
+          personality_tags: string[] | null
+          profession: string | null
           profile_image_url: string | null
           region: Database["public"]["Enums"]["region"] | null
           religious_level: Database["public"]["Enums"]["religious_level"] | null
+          shabbat_vibe: string[] | null
           updated_at: string
           user_id: string
         }
@@ -743,16 +893,22 @@ export type Database = {
           dietary_preference?:
             | Database["public"]["Enums"]["dietary_preference"]
             | null
+          education?: string | null
           gender?: Database["public"]["Enums"]["gender_preference"] | null
+          hobbies?: string[] | null
           id?: string
           kashrut_preference?:
             | Database["public"]["Enums"]["kashrut_level"]
             | null
+          languages?: string[] | null
+          personality_tags?: string[] | null
+          profession?: string | null
           profile_image_url?: string | null
           region?: Database["public"]["Enums"]["region"] | null
           religious_level?:
             | Database["public"]["Enums"]["religious_level"]
             | null
+          shabbat_vibe?: string[] | null
           updated_at?: string
           user_id: string
         }
@@ -765,16 +921,22 @@ export type Database = {
           dietary_preference?:
             | Database["public"]["Enums"]["dietary_preference"]
             | null
+          education?: string | null
           gender?: Database["public"]["Enums"]["gender_preference"] | null
+          hobbies?: string[] | null
           id?: string
           kashrut_preference?:
             | Database["public"]["Enums"]["kashrut_level"]
             | null
+          languages?: string[] | null
+          personality_tags?: string[] | null
+          profession?: string | null
           profile_image_url?: string | null
           region?: Database["public"]["Enums"]["region"] | null
           religious_level?:
             | Database["public"]["Enums"]["religious_level"]
             | null
+          shabbat_vibe?: string[] | null
           updated_at?: string
           user_id?: string
         }
