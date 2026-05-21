@@ -713,8 +713,9 @@ const Profile = () => {
                         <Label htmlFor="city">עיר / יישוב</Label>
                         <Input id="city" name="city" placeholder="הרצליה" defaultValue={detailedProfile?.city || ""} />
                       </div>
-                      <div className="space-y-2">
-                        <Label>תאריכים פנויים לאירוח</Label>
+                      <div id="dates" className="space-y-2 scroll-mt-24 rounded-2xl bg-primary/5 p-4 border-2 border-primary/20">
+                        <Label className="text-base font-bold">📅 תאריכים פנויים לאירוח</Label>
+                        <p className="text-xs text-muted-foreground">בחרו את השבתות והחגים שבהם תוכלו לארח. אל תשכחו לשמור בסוף!</p>
                         <HostDatePicker
                           selectedDates={availableDates}
                           onChange={setAvailableDates}
