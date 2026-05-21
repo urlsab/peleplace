@@ -409,7 +409,7 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
       {category === "host_reservist" && (
         <>
           <div className="rounded-xl bg-primary/10 border border-primary/30 p-4 text-sm leading-relaxed">
-            💛 תודה שאת כאן. נחבר אותך עם בחורה אמינה שתבוא לעזור בהכנות לשבת, לשחק עם הילדים, או פשוט להיות חברה.
+            💛 תודה שאת כאן. נחבר אותך עם אורחת אמינה שתבוא לעזור בהכנות לשבת, לשחק עם הילדים, או פשוט להיות חברה.
           </div>
           <div className="space-y-2"><Label htmlFor="aboutUs">קצת עליי ועל המשפחה</Label><Textarea id="aboutUs" name="aboutUs" placeholder="ספרי קצת על המשפחה, האווירה בבית, מה חשוב לך..." className="min-h-[100px]" defaultValue={existing?.about_us || ""} /></div>
           <div className="space-y-2">
@@ -445,7 +445,7 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
           <div className="space-y-2">
             <Label>את מי תרצי לארח?</Label>
             <RadioGroup name="guestPref" defaultValue={existing?.guest_preference || "women"} className="flex gap-4">
-              <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="women" /><span>בחורה</span></label>
+              <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="women" /><span>אורחת</span></label>
               <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="mixed" /><span>לא משנה</span></label>
             </RadioGroup>
           </div>

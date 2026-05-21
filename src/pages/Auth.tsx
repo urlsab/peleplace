@@ -23,7 +23,7 @@ const CATEGORIES: {
 }[] = [
   { value: "single", label: "רווק / רווקה", description: "מחפש/ת מקום לשבת או חג", icon: UserRound },
   { value: "host_family", label: "משפחה מארחת", description: "מארחים בבית לארוחות שבת וחג", icon: Home },
-  { value: "host_reservist", label: "אשת מילואים", description: "נשארת בבית ושמחה לעזרה או חברה של בחורה", icon: Shield },
+  { value: "host_reservist", label: "אשת מילואים", description: "נשארת בבית ושמחה לארח אורחת שתעזור ותהיה חברה", icon: Shield },
   { value: "host_organized_shabbat", label: "ארגון לשבתות", description: "מארגנים שבתות קבוצתיות", icon: Calendar },
   { value: "host_singles_group", label: "קבוצת רווקים", description: "מפעילים קהילה לרווקים", icon: Users },
   { value: "host_volunteer", label: "מקום להתנדבות", description: "מציעים התנדבות בשבת/חג", icon: HandHeart },
