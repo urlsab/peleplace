@@ -35,7 +35,9 @@ const backgroundLayers = [
 
 const Index = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
+
+  const isApprovedHost = profile?.user_type === "host" && profile?.registration_status === "approved";
 
   const handleCTA = () => {
     navigate(user ? "/profile" : "/auth");
