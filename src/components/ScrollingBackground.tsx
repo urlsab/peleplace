@@ -52,10 +52,7 @@ const ScrollingBackground = ({ layers }: { layers: BackgroundLayer[] }) => {
   }, [layers]);
 
   return (
-    <div
-      className="fixed inset-0 z-0"
-      style={{ height: "100vh", height: "-webkit-fill-available" }}
-    >
+    <div className="fixed inset-0 z-0 h-[100dvh]">
       {layers.map((layer, i) => (
         <div
           key={layer.id}
