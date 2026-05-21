@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface BackgroundLayer {
   id: string;
@@ -8,27 +8,36 @@ interface BackgroundLayer {
 
 const ScrollingBackground = ({ layers }: { layers: BackgroundLayer[] }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const rafRef = useRef<number>(0);
 
   useEffect(() => {
     const sections = layers.map((l) => document.getElementById(l.id));
 
     const observer = new IntersectionObserver(
       (entries) => {
-        let maxRatio = 0;
-        let maxIndex = activeIndex;
-        entries.forEach((entry) => {
-          const idx = layers.findIndex((l) => l.id === entry.target.id);
-          if (idx !== -1 && entry.intersectionRatio > maxRatio) {
-            maxRatio = entry.intersectionRatio;
-            maxIndex = idx;
+        // Cancel any pending RAF update
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+
+        rafRef.current = requestAnimationFrame(() => {
+          let bestIndex = activeIndex;
+          let bestRatio = 0;
+
+          entries.forEach((entry) => {
+            const idx = layers.findIndex((l) => l.id === entry.target.id);
+            if (idx !== -1 && entry.intersectionRatio > bestRatio) {
+              bestRatio = entry.intersectionRatio;
+              bestIndex = idx;
+            }
+          });
+
+          if (bestRatio > 0.05) {
+            setActiveIndex(bestIndex);
           }
         });
-        if (maxRatio > 0.15) {
-          setActiveIndex(maxIndex);
-        }
       },
       {
-        threshold: [0, 0.15, 0.3, 0.5, 0.7, 1],
+        rootMargin: "-35% 0px -35% 0px",
+        threshold: [0, 0.05, 0.1, 0.25, 0.5, 0.75, 1],
       }
     );
 
@@ -36,16 +45,26 @@ const ScrollingBackground = ({ layers }: { layers: BackgroundLayer[] }) => {
       if (el) observer.observe(el);
     });
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
   }, [layers]);
 
   return (
-    <div className="fixed inset-0 z-0">
+    <div
+      className="fixed inset-0 z-0"
+      style={{ height: "100vh", height: "-webkit-fill-available" }}
+    >
       {layers.map((layer, i) => (
         <div
           key={layer.id}
-          className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: i === activeIndex ? 1 : 0 }}
+          className="absolute inset-0"
+          style={{
+            opacity: i === activeIndex ? 1 : 0,
+            transition: "opacity 0.4s ease-out",
+            willChange: "opacity",
+          }}
         >
           <img
             src={layer.image}
@@ -54,6 +73,7 @@ const ScrollingBackground = ({ layers }: { layers: BackgroundLayer[] }) => {
             loading={i === 0 ? "eager" : "lazy"}
             width={1920}
             height={1080}
+            style={{ transform: "translateZ(0)" }}
           />
           <div className="absolute inset-0" style={layer.overlayStyle} />
         </div>
