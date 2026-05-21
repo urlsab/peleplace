@@ -70,6 +70,26 @@ const Profile = () => {
     }
   }, [profile?.user_type]);
 
+  // If user lands with #dates hash → jump straight into edit mode for host
+  // and scroll to the date picker section.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.hash !== "#dates") return;
+    if (!profile || profile.registration_status !== "approved") return;
+    setActiveRole("host");
+    setMode("edit");
+  }, [profile?.registration_status]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.hash !== "#dates") return;
+    if (mode !== "edit" || loadingProfile) return;
+    const t = setTimeout(() => {
+      document.getElementById("dates")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 200);
+    return () => clearTimeout(t);
+  }, [mode, loadingProfile, hostType]);
+
   // Load detailed profile based on activeRole
   useEffect(() => {
     if (!user || !profile || profile.registration_status !== "approved") {
