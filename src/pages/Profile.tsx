@@ -757,8 +757,8 @@ const Profile = () => {
                       </div>
                       <div className="space-y-2"><Label htmlFor="teamSize">מספר אנשי צוות נדרשים</Label><Input id="teamSize" name="teamSize" type="number" min={1} placeholder="3" defaultValue={detailedProfile?.team_size || ""} /></div>
                       <div className="space-y-2"><Label htmlFor="specialReq">דרישות מיוחדות</Label><Textarea id="specialReq" name="specialReq" placeholder="תואר, רישיון לנשק, ניסיון..." defaultValue={detailedProfile?.special_requirements || ""} /></div>
-                      <div className="space-y-2">
-                        <Label>תאריכים פנויים</Label>
+                      <div id="dates" className="space-y-2 scroll-mt-24 rounded-2xl bg-primary/5 p-4 border-2 border-primary/20">
+                        <Label className="text-base font-bold">📅 תאריכים פנויים</Label>
                         <HostDatePicker
                           selectedDates={availableDates}
                           onChange={setAvailableDates}
