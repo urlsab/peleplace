@@ -16,7 +16,17 @@ export type ProfileCategory =
   | "host_volunteer"
   | "host_organized_shabbat"
   | "host_work"
-  | "host_singles_group";
+  | "host_singles_group"
+  | "host_reservist";
+
+const helpTypeLabels: Record<string, string> = {
+  childcare: "טיפול בילדים",
+  shabbat_prep: "הכנות לשבת",
+  company: "חברה ושיחה",
+  household: "עזרה בבית",
+  errands: "סידורים",
+  other: "אחר",
+};
 
 const regionLabels: Record<string, string> = {
   north: "צפון", haifa: "חיפה", sharon: "שרון", center: "מרכז",
