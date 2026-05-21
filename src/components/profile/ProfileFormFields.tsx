@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import HostDatePicker from "@/components/profile/HostDatePicker";
+import { ProfileExtrasFields, ProfileImageUploads, readProfileExtras } from "@/components/profile/ProfileExtrasFields";
 
 export type ProfileCategory =
   | "single"
@@ -93,19 +94,21 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
     const form = new FormData(e.currentTarget);
 
     try {
-      // Profile image upload (single only)
-      let profileImageUrl: string | null = existing?.profile_image_url || null;
-      if (category === "single") {
-        const imgFile = form.get("profileImage") as File | null;
-        if (imgFile && imgFile.size > 0) {
-          const ext = imgFile.name.split(".").pop();
-          const path = `${userId}/profile-${Date.now()}.${ext}`;
-          const { error: upErr } = await supabase.storage.from("profile-images").upload(path, imgFile, { upsert: true });
-          if (upErr) throw upErr;
-          const { data: pub } = supabase.storage.from("profile-images").getPublicUrl(path);
-          profileImageUrl = pub.publicUrl;
-        }
-      }
+      // Image uploads — both profile + banner — available for all categories
+      const uploadImage = async (field: string, prefix: string, currentUrl: string | null) => {
+        const file = form.get(field) as File | null;
+        if (!file || file.size === 0) return currentUrl;
+        const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+        const path = `${userId}/${prefix}-${Date.now()}.${ext}`;
+        const { error: upErr } = await supabase.storage.from("profile-images").upload(path, file, { upsert: true });
+        if (upErr) throw upErr;
+        const { data: pub } = supabase.storage.from("profile-images").getPublicUrl(path);
+        return pub.publicUrl;
+      };
+      const profileImageUrl = await uploadImage("profileImage", "profile", existing?.profile_image_url || null);
+      const bannerImageUrl = await uploadImage("bannerImage", "banner", existing?.banner_image_url || null);
+      const extras = readProfileExtras(form);
+      const imageCols = { profile_image_url: profileImageUrl, banner_image_url: bannerImageUrl };
 
       let error: any = null;
       if (category === "single") {
@@ -117,9 +120,10 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
           region: (form.get("region") as any) || null,
           city: (form.get("city") as string) || null,
           about_me: (form.get("aboutMe") as string) || null,
-          profile_image_url: profileImageUrl,
           kashrut_preference: (form.get("kashrutPref") as any) || null,
           dietary_preference: (form.get("dietaryPref") as any) || null,
+          ...imageCols,
+          ...extras,
         };
         ({ error } = await supabase.from("single_profiles").upsert(data, { onConflict: "user_id" }));
       } else if (category === "host_family") {
@@ -133,6 +137,8 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
           city: (form.get("city") as string) || null,
           available_dates: alwaysAvailable ? null : (availableDates.length > 0 ? availableDates : null),
           always_available: alwaysAvailable,
+          ...imageCols,
+          ...extras,
         };
         ({ error } = await supabase.from("host_family_profiles").upsert(data, { onConflict: "user_id" }));
       } else if (category === "host_work") {
@@ -149,6 +155,8 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
           special_requirements: (form.get("specialReq") as string) || null,
           available_dates: alwaysAvailable ? null : (availableDates.length > 0 ? availableDates : null),
           always_available: alwaysAvailable,
+          ...imageCols,
+          ...extras,
         };
         ({ error } = await supabase.from("host_work_profiles").upsert(data, { onConflict: "user_id" }));
       } else if (category === "host_volunteer") {
@@ -161,6 +169,8 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
           special_requirements: (form.get("specialReq") as string) || null,
           provides_accommodation: form.get("accommodation") === "on",
           provides_meals: form.get("meals") === "on",
+          ...imageCols,
+          ...extras,
         };
         ({ error } = await supabase.from("host_volunteer_profiles").upsert(data, { onConflict: "user_id" }));
       } else if (category === "host_singles_group") {
@@ -177,6 +187,8 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
           age_range_max: parseInt(form.get("ageMax") as string) || null,
           available_dates: alwaysAvailable ? null : (availableDates.length > 0 ? availableDates : null),
           always_available: alwaysAvailable,
+          ...imageCols,
+          ...extras,
         };
         ({ error } = await supabase.from("host_singles_group_profiles").upsert(data, { onConflict: "user_id" }));
       } else if (category === "host_organized_shabbat") {
@@ -193,6 +205,8 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
           target_audience: (form.get("targetAudience") as string) || null,
           available_dates: alwaysAvailable ? null : (availableDates.length > 0 ? availableDates : null),
           always_available: alwaysAvailable,
+          ...imageCols,
+          ...extras,
         };
         ({ error } = await supabase.from("host_organized_shabbat_profiles").upsert(data, { onConflict: "user_id" }));
       } else if (category === "host_reservist") {
@@ -212,6 +226,8 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
           special_requirements: (form.get("specialReq") as string) || null,
           available_dates: alwaysAvailable ? null : (availableDates.length > 0 ? availableDates : null),
           always_available: alwaysAvailable,
+          ...imageCols,
+          ...extras,
         };
         ({ error } = await supabase.from("host_reservist_profiles").upsert(data, { onConflict: "user_id" }));
       }
@@ -228,15 +244,10 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      <ProfileImageUploads existing={existing} />
+
       {category === "single" && (
         <>
-          <div className="space-y-2">
-            <Label htmlFor="profileImage">תמונת פרופיל (אופציונלי)</Label>
-            {existing?.profile_image_url && (
-              <img src={existing.profile_image_url} alt="" className="h-24 w-24 rounded-full object-cover border-2 border-border" />
-            )}
-            <Input id="profileImage" name="profileImage" type="file" accept="image/*" className="cursor-pointer" />
-          </div>
           <div className="space-y-2"><Label htmlFor="age">גיל</Label><Input id="age" name="age" type="number" min={18} max={99} placeholder="25" defaultValue={existing?.age || ""} /></div>
           <div className="space-y-2">
             <Label>מגדר</Label>
@@ -456,7 +467,7 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
           </div>
         </>
       )}
-
+      <ProfileExtrasFields existing={existing} />
 
 
       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>
