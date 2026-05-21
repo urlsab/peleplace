@@ -65,6 +65,17 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-2">
+          {user && isApproved && profile?.user_type === "host" && (
+            <Button
+              size="sm"
+              onClick={() => navigate("/profile#dates")}
+              className="rounded-full gap-1.5 h-9 px-3 sm:px-4 text-xs sm:text-sm font-bold shadow-md shadow-primary/20"
+            >
+              <CalendarPlus className="h-4 w-4" />
+              <span className="hidden sm:inline">הוסיפו שבת</span>
+              <span className="sm:hidden">שבת</span>
+            </Button>
+          )}
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
