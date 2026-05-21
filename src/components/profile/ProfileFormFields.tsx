@@ -477,6 +477,7 @@ export async function loadExistingDetailedProfile(category: ProfileCategory, use
     host_volunteer: "host_volunteer_profiles",
     host_singles_group: "host_singles_group_profiles",
     host_organized_shabbat: "host_organized_shabbat_profiles",
+    host_reservist: "host_reservist_profiles",
   };
   const { data } = await supabase.from(tableMap[category] as any).select("*").eq("user_id", userId).maybeSingle();
   return data;
