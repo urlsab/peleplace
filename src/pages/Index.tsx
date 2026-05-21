@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Briefcase, HandHeart, Home, Star, Heart, Sparkles, Sun, ShieldCheck, UserCheck, Lock, Eye } from "lucide-react";
+import { Briefcase, HandHeart, Home, Star, Heart, Sparkles, Sun, ShieldCheck, UserCheck, Lock, Eye, CalendarPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import founderPhoto from "@/assets/founder-photo.png";
@@ -35,7 +35,9 @@ const backgroundLayers = [
 
 const Index = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, profile } = useAuth();
+
+  const isApprovedHost = profile?.user_type === "host" && profile?.registration_status === "approved";
 
   const handleCTA = () => {
     navigate(user ? "/profile" : "/auth");
@@ -48,6 +50,39 @@ const Index = () => {
       <div className="relative z-10">
         <Navbar />
         <HeroSection />
+
+        {/* Host quick action banner */}
+        {isApprovedHost && (
+          <motion.section
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="relative z-10 container mx-auto px-6 -mt-8 mb-4"
+          >
+            <div
+              className="rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-card border border-primary/15"
+              style={{ background: "linear-gradient(135deg, hsla(25,80%,51%,0.08), hsla(155,30%,45%,0.06))" }}
+            >
+              <div className="flex items-center gap-3 text-right">
+                <div className="h-10 w-10 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
+                  <Home className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <p className="font-bold text-foreground text-sm">ברוכים הבאים, {profile.first_name || "מארח/ת"}!</p>
+                  <p className="text-xs text-muted-foreground">רוצים לפתוח את הבית בשבת הקרובה?</p>
+                </div>
+              </div>
+              <Button
+                onClick={() => navigate("/profile#dates")}
+                className="rounded-full bg-primary px-5 h-10 text-xs font-bold text-primary-foreground shadow-md hover:shadow-lg hover:bg-primary/90 transition-all whitespace-nowrap"
+              >
+                <CalendarPlus className="h-4 w-4 ml-1.5" />
+                הוסיפו שבת לאירוח
+              </Button>
+            </div>
+          </motion.section>
+        )}
 
         {/* Registration Cards */}
         <RegistrationCards />
