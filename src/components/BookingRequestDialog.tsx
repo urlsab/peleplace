@@ -14,7 +14,7 @@ interface BookingRequestDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   hostUserId: string;
-  hostType: "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat";
+  hostType: "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat" | "reservist";
   hostTitle: string;
   /** Specific dates the host has marked as available */
   availableDates?: string[] | null;
