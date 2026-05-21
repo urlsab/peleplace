@@ -1,4 +1,4 @@
-import { LogOut, User, Shield, Search, CalendarCheck, Menu, FileText, Mail, CalendarRange, ChevronDown, Settings as SettingsIcon } from "lucide-react";
+import { LogOut, User, Shield, Search, CalendarCheck, Menu, FileText, Mail, CalendarRange, ChevronDown, Settings as SettingsIcon, CalendarPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -82,6 +82,15 @@ const Navbar = () => {
                 <DropdownMenuItem onClick={() => navigate("/profile")} className="rounded-xl gap-2 cursor-pointer">
                   <User className="h-4 w-4" /> הפרופיל שלי
                 </DropdownMenuItem>
+
+                {isApproved && profile?.user_type === "host" && (
+                  <DropdownMenuItem
+                    onClick={() => navigate("/profile#dates")}
+                    className="rounded-xl gap-2 cursor-pointer bg-primary/10 text-primary focus:bg-primary/20 focus:text-primary"
+                  >
+                    <CalendarPlus className="h-4 w-4" /> הוסיפו שבת לאירוח
+                  </DropdownMenuItem>
+                )}
 
                 {isApproved && (
                   <>

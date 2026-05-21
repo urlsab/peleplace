@@ -70,6 +70,26 @@ const Profile = () => {
     }
   }, [profile?.user_type]);
 
+  // If user lands with #dates hash → jump straight into edit mode for host
+  // and scroll to the date picker section.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.hash !== "#dates") return;
+    if (!profile || profile.registration_status !== "approved") return;
+    setActiveRole("host");
+    setMode("edit");
+  }, [profile?.registration_status]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.hash !== "#dates") return;
+    if (mode !== "edit" || loadingProfile) return;
+    const t = setTimeout(() => {
+      document.getElementById("dates")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 200);
+    return () => clearTimeout(t);
+  }, [mode, loadingProfile, hostType]);
+
   // Load detailed profile based on activeRole
   useEffect(() => {
     if (!user || !profile || profile.registration_status !== "approved") {
@@ -693,8 +713,9 @@ const Profile = () => {
                         <Label htmlFor="city">עיר / יישוב</Label>
                         <Input id="city" name="city" placeholder="הרצליה" defaultValue={detailedProfile?.city || ""} />
                       </div>
-                      <div className="space-y-2">
-                        <Label>תאריכים פנויים לאירוח</Label>
+                      <div id="dates" className="space-y-2 scroll-mt-24 rounded-2xl bg-primary/5 p-4 border-2 border-primary/20">
+                        <Label className="text-base font-bold">📅 תאריכים פנויים לאירוח</Label>
+                        <p className="text-xs text-muted-foreground">בחרו את השבתות והחגים שבהם תוכלו לארח. אל תשכחו לשמור בסוף!</p>
                         <HostDatePicker
                           selectedDates={availableDates}
                           onChange={setAvailableDates}
@@ -736,8 +757,8 @@ const Profile = () => {
                       </div>
                       <div className="space-y-2"><Label htmlFor="teamSize">מספר אנשי צוות נדרשים</Label><Input id="teamSize" name="teamSize" type="number" min={1} placeholder="3" defaultValue={detailedProfile?.team_size || ""} /></div>
                       <div className="space-y-2"><Label htmlFor="specialReq">דרישות מיוחדות</Label><Textarea id="specialReq" name="specialReq" placeholder="תואר, רישיון לנשק, ניסיון..." defaultValue={detailedProfile?.special_requirements || ""} /></div>
-                      <div className="space-y-2">
-                        <Label>תאריכים פנויים</Label>
+                      <div id="dates" className="space-y-2 scroll-mt-24 rounded-2xl bg-primary/5 p-4 border-2 border-primary/20">
+                        <Label className="text-base font-bold">📅 תאריכים פנויים</Label>
                         <HostDatePicker
                           selectedDates={availableDates}
                           onChange={setAvailableDates}
@@ -805,8 +826,8 @@ const Profile = () => {
                         <div className="space-y-2"><Label htmlFor="ageMin">גיל מינימום</Label><Input id="ageMin" name="ageMin" type="number" min={18} max={99} placeholder="22" defaultValue={detailedProfile?.age_range_min || ""} /></div>
                         <div className="space-y-2"><Label htmlFor="ageMax">גיל מקסימום</Label><Input id="ageMax" name="ageMax" type="number" min={18} max={99} placeholder="35" defaultValue={detailedProfile?.age_range_max || ""} /></div>
                       </div>
-                      <div className="space-y-2">
-                        <Label>תאריכי שבתות</Label>
+                      <div id="dates" className="space-y-2 scroll-mt-24 rounded-2xl bg-primary/5 p-4 border-2 border-primary/20">
+                        <Label className="text-base font-bold">📅 תאריכי שבתות</Label>
                         <HostDatePicker
                           selectedDates={availableDates}
                           onChange={setAvailableDates}
@@ -842,8 +863,8 @@ const Profile = () => {
                       <div className="space-y-2"><Label htmlFor="targetAudience">קהל יעד</Label><Input id="targetAudience" name="targetAudience" placeholder="רווקים/ות 25-35, דתיים" defaultValue={detailedProfile?.target_audience || ""} /></div>
                       <div className="space-y-2"><Label htmlFor="cost">עלות</Label><Input id="cost" name="cost" placeholder="450 ₪ לאדם" defaultValue={detailedProfile?.cost || ""} /></div>
                       <div className="space-y-2"><Label htmlFor="regLink">קישור להרשמה</Label><Input id="regLink" name="regLink" type="url" placeholder="https://..." defaultValue={detailedProfile?.registration_link || ""} /></div>
-                      <div className="space-y-2">
-                        <Label>תאריכי שבתות</Label>
+                      <div id="dates" className="space-y-2 scroll-mt-24 rounded-2xl bg-primary/5 p-4 border-2 border-primary/20">
+                        <Label className="text-base font-bold">📅 תאריכי שבתות</Label>
                         <HostDatePicker
                           selectedDates={availableDates}
                           onChange={setAvailableDates}
