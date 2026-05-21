@@ -96,7 +96,7 @@ const Index = () => {
               {/* Text column — flowing, no card background */}
               <motion.div {...fadeUp} transition={{ delay: 0.2, duration: 0.6 }} className="md:col-span-7 space-y-6 text-right">
                 <p className="text-2xl md:text-[1.6rem] font-display font-bold leading-[1.4] text-foreground">
-                  שלום, אני <span className="text-gradient-warm">אודיה עמרוסי</span> — בת 32, נשואה ליוסף חיים ואמא לפלא בן 9 חודשים.
+                  שלום, אני <span className="text-gradient-warm">אודיה עמרוסי</span> — בת 32, נשואה ליוסף חיים ואמא לפלא בן שנה.
                 </p>
 
                 <p className="text-base text-muted-foreground leading-[1.95]">
