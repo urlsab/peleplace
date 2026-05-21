@@ -83,6 +83,15 @@ const Navbar = () => {
                   <User className="h-4 w-4" /> הפרופיל שלי
                 </DropdownMenuItem>
 
+                {isApproved && profile?.user_type === "host" && (
+                  <DropdownMenuItem
+                    onClick={() => navigate("/profile#dates")}
+                    className="rounded-xl gap-2 cursor-pointer bg-primary/10 text-primary focus:bg-primary/20 focus:text-primary"
+                  >
+                    <CalendarPlus className="h-4 w-4" /> הוסיפו שבת לאירוח
+                  </DropdownMenuItem>
+                )}
+
                 {isApproved && (
                   <>
                     <DropdownMenuItem onClick={() => navigate("/my-bookings")} className="rounded-xl gap-2 cursor-pointer">
