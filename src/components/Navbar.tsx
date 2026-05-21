@@ -1,4 +1,4 @@
-import { LogOut, User, Shield, Search, CalendarCheck, Menu, FileText, Mail, CalendarRange, ChevronDown, Settings as SettingsIcon } from "lucide-react";
+import { LogOut, User, Shield, Search, CalendarCheck, Menu, FileText, Mail, CalendarRange, ChevronDown, Settings as SettingsIcon, CalendarPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
