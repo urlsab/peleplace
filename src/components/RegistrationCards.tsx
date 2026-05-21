@@ -95,9 +95,9 @@ const FlipCard = ({ card, index, onNavigate }: { card: typeof registrationCards[
             height={512}
             className="h-full w-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[hsl(210,18%,12%)]/80 via-[hsl(210,18%,12%)]/30 to-transparent" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <h3 className="text-3xl md:text-4xl font-black text-cream font-display drop-shadow-lg">
+          <div className="absolute inset-0 bg-gradient-to-t from-[hsl(210,18%,8%)]/95 via-[hsl(210,18%,12%)]/60 to-[hsl(210,18%,12%)]/30" />
+          <div className="absolute inset-x-0 bottom-0 p-6 flex items-end justify-center md:items-center md:inset-0 md:p-0">
+            <h3 className="text-3xl md:text-4xl font-black text-cream font-display text-center [text-shadow:0_2px_12px_rgba(0,0,0,0.85)]">
               {card.title}
             </h3>
           </div>
@@ -138,9 +138,6 @@ const RegistrationCards = () => {
     <section id="opportunities" className="relative py-24 overflow-hidden">
       {/* Clean text heading — separate from card styling */}
       <motion.div {...fadeUp} transition={{ duration: 0.7 }} className="container mx-auto px-6 mb-16 text-right">
-        <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-[11px] font-semibold text-primary tracking-[0.15em] uppercase">
-          בחרו אתכם
-        </span>
         <h2 className="text-4xl md:text-[3.5rem] font-black leading-[1.05]">
           מי <span className="text-gradient-warm italic">אתם?</span>
         </h2>
