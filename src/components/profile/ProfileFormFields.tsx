@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import HostDatePicker from "@/components/profile/HostDatePicker";
+import { ProfileExtrasFields, ProfileImageUploads, readProfileExtras } from "@/components/profile/ProfileExtrasFields";
 
 export type ProfileCategory =
   | "single"
