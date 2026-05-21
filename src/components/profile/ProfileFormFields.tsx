@@ -16,7 +16,17 @@ export type ProfileCategory =
   | "host_volunteer"
   | "host_organized_shabbat"
   | "host_work"
-  | "host_singles_group";
+  | "host_singles_group"
+  | "host_reservist";
+
+const helpTypeLabels: Record<string, string> = {
+  childcare: "טיפול בילדים",
+  shabbat_prep: "הכנות לשבת",
+  company: "חברה ושיחה",
+  household: "עזרה בבית",
+  errands: "סידורים",
+  other: "אחר",
+};
 
 const regionLabels: Record<string, string> = {
   north: "צפון", haifa: "חיפה", sharon: "שרון", center: "מרכז",
@@ -185,6 +195,25 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
           always_available: alwaysAvailable,
         };
         ({ error } = await supabase.from("host_organized_shabbat_profiles").upsert(data, { onConflict: "user_id" }));
+      } else if (category === "host_reservist") {
+        const helpTypesRaw = form.getAll("helpTypes") as string[];
+        const data = {
+          user_id: userId,
+          about_us: (form.get("aboutUs") as string) || null,
+          religious_level: (form.get("religiousLevel") as any) || null,
+          kashrut_level: (form.get("kashrutLevel") as any) || null,
+          region: (form.get("region") as any) || null,
+          city: (form.get("city") as string) || null,
+          num_children: parseInt(form.get("numChildren") as string) || null,
+          children_ages: (form.get("childrenAges") as string) || null,
+          help_types: helpTypesRaw.length > 0 ? helpTypesRaw : null,
+          guest_preference: (form.get("guestPref") as any) || "women",
+          spouse_status: (form.get("spouseStatus") as string) || null,
+          special_requirements: (form.get("specialReq") as string) || null,
+          available_dates: alwaysAvailable ? null : (availableDates.length > 0 ? availableDates : null),
+          always_available: alwaysAvailable,
+        };
+        ({ error } = await supabase.from("host_reservist_profiles").upsert(data, { onConflict: "user_id" }));
       }
 
       if (error) throw error;
@@ -377,6 +406,59 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
         </>
       )}
 
+      {category === "host_reservist" && (
+        <>
+          <div className="rounded-xl bg-primary/10 border border-primary/30 p-4 text-sm leading-relaxed">
+            💛 תודה שאת כאן. נחבר אותך עם בחורה אמינה שתבוא לעזור בהכנות לשבת, לשחק עם הילדים, או פשוט להיות חברה.
+          </div>
+          <div className="space-y-2"><Label htmlFor="aboutUs">קצת עליי ועל המשפחה</Label><Textarea id="aboutUs" name="aboutUs" placeholder="ספרי קצת על המשפחה, האווירה בבית, מה חשוב לך..." className="min-h-[100px]" defaultValue={existing?.about_us || ""} /></div>
+          <div className="space-y-2">
+            <Label htmlFor="spouseStatus">סטטוס בן הזוג</Label>
+            <Select name="spouseStatus" defaultValue={existing?.spouse_status || undefined}>
+              <SelectTrigger><SelectValue placeholder="בחרי" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="currently_in_reserves">כרגע במילואים</SelectItem>
+                <SelectItem value="frequently_in_reserves">יוצא תכופות למילואים</SelectItem>
+                <SelectItem value="regular_army">בצבא סדיר</SelectItem>
+                <SelectItem value="other">אחר</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2"><Label htmlFor="numChildren">מספר ילדים</Label><Input id="numChildren" name="numChildren" type="number" min={0} max={20} placeholder="3" defaultValue={existing?.num_children || ""} /></div>
+            <div className="space-y-2"><Label htmlFor="childrenAges">גילאי הילדים</Label><Input id="childrenAges" name="childrenAges" placeholder="2, 5, 8" defaultValue={existing?.children_ages || ""} /></div>
+          </div>
+          <div className="space-y-3 rounded-xl border border-border bg-background p-4">
+            <Label className="font-bold">סוג העזרה הנדרשת</Label>
+            <p className="text-xs text-muted-foreground">סמני את כל מה שרלוונטי</p>
+            {Object.entries(helpTypeLabels).map(([v, l]) => (
+              <div key={v} className="flex items-center gap-2">
+                <Checkbox id={`help-${v}`} name="helpTypes" value={v} defaultChecked={existing?.help_types?.includes(v)} />
+                <Label htmlFor={`help-${v}`} className="cursor-pointer">{l}</Label>
+              </div>
+            ))}
+          </div>
+          <div className="space-y-2"><Label>רמה דתית</Label><ReligiousSelect name="religiousLevel" defaultValue={existing?.religious_level || undefined} /></div>
+          <div className="space-y-2"><Label>רמת כשרות</Label><KashrutSelect name="kashrutLevel" defaultValue={existing?.kashrut_level || undefined} /></div>
+          <div className="space-y-2"><Label>אזור מגורים</Label><RegionSelect name="region" defaultValue={existing?.region || undefined} /></div>
+          <div className="space-y-2"><Label htmlFor="city">עיר / יישוב</Label><Input id="city" name="city" placeholder="פתח תקווה" defaultValue={existing?.city || ""} /></div>
+          <div className="space-y-2">
+            <Label>את מי תרצי לארח?</Label>
+            <RadioGroup name="guestPref" defaultValue={existing?.guest_preference || "women"} className="flex gap-4">
+              <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="women" /><span>בחורה</span></label>
+              <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="mixed" /><span>לא משנה</span></label>
+            </RadioGroup>
+          </div>
+          <div className="space-y-2"><Label htmlFor="specialReq">דרישות מיוחדות / טוב לדעת</Label><Textarea id="specialReq" name="specialReq" placeholder="אלרגיות, בעלי חיים בבית, צמחונות..." defaultValue={existing?.special_requirements || ""} /></div>
+          <div className="space-y-2">
+            <Label>תאריכים שבהם תרצי עזרה</Label>
+            <HostDatePicker selectedDates={availableDates} onChange={setAvailableDates} alwaysAvailable={alwaysAvailable} onAlwaysAvailableChange={setAlwaysAvailable} hostType="reservist" />
+          </div>
+        </>
+      )}
+
+
+
       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>
         {saving ? "שומר..." : (submitLabel || "שמירת פרופיל")}
       </Button>
@@ -395,6 +477,7 @@ export async function loadExistingDetailedProfile(category: ProfileCategory, use
     host_volunteer: "host_volunteer_profiles",
     host_singles_group: "host_singles_group_profiles",
     host_organized_shabbat: "host_organized_shabbat_profiles",
+    host_reservist: "host_reservist_profiles",
   };
   const { data } = await supabase.from(tableMap[category] as any).select("*").eq("user_id", userId).maybeSingle();
   return data;

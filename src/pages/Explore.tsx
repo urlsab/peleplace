@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Search, Filter, MapPin, Calendar, Users, Briefcase, HandHeart, Home, X, Send, Sparkles, CalendarDays } from "lucide-react";
+import { Search, Filter, MapPin, Calendar, Users, Briefcase, HandHeart, Home, X, Send, Sparkles, CalendarDays, Shield } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
@@ -39,9 +39,10 @@ const categoryConfig = {
   volunteer: { label: "התנדבות", icon: HandHeart, color: "bg-secondary" },
   singles_group: { label: "חבורת רווקים/ות", icon: Sparkles, color: "bg-[hsl(var(--olive))]" },
   organized_shabbat: { label: "שבת מאורגנת", icon: CalendarDays, color: "bg-[hsl(var(--amber-soft))]" },
+  reservist: { label: "אשת מילואים", icon: Shield, color: "bg-[hsl(var(--terracotta))]" },
 };
 
-type OpportunityType = "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat";
+type OpportunityType = "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat" | "reservist";
 
 type OpportunityItem = {
   id: string;
@@ -114,6 +115,17 @@ const Explore = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("host_organized_shabbat_profiles")
+        .select("*");
+      if (error) throw error;
+      return data || [];
+    },
+  });
+
+  const { data: reservistProfiles } = useQuery({
+    queryKey: ["explore-reservist"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("host_reservist_profiles")
         .select("*");
       if (error) throw error;
       return data || [];
@@ -219,8 +231,28 @@ const Explore = () => {
       })
     );
 
+    reservistProfiles?.forEach((p) =>
+      items.push({
+        id: p.id,
+        userId: p.user_id,
+        type: "reservist",
+        title: `אשת מילואים${p.city ? ` — ${p.city}` : ""}`,
+        city: p.city,
+        region: p.region,
+        religiousLevel: p.religious_level,
+        availableDates: p.available_dates,
+        alwaysAvailable: (p as any).always_available || false,
+        details: {
+          aboutUs: p.about_us,
+          numChildren: p.num_children,
+          childrenAges: p.children_ages,
+          helpTypes: p.help_types,
+        },
+      })
+    );
+
     return items;
-  }, [familyProfiles, workProfiles, volunteerProfiles, singlesGroupProfiles, organizedShabbatProfiles]);
+  }, [familyProfiles, workProfiles, volunteerProfiles, singlesGroupProfiles, organizedShabbatProfiles, reservistProfiles]);
 
   const filtered = useMemo(() => {
     return allOpportunities.filter((item) => {
@@ -329,6 +361,7 @@ const Explore = () => {
                 <SelectContent>
                   <SelectItem value="all">כל הסוגים</SelectItem>
                   <SelectItem value="family">אירוח משפחה</SelectItem>
+                  <SelectItem value="reservist">אשת מילואים</SelectItem>
                   <SelectItem value="singles_group">חבורת רווקים/ות</SelectItem>
                   <SelectItem value="organized_shabbat">שבת מאורגנת</SelectItem>
                   <SelectItem value="work">עבודה</SelectItem>

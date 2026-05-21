@@ -373,6 +373,76 @@ export type Database = {
         }
         Relationships: []
       }
+      host_reservist_profiles: {
+        Row: {
+          about_us: string | null
+          always_available: boolean
+          available_dates: string[] | null
+          children_ages: string | null
+          city: string | null
+          created_at: string
+          guest_preference:
+            | Database["public"]["Enums"]["gender_preference"]
+            | null
+          help_types: string[] | null
+          id: string
+          kashrut_level: Database["public"]["Enums"]["kashrut_level"] | null
+          num_children: number | null
+          region: Database["public"]["Enums"]["region"] | null
+          religious_level: Database["public"]["Enums"]["religious_level"] | null
+          special_requirements: string | null
+          spouse_status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          about_us?: string | null
+          always_available?: boolean
+          available_dates?: string[] | null
+          children_ages?: string | null
+          city?: string | null
+          created_at?: string
+          guest_preference?:
+            | Database["public"]["Enums"]["gender_preference"]
+            | null
+          help_types?: string[] | null
+          id?: string
+          kashrut_level?: Database["public"]["Enums"]["kashrut_level"] | null
+          num_children?: number | null
+          region?: Database["public"]["Enums"]["region"] | null
+          religious_level?:
+            | Database["public"]["Enums"]["religious_level"]
+            | null
+          special_requirements?: string | null
+          spouse_status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          about_us?: string | null
+          always_available?: boolean
+          available_dates?: string[] | null
+          children_ages?: string | null
+          city?: string | null
+          created_at?: string
+          guest_preference?:
+            | Database["public"]["Enums"]["gender_preference"]
+            | null
+          help_types?: string[] | null
+          id?: string
+          kashrut_level?: Database["public"]["Enums"]["kashrut_level"] | null
+          num_children?: number | null
+          region?: Database["public"]["Enums"]["region"] | null
+          religious_level?:
+            | Database["public"]["Enums"]["religious_level"]
+            | null
+          special_requirements?: string | null
+          spouse_status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       host_singles_group_profiles: {
         Row: {
           age_range_max: number | null

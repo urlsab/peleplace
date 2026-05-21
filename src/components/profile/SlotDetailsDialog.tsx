@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { labelHebrewDate } from "@/lib/hebrewDates";
 import { CopyCheck } from "lucide-react";
 
-export type SlotHostType = "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat";
+export type SlotHostType = "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat" | "reservist";
 
 export interface SlotDetails {
   capacity: number | null;
@@ -48,7 +48,7 @@ interface SlotDetailsDialogProps {
 }
 
 const isHosting = (t: SlotHostType) =>
-  t === "family" || t === "singles_group" || t === "organized_shabbat";
+  t === "family" || t === "singles_group" || t === "organized_shabbat" || t === "reservist";
 const isWorkOrVolunteer = (t: SlotHostType) => t === "work" || t === "volunteer";
 
 const SlotDetailsDialog = ({

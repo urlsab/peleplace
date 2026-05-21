@@ -9,6 +9,7 @@ import cardHosting from "@/assets/card-hosting.jpg";
 import cardSingle from "@/assets/card-single.jpg";
 import cardSinglesGroup from "@/assets/card-singles-group.jpg";
 import cardOrganizedShabbat from "@/assets/card-organized-shabbat.jpg";
+import cardReservist from "@/assets/card-reservist.jpg";
 
 const registrationCards = [
   {
@@ -25,6 +26,14 @@ const registrationCards = [
     subtitle: "הזמינו אורח/ת לשולחן השבת",
     description: "הצטרפו כמארחים והזמינו רווקים ורווקות לשולחן השבת שלכם",
     cta: "הירשמו כמארחים",
+    userType: "host",
+  },
+  {
+    image: cardReservist,
+    title: "אשת מילואים?",
+    subtitle: "בעלך במילואים ושמחה לחברה בבית?",
+    description: "הזמיני בחורה שתבוא לעזור עם הילדים, ההכנות לשבת, או פשוט להיות חברה",
+    cta: "הירשמי כאשת מילואים",
     userType: "host",
   },
   {
