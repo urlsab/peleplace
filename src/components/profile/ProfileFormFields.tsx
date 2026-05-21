@@ -406,6 +406,59 @@ const ProfileFormFields = ({ category, userId, existing, onSaved, submitLabel }:
         </>
       )}
 
+      {category === "host_reservist" && (
+        <>
+          <div className="rounded-xl bg-primary/10 border border-primary/30 p-4 text-sm leading-relaxed">
+            💛 תודה שאת כאן. נחבר אותך עם בחורה אמינה שתבוא לעזור בהכנות לשבת, לשחק עם הילדים, או פשוט להיות חברה.
+          </div>
+          <div className="space-y-2"><Label htmlFor="aboutUs">קצת עליי ועל המשפחה</Label><Textarea id="aboutUs" name="aboutUs" placeholder="ספרי קצת על המשפחה, האווירה בבית, מה חשוב לך..." className="min-h-[100px]" defaultValue={existing?.about_us || ""} /></div>
+          <div className="space-y-2">
+            <Label htmlFor="spouseStatus">סטטוס בן הזוג</Label>
+            <Select name="spouseStatus" defaultValue={existing?.spouse_status || undefined}>
+              <SelectTrigger><SelectValue placeholder="בחרי" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="currently_in_reserves">כרגע במילואים</SelectItem>
+                <SelectItem value="frequently_in_reserves">יוצא תכופות למילואים</SelectItem>
+                <SelectItem value="regular_army">בצבא סדיר</SelectItem>
+                <SelectItem value="other">אחר</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-2"><Label htmlFor="numChildren">מספר ילדים</Label><Input id="numChildren" name="numChildren" type="number" min={0} max={20} placeholder="3" defaultValue={existing?.num_children || ""} /></div>
+            <div className="space-y-2"><Label htmlFor="childrenAges">גילאי הילדים</Label><Input id="childrenAges" name="childrenAges" placeholder="2, 5, 8" defaultValue={existing?.children_ages || ""} /></div>
+          </div>
+          <div className="space-y-3 rounded-xl border border-border bg-background p-4">
+            <Label className="font-bold">סוג העזרה הנדרשת</Label>
+            <p className="text-xs text-muted-foreground">סמני את כל מה שרלוונטי</p>
+            {Object.entries(helpTypeLabels).map(([v, l]) => (
+              <div key={v} className="flex items-center gap-2">
+                <Checkbox id={`help-${v}`} name="helpTypes" value={v} defaultChecked={existing?.help_types?.includes(v)} />
+                <Label htmlFor={`help-${v}`} className="cursor-pointer">{l}</Label>
+              </div>
+            ))}
+          </div>
+          <div className="space-y-2"><Label>רמה דתית</Label><ReligiousSelect name="religiousLevel" defaultValue={existing?.religious_level || undefined} /></div>
+          <div className="space-y-2"><Label>רמת כשרות</Label><KashrutSelect name="kashrutLevel" defaultValue={existing?.kashrut_level || undefined} /></div>
+          <div className="space-y-2"><Label>אזור מגורים</Label><RegionSelect name="region" defaultValue={existing?.region || undefined} /></div>
+          <div className="space-y-2"><Label htmlFor="city">עיר / יישוב</Label><Input id="city" name="city" placeholder="פתח תקווה" defaultValue={existing?.city || ""} /></div>
+          <div className="space-y-2">
+            <Label>את מי תרצי לארח?</Label>
+            <RadioGroup name="guestPref" defaultValue={existing?.guest_preference || "women"} className="flex gap-4">
+              <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="women" /><span>בחורה</span></label>
+              <label className="flex items-center gap-2 cursor-pointer"><RadioGroupItem value="mixed" /><span>לא משנה</span></label>
+            </RadioGroup>
+          </div>
+          <div className="space-y-2"><Label htmlFor="specialReq">דרישות מיוחדות / טוב לדעת</Label><Textarea id="specialReq" name="specialReq" placeholder="אלרגיות, בעלי חיים בבית, צמחונות..." defaultValue={existing?.special_requirements || ""} /></div>
+          <div className="space-y-2">
+            <Label>תאריכים שבהם תרצי עזרה</Label>
+            <HostDatePicker selectedDates={availableDates} onChange={setAvailableDates} alwaysAvailable={alwaysAvailable} onAlwaysAvailableChange={setAlwaysAvailable} hostType="reservist" />
+          </div>
+        </>
+      )}
+
+
+
       <Button type="submit" className="w-full rounded-full font-bold" size="lg" disabled={saving}>
         {saving ? "שומר..." : (submitLabel || "שמירת פרופיל")}
       </Button>
