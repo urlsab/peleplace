@@ -72,8 +72,8 @@ const Navbar = () => {
               className="rounded-full gap-1.5 h-9 px-3 sm:px-4 text-xs sm:text-sm font-bold shadow-md shadow-primary/20"
             >
               <CalendarPlus className="h-4 w-4" />
-              <span className="hidden xs:inline sm:inline">הוסיפו שבת</span>
-              <span className="xs:hidden sm:hidden">שבת</span>
+              <span className="hidden sm:inline">הוסיפו שבת</span>
+              <span className="sm:hidden">שבת</span>
             </Button>
           )}
           {user ? (
