@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index.tsx";
 import Auth from "./pages/Auth.tsx";
+// test github and vercel connection
 // Register page removed — registration is now part of Auth.tsx
 import Profile from "./pages/Profile.tsx";
 import Admin from "./pages/Admin.tsx";
