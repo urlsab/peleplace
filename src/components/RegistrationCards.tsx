@@ -141,9 +141,6 @@ const RegistrationCards = () => {
         <h2 className="text-4xl md:text-[3.5rem] font-black leading-[1.05]">
           מי <span className="text-gradient-warm italic">אתם?</span>
         </h2>
-        <p className="mt-4 text-base text-muted-foreground max-w-md">
-          בחרו את הקטגוריה שמתאימה לכם — זה חינם ולוקח דקה
-        </p>
         <div className="mt-4 h-[2px] w-24 bg-gradient-to-l from-primary to-transparent" />
       </motion.div>
 

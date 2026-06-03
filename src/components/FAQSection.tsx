@@ -94,11 +94,6 @@ const FAQSection = () => {
             transition={{ duration: 0.7 }}
             className="md:col-span-5 md:sticky md:top-24"
           >
-            {/* Numbered marker — magazine style */}
-            <div className="flex items-baseline gap-4 mb-6 justify-center md:justify-start">
-              <span className="font-display text-7xl md:text-8xl font-black text-primary/20 leading-none">10</span>
-              <span className="text-[10px] font-bold text-muted-foreground tracking-[0.25em] uppercase">FAQ — שאלות נפוצות</span>
-            </div>
             {/* Centered serif-flavored headline with hand-drawn underline */}
             <h2 className="mb-6 text-center md:text-right text-3xl md:text-5xl font-black leading-[1.15] font-display">
               <span className="block">כל מה ש</span>
@@ -110,9 +105,6 @@ const FAQSection = () => {
               </span>
               <span className="block mt-3">על פל״א.</span>
             </h2>
-            <p className="text-muted-foreground text-sm mb-8 text-center md:text-right max-w-xs mx-auto md:mx-0">
-              כל מה שרציתם לדעת על פל״א — במקום אחד.
-            </p>
             <div className="relative rounded-[2rem] overflow-hidden shadow-card">
               <img
                 src={sceneOpenDoor}

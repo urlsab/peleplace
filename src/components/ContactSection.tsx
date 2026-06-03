@@ -68,13 +68,6 @@ const ContactSection = () => {
       <div className="container relative z-10 mx-auto px-6">
         {/* Centered ornamental header — completely different style from About/FAQ */}
         <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center max-w-2xl mx-auto">
-          <div className="flex items-center justify-center gap-3 mb-5">
-            <span className="h-px w-10 bg-primary/40" />
-            <Mail className="h-5 w-5 text-primary" />
-            <span className="text-[11px] font-bold text-primary tracking-[0.3em] uppercase">Get in touch</span>
-            <Mail className="h-5 w-5 text-primary" />
-            <span className="h-px w-10 bg-primary/40" />
-          </div>
           <h2 className="text-5xl md:text-6xl font-display font-black leading-[1.1] mb-4">
             <span className="italic text-gradient-warm">בואו</span>{" "}
             <span>נדבר.</span>

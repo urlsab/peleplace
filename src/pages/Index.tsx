@@ -100,9 +100,6 @@ const Index = () => {
           <div className="container relative z-10 mx-auto px-6">
             {/* Section label — top right, no card */}
             <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-12 text-right max-w-3xl mr-auto">
-              <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-[11px] font-semibold text-primary tracking-[0.15em] uppercase">
-                קצת עלינו
-              </span>
               <h2 className="text-4xl md:text-[3.5rem] font-black leading-[1.05]">
                 הסיפור <span className="text-gradient-warm italic">שלנו</span>
               </h2>
@@ -188,9 +185,6 @@ const Index = () => {
 
           <div className="container relative z-10 mx-auto px-6">
             <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-12 text-center max-w-2xl mx-auto">
-              <span className="mb-4 inline-block rounded-full bg-primary/10 px-4 py-1.5 text-[11px] font-semibold text-primary tracking-[0.15em] uppercase">
-                ביטחון ואמון
-              </span>
               <h2 className="text-3xl md:text-[2.75rem] font-black leading-[1.1]">
                 קהילה <span className="text-gradient-warm italic">מאומתת</span>
                 <br />
