@@ -69,10 +69,10 @@ const ContactSection = () => {
         {/* Centered ornamental header — completely different style from About/FAQ */}
         <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-14 text-center max-w-2xl mx-auto">
           <h2 className="text-5xl md:text-6xl font-display font-black leading-[1.1] mb-4">
-            <span className="italic text-gradient-warm">בואו</span>{" "}
+            <span className="text-gradient-warm">בואו</span>{" "}
             <span>נדבר.</span>
           </h2>
-          <p className="text-muted-foreground text-base leading-relaxed max-w-md mx-auto">
+          <p className="text-foreground font-bold text-base leading-relaxed max-w-md mx-auto">
             השאירו פרטים ואחזור אליכם בהקדם — כל הודעה מקבלת תשובה אישית 💛
           </p>
         </motion.div>
@@ -82,7 +82,7 @@ const ContactSection = () => {
             <div className="text-center space-y-4 py-10">
               <CheckCircle className="h-14 w-14 text-primary mx-auto" />
               <h3 className="text-xl font-bold font-display">תודה שפניתם!</h3>
-              <p className="text-muted-foreground text-sm">קיבלתי את ההודעה ואחזור אליכם בהקדם 💛</p>
+              <p className="text-foreground font-bold text-sm">קיבלתי את ההודעה ואחזור אליכם בהקדם 💛</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4 bg-background/80 backdrop-blur-sm rounded-2xl p-8 border border-border/40 shadow-card" dir="rtl">
@@ -92,6 +92,8 @@ const ContactSection = () => {
                 onChange={(e) => setForm((p) => ({ ...p, full_name: e.target.value }))}
                 maxLength={100}
                 required
+                dir="rtl"
+                className="text-right font-semibold placeholder:text-right"
               />
               <Input
                 type="email"
@@ -100,6 +102,8 @@ const ContactSection = () => {
                 onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
                 maxLength={255}
                 required
+                dir="rtl"
+                className="text-right font-semibold placeholder:text-right"
               />
               <Input
                 type="tel"
@@ -108,12 +112,14 @@ const ContactSection = () => {
                 onChange={(e) => setForm((p) => ({ ...p, phone: e.target.value }))}
                 maxLength={20}
                 required
+                dir="rtl"
+                className="text-right font-semibold placeholder:text-right"
               />
-              <Select value={form.subject} onValueChange={(val) => setForm((p) => ({ ...p, subject: val }))}>
-                <SelectTrigger>
+              <Select dir="rtl" value={form.subject} onValueChange={(val) => setForm((p) => ({ ...p, subject: val }))}>
+                <SelectTrigger dir="rtl" className="text-right font-semibold">
                   <SelectValue placeholder="נושא הפנייה" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent align="end" sideOffset={6}>
                   <SelectItem value="guest">מתארח/ת</SelectItem>
                   <SelectItem value="host">מארח/ת</SelectItem>
                   <SelectItem value="other">אחר</SelectItem>
@@ -126,6 +132,8 @@ const ContactSection = () => {
                 maxLength={1000}
                 rows={4}
                 required
+                dir="rtl"
+                className="text-right font-semibold placeholder:text-right"
               />
               <Button type="submit" disabled={loading} className="w-full rounded-full h-11 font-bold gap-2">
                 {loading ? "שולח..." : (

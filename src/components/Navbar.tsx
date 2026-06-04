@@ -1,4 +1,4 @@
-import { LogOut, User, Shield, Search, CalendarCheck, Menu, FileText, Mail, CalendarRange, ChevronDown, Settings as SettingsIcon, CalendarPlus } from "lucide-react";
+import { LogOut, User, Shield, Search, CalendarCheck, Menu, FileText, Mail, Settings as SettingsIcon, CalendarPlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -39,29 +39,32 @@ const Navbar = () => {
             height={48}
             className="h-10 w-10 shrink-0 object-contain transition-transform group-hover:scale-105 rounded-full"
           />
-          <span className="text-[11px] text-muted-foreground font-medium mt-0.5 truncate">— פשוט לבחור איפה</span>
+          <span className="text-[11px] text-foreground font-bold mt-0.5 truncate">— פשוט לבחור איפה</span>
         </button>
 
         {/* Desktop quick links */}
-        <div className="hidden md:flex items-center gap-1">
-          <button onClick={() => goToSection("#about")} className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all">
+        <div className="hidden lg:flex items-center gap-1">
+          <button onClick={() => goToSection("#hero")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+            בית
+          </button>
+          <button onClick={() => goToSection("#about")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
             הסיפור שלנו
           </button>
-          <button onClick={() => goToSection("#faq")} className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all">
+          <button onClick={() => goToSection("#trust")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+            אמון וביטחון
+          </button>
+          <button onClick={() => goToSection("#faq")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
             שאלות ותשובות
           </button>
-          {user && isApproved && (
-            <button onClick={() => navigate("/explore")} className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all flex items-center gap-1.5">
-              <Search className="h-3.5 w-3.5" />
-              חיפוש
-            </button>
-          )}
-          {user && isApproved && (
-            <button onClick={() => navigate("/calendar")} className="px-3 py-1.5 rounded-full text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-all flex items-center gap-1.5">
-              <CalendarRange className="h-3.5 w-3.5" />
-              לוח שבתות
-            </button>
-          )}
+          <button onClick={() => goToSection("#contact")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+            צור קשר
+          </button>
+          <button onClick={() => navigate("/calendar")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+            לוח שבתות
+          </button>
+          <button onClick={() => navigate("/terms")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+            תקנון
+          </button>
         </div>
 
         <div className="flex items-center gap-2">
@@ -109,7 +112,7 @@ const Navbar = () => {
                       <CalendarCheck className="h-4 w-4" /> שבתות שהשתתפתי
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => navigate("/calendar")} className="rounded-xl gap-2 cursor-pointer">
-                      <CalendarRange className="h-4 w-4" /> לוח שבתות
+                      לוח שבתות
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => navigate("/explore")} className="rounded-xl gap-2 cursor-pointer md:hidden">
                       <Search className="h-4 w-4" /> חיפוש
@@ -152,15 +155,18 @@ const Navbar = () => {
               {/* Mobile menu for guests */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button size="sm" variant="ghost" className="rounded-full h-8 w-8 p-0 md:hidden">
+                  <Button size="sm" variant="ghost" className="rounded-full h-8 w-8 p-0 lg:hidden">
                     <Menu className="h-4 w-4" />
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48 rounded-2xl p-2">
-                  <DropdownMenuItem onClick={() => goToSection("#about")} className="rounded-xl cursor-pointer">הסיפור שלנו</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => goToSection("#faq")} className="rounded-xl cursor-pointer">שאלות ותשובות</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => goToSection("#contact")} className="rounded-xl cursor-pointer">צור קשר</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => navigate("/terms")} className="rounded-xl cursor-pointer">תקנון</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => goToSection("#hero")} className="rounded-xl cursor-pointer font-bold text-foreground">בית</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => goToSection("#about")} className="rounded-xl cursor-pointer font-bold text-foreground">הסיפור שלנו</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => goToSection("#trust")} className="rounded-xl cursor-pointer font-bold text-foreground">אמון וביטחון</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => goToSection("#faq")} className="rounded-xl cursor-pointer font-bold text-foreground">שאלות ותשובות</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => goToSection("#contact")} className="rounded-xl cursor-pointer font-bold text-foreground">צור קשר</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate("/calendar")} className="rounded-xl cursor-pointer font-bold text-foreground">לוח שבתות</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate("/terms")} className="rounded-xl cursor-pointer font-bold text-foreground">תקנון</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
               <Button size="sm" className="rounded-full font-semibold h-8 px-5 text-xs" onClick={() => navigate("/auth")}>

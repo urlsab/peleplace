@@ -6,7 +6,6 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { HelpCircle, Heart, Star, Sun } from "lucide-react";
-import sceneOpenDoor from "@/assets/scene-open-door.jpg";
 
 
 const faqs = [
@@ -85,48 +84,26 @@ const FAQSection = () => {
       <div className="absolute bottom-10 right-1/4 h-48 w-48 rounded-full bg-primary/6 blur-[60px]" />
 
       <div className="container relative z-10 mx-auto px-6">
-        <div className="grid gap-12 md:gap-16 md:grid-cols-12 items-start max-w-6xl mx-auto">
-          {/* Left: Image + headline (sticky) */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className="md:col-span-5 md:sticky md:top-24"
-          >
-            {/* Centered serif-flavored headline with hand-drawn underline */}
-            <h2 className="mb-6 text-center md:text-right text-3xl md:text-5xl font-black leading-[1.15] font-display">
-              <span className="block">כל מה ש</span>
-              <span className="relative inline-block mt-2">
-                <span className="text-gradient-warm italic">רציתם לדעת</span>
-                <svg className="absolute -bottom-2 right-0 w-full h-3" viewBox="0 0 200 12" preserveAspectRatio="none">
-                  <path d="M2,8 Q50,2 100,7 T198,5" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" className="text-primary/60" />
-                </svg>
-              </span>
-              <span className="block mt-3">על פל״א.</span>
-            </h2>
-            <div className="relative rounded-[2rem] overflow-hidden shadow-card">
-              <img
-                src={sceneOpenDoor}
-                alt="דלת פתוחה — בית מזמין לשבת"
-                loading="lazy"
-                width={896}
-                height={1280}
-                className="w-full h-[280px] md:h-[360px] object-cover"
-              />
-              <div className="absolute inset-0" style={{ background: "linear-gradient(to top, hsla(210,18%,8%,0.4), transparent 60%)" }} />
-            </div>
-          </motion.div>
-
-          {/* Right: Accordion */}
+        <div className="max-w-5xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.15, duration: 0.5 }}
-            className="md:col-span-7"
+            transition={{ duration: 0.7 }}
+            className="mb-10 text-center"
           >
-            <Accordion type="single" collapsible className="space-y-3">
+            <h2 className="text-3xl md:text-5xl font-black leading-[1.15] font-display">
+              שאלות נפוצות על פל"א
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1, duration: 0.5 }}
+          >
+            <Accordion type="single" collapsible className="space-y-3 max-w-2xl mx-auto">
               {faqs.map((faq, i) => (
                 <AccordionItem
                   key={i}
@@ -134,10 +111,10 @@ const FAQSection = () => {
                   className="rounded-2xl border border-border/50 px-6 shadow-card data-[state=open]:shadow-hover transition-shadow"
                   style={{ backgroundColor: "hsl(30 40% 88%)" }}
                 >
-                  <AccordionTrigger className="text-right font-bold font-display text-sm py-5 hover:no-underline [&>svg]:shrink-0">
+                  <AccordionTrigger className="justify-center gap-3 text-center font-bold font-display text-sm py-5 hover:no-underline [&>svg]:shrink-0">
                     {faq.question}
                   </AccordionTrigger>
-                  <AccordionContent className="text-foreground/80 text-sm leading-relaxed pb-5">
+                  <AccordionContent className="text-center text-foreground font-bold text-sm leading-relaxed pb-5">
                     {faq.answer}
                   </AccordionContent>
                 </AccordionItem>

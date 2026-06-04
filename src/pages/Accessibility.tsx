@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import { motion } from "framer-motion";
-import { Accessibility as AccessibilityIcon } from "lucide-react";
 import DynamicBackground from "@/components/DynamicBackground";
 import { Button } from "@/components/ui/button";
 
@@ -22,10 +21,7 @@ const Accessibility = () => {
           transition={{ duration: 0.5 }}
         >
           <div className="text-center mb-8">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-primary mb-4">
-              <AccessibilityIcon className="h-6 w-6 text-primary-foreground" />
-            </div>
-            <h1 className="text-3xl font-black font-display">
+            <h1 className="mt-4 text-3xl font-black font-display">
               {isHe ? "הצהרת נגישות" : "Accessibility Statement"}
             </h1>
             <p className="mt-2 text-muted-foreground">

@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import { motion } from "framer-motion";
-import { ScrollText } from "lucide-react";
 import DynamicBackground from "@/components/DynamicBackground";
 
 const Terms = () => {
@@ -15,10 +14,7 @@ const Terms = () => {
           transition={{ duration: 0.5 }}
         >
           <div className="text-center mb-12">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-primary mb-4">
-              <ScrollText className="h-6 w-6 text-primary-foreground" />
-            </div>
-            <h1 className="text-3xl font-black font-display">תקנון, תנאי שימוש ומדיניות פרטיות</h1>
+            <h1 className="mt-8 text-3xl font-black font-display">תקנון, תנאי שימוש ומדיניות פרטיות</h1>
             <p className="mt-2 text-muted-foreground">עודכן לאחרונה: אפריל 2026</p>
           </div>
 

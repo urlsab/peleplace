@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowDown, Sparkles, Heart, Users, Target, Sprout, Quote } from "lucide-react";
+import { Heart, Users, Target, Sprout, Quote, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -16,39 +16,13 @@ const HeroSection = () => {
   const [communityOpen, setCommunityOpen] = useState(false);
 
   return (
-    <section id="hero" className="relative min-h-[92vh] flex items-center overflow-hidden">
-      {/* Soft dark vignette — stronger on mobile, subtle on desktop */}
-      <div
-        className="absolute inset-0 z-[1] md:hidden"
-        style={{ background: "linear-gradient(180deg, hsla(210,18%,5%,0.35) 0%, hsla(210,18%,5%,0.55) 35%, hsla(210,18%,5%,0.55) 65%, hsla(210,18%,5%,0.25) 100%)" }}
-      />
-      <div
-        className="absolute inset-0 z-[1] hidden md:block"
-        style={{ background: "linear-gradient(to left, hsla(210,18%,5%,0.5) 20%, hsla(210,18%,5%,0.25) 50%, transparent 80%)" }}
-      />
-
+    <section id="hero" className="relative min-h-[96vh] flex items-center overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-20 left-10 h-72 w-72 rounded-full bg-primary/10 blur-[100px]" />
       <div className="absolute bottom-20 right-10 h-60 w-60 rounded-full bg-secondary/10 blur-[80px]" />
 
-      <div className="container relative z-10 mx-auto px-6 py-20">
-        <div className="max-w-2xl">
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <button
-              type="button"
-              onClick={() => setCommunityOpen(true)}
-              className="mb-8 inline-flex items-center gap-2 rounded-full bg-cream/20 px-4 py-2 backdrop-blur-md border border-cream/25 hover:bg-cream/30 hover:border-cream/40 transition-all cursor-pointer group"
-            >
-              <Sparkles className="h-3.5 w-3.5 text-cream group-hover:rotate-12 transition-transform" />
-              <span className="text-xs font-medium text-cream tracking-wide">הקהילה שתמיד מחכה לכם</span>
-              <span className="text-[10px] text-cream/70 group-hover:text-cream transition-colors">לחצו לסיפור המלא ←</span>
-            </button>
-          </motion.div>
-
+      <div className="container relative z-10 mx-auto px-6 py-20 md:py-24">
+        <div className="max-w-2xl mt-6 md:mt-10">
           <motion.h1
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
@@ -57,7 +31,7 @@ const HeroSection = () => {
           >
             תמיד יש לך
             <br />
-            <span className="bg-gradient-to-l from-[hsl(20,50%,78%)] to-[hsl(155,30%,60%)] bg-clip-text text-transparent">
+            <span className="text-gradient-warm">
               איפה להיות.
             </span>
           </motion.h1>
@@ -66,7 +40,7 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-10 max-w-md text-base leading-relaxed text-cream-deep md:text-lg drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)]"
+            className="mb-10 max-w-md text-base leading-relaxed text-cream font-bold md:text-lg drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)]"
           >
             מחברים רווקים ורווקות למקומות חמים, אנשים מדהימים וחוויות משמעותיות — בכל שבת וחג.
           </motion.p>
@@ -96,14 +70,6 @@ const HeroSection = () => {
         </div>
       </div>
 
-      <motion.div
-        animate={{ y: [0, 6, 0] }}
-        transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-      >
-        <ArrowDown className="h-5 w-5 text-cream/40" />
-      </motion.div>
-
       <Dialog open={communityOpen} onOpenChange={setCommunityOpen}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0" dir="rtl">
           {/* Hero header with gradient */}
@@ -122,7 +88,7 @@ const HeroSection = () => {
               <DialogTitle className="text-3xl font-black font-display text-right leading-tight">
                 פל״א — <span className="text-gradient-warm">פשוט לבחור איפה</span>
               </DialogTitle>
-              <DialogDescription className="text-right text-sm text-muted-foreground mt-2">
+              <DialogDescription className="text-right text-sm text-foreground font-bold mt-2">
                 קהילה שמחברת בין אנשים, לבבות ובתים — בכל שבת וחג
               </DialogDescription>
             </DialogHeader>
@@ -162,20 +128,20 @@ const HeroSection = () => {
               <div className="relative pr-6 border-r-2 border-dashed border-secondary/30 space-y-5">
                 <div className="relative">
                   <div className="absolute -right-[29px] top-1 h-4 w-4 rounded-full bg-secondary border-4 border-background" />
-                  <p className="text-sm leading-[1.85] text-muted-foreground">
+                  <p className="text-sm leading-[1.85] text-foreground font-bold">
                     פל״א נולד מתוך חוויה אישית של <strong className="text-foreground">אודיה עמרוסי</strong>,
                     שהכירה מקרוב את הבדידות של רווקות ורווקים בשבתות וחגים.
                   </p>
                 </div>
                 <div className="relative">
                   <div className="absolute -right-[29px] top-1 h-4 w-4 rounded-full bg-primary border-4 border-background" />
-                  <p className="text-sm leading-[1.85] text-muted-foreground">
+                  <p className="text-sm leading-[1.85] text-foreground font-bold">
                     במקום לחכות שמישהו אחר יפתור — היא הקימה את הפלטפורמה שתמיד הייתה צריכה להתקיים.
                   </p>
                 </div>
                 <div className="relative">
                   <div className="absolute -right-[29px] top-1 h-4 w-4 rounded-full bg-accent border-4 border-background" />
-                  <p className="text-sm leading-[1.85] text-muted-foreground">
+                  <p className="text-sm leading-[1.85] text-foreground font-bold">
                     היום פל״א הוא <strong className="text-foreground">בית לקהילה גדלה והולכת</strong> של
                     מארחים, מתנדבים, ארגונים ורווקות ורווקים שמחפשים מקום חם.
                   </p>
@@ -215,7 +181,7 @@ const HeroSection = () => {
                 <Users className="h-4 w-4 text-primary" />
                 <span className="text-xs font-bold uppercase tracking-widest text-primary">מי בקהילה</span>
               </div>
-              <p className="text-sm leading-[1.95] text-muted-foreground">
+              <p className="text-sm leading-[1.95] text-foreground font-bold">
                 הקהילה שלנו מורכבת מ
                 <strong className="text-foreground"> רווקים ורווקות 💛</strong> שמחפשים מקום חם להיות בו,
                 <strong className="text-foreground"> משפחות מארחות 🏡</strong> שפותחות את הבית והלב,

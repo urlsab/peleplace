@@ -6,11 +6,13 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, CheckCircle2, Eye, EyeOff, UserRound, Home, HandHeart, Calendar, Briefcase, Users, ArrowRight, Shield } from "lucide-react";
+import { Upload, CheckCircle2, Eye, EyeOff } from "lucide-react";
 import DynamicBackground from "@/components/DynamicBackground";
+import Navbar from "@/components/Navbar";
 import ProfileFormFields, { type ProfileCategory } from "@/components/profile/ProfileFormFields";
 
 type RegistrationCategory = ProfileCategory;
@@ -19,15 +21,14 @@ const CATEGORIES: {
   value: RegistrationCategory;
   label: string;
   description: string;
-  icon: typeof UserRound;
 }[] = [
-  { value: "single", label: "רווק / רווקה", description: "מחפש/ת מקום לשבת או חג", icon: UserRound },
-  { value: "host_family", label: "משפחה מארחת", description: "מארחים בבית לארוחות שבת וחג", icon: Home },
-  { value: "host_reservist", label: "אשת מילואים", description: "נשארת בבית ושמחה לארח אורחת שתעזור ותהיה חברה", icon: Shield },
-  { value: "host_organized_shabbat", label: "ארגון לשבתות", description: "מארגנים שבתות קבוצתיות", icon: Calendar },
-  { value: "host_singles_group", label: "קבוצת רווקים", description: "מפעילים קהילה לרווקים", icon: Users },
-  { value: "host_volunteer", label: "מקום להתנדבות", description: "מציעים התנדבות בשבת/חג", icon: HandHeart },
-  { value: "host_work", label: "מקום עבודה", description: "מציעים עבודה בשבת/חג", icon: Briefcase },
+  { value: "single", label: "רווק / רווקה", description: "מחפש/ת מקום לשבת או חג" },
+  { value: "host_family", label: "משפחה מארחת", description: "מארחים בבית לארוחות שבת וחג" },
+  { value: "host_reservist", label: "אשת מילואים", description: "נשארת בבית ושמחה לארח אורחת שתעזור ותהיה חברה" },
+  { value: "host_organized_shabbat", label: "ארגון לשבתות", description: "מארגנים שבתות קבוצתיות" },
+  { value: "host_singles_group", label: "קבוצת רווקים", description: "מפעילים קהילה לרווקים" },
+  { value: "host_volunteer", label: "מקום להתנדבות", description: "מציעים התנדבות בשבת/חג" },
+  { value: "host_work", label: "מקום עבודה", description: "מציעים עבודה בשבת/חג" },
 ];
 
 const Auth = () => {
@@ -236,8 +237,9 @@ const Auth = () => {
   // Wizard step: detailed profile (after account created)
   if (regStep === "profile" && registeredUserId && category) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 py-8">
+      <div className="min-h-screen flex items-center justify-center px-4 py-8 pt-24">
         <DynamicBackground variant="candles" />
+        <Navbar />
         <div className="w-full max-w-lg space-y-6">
           <div className="text-center space-y-1">
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 mb-2">
@@ -273,8 +275,9 @@ const Auth = () => {
   // Success screen
   if (submitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4 pt-24">
         <DynamicBackground variant="candles" />
+        <Navbar />
         <div className="mx-auto max-w-md text-center space-y-6">
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
             <CheckCircle2 className="h-10 w-10 text-primary" />
@@ -308,8 +311,9 @@ const Auth = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8">
+    <div className="min-h-screen flex items-center justify-center px-4 py-8 pt-24">
       <DynamicBackground variant="candles" />
+      <Navbar />
       <div className="w-full max-w-md space-y-6">
         {/* Logo */}
         <div className="text-center">
@@ -381,60 +385,24 @@ const Auth = () => {
                 {loading ? "מתחבר..." : "התחברות"}
               </Button>
             </form>
-          ) : !category ? (
-            /* CATEGORY SELECTION STEP */
-            <div className="space-y-3">
-              <div className="text-center space-y-1">
-                <h2 className="text-base font-bold font-display">איך תרצו להצטרף?</h2>
-                <p className="text-xs text-muted-foreground">בחרו את הסוג שמתאים לכם</p>
-              </div>
-              <div className="grid grid-cols-1 gap-2">
-                {CATEGORIES.map((c) => {
-                  const Icon = c.icon;
-                  return (
-                    <button
-                      key={c.value}
-                      type="button"
-                      onClick={() => setCategory(c.value)}
-                      className="flex items-center gap-3 rounded-xl border-2 border-border bg-background p-3 text-right transition-all hover:border-primary hover:shadow-sm"
-                    >
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                        <Icon className="h-5 w-5" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <div className="font-bold text-sm font-display">{c.label}</div>
-                        <div className="text-[11px] text-muted-foreground truncate">{c.description}</div>
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
           ) : (
             /* REGISTRATION FORM */
             <form onSubmit={handleRegister} className="space-y-4">
-              {/* Selected category banner */}
-              <div className="flex items-center justify-between gap-2 rounded-xl bg-accent/60 px-3 py-2">
-                <div className="flex items-center gap-2 min-w-0">
-                  {(() => {
-                    const c = CATEGORIES.find((x) => x.value === category)!;
-                    const Icon = c.icon;
-                    return (
-                      <>
-                        <Icon className="h-4 w-4 text-primary shrink-0" />
-                        <span className="text-xs font-bold truncate">{c.label}</span>
-                      </>
-                    );
-                  })()}
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setCategory(null)}
-                  className="flex items-center gap-1 text-[11px] text-primary hover:underline shrink-0"
-                >
-                  שינוי
-                  <ArrowRight className="h-3 w-3" />
-                </button>
+              {/* Category question at the top of registration */}
+              <div className="space-y-2 rounded-xl border border-border bg-accent/30 p-3">
+                <Label className="text-xs font-bold">מי אתה? *</Label>
+                <Select dir="rtl" value={category ?? undefined} onValueChange={(val) => setCategory(val as RegistrationCategory)}>
+                  <SelectTrigger className="text-right font-semibold bg-background">
+                    <SelectValue placeholder="בחרו סוג משתמש" />
+                  </SelectTrigger>
+                  <SelectContent align="end" sideOffset={6}>
+                    {CATEGORIES.map((c) => (
+                      <SelectItem key={c.value} value={c.value}>
+                        {c.label} — {c.description}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="space-y-1.5">
@@ -619,7 +587,7 @@ const Auth = () => {
               <Button
                 type="submit"
                 className="w-full rounded-full font-bold h-11"
-                disabled={loading || !termsAccepted || !gender || !dateOfBirth || !recommenderName.trim() || !recommenderPhone.trim() || !recommenderRelationship.trim()}
+                disabled={loading || !category || !termsAccepted || !gender || !dateOfBirth || !recommenderName.trim() || !recommenderPhone.trim() || !recommenderRelationship.trim()}
               >
                 {loading ? "נרשם..." : "הצטרפות לפל״א"}
               </Button>
