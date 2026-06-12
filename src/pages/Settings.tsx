@@ -9,17 +9,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { KeyRound, Mail, Trash2, ArrowRight } from "lucide-react";
 import DynamicBackground from "@/components/DynamicBackground";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+
 
 const Settings = () => {
   const { user, signOut } = useAuth();
@@ -76,15 +66,31 @@ const Settings = () => {
   };
 
   const handleDeleteAccount = async () => {
-    setDeleting(true);
-    // Note: actual deletion requires service role; we sign out and ask user to contact
-    await signOut();
-    toast({
-      title: "התנתקת מהמערכת",
-      description: "למחיקה מלאה של החשבון נא ליצור קשר עם הצוות",
-    });
-    navigate("/");
-  };
+  setDeleting(true);
+
+  const { data: { session } } = await supabase.auth.getSession();
+
+  const res = await fetch(
+    `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/delete-user`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${session?.access_token}`,
+      },
+    }
+  );
+
+  if (!res.ok) {
+    const err = await res.json();
+    toast({ title: "שגיאה במחיקה", description: err.error, variant: "destructive" });
+    setDeleting(false);
+    return;
+  }
+
+  await signOut();
+  toast({ title: "החשבון נמחק בהצלחה" });
+  navigate("/");
+};
 
   return (
     <div className="min-h-screen">
@@ -182,31 +188,16 @@ const Settings = () => {
             <p className="text-sm text-muted-foreground">
               מחיקת החשבון תסיר את כל הנתונים שלך מהמערכת. פעולה זו אינה הפיכה.
             </p>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="destructive" className="w-full rounded-full font-bold">
-                  בקשה למחיקת חשבון
-                </Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent dir="rtl">
-                <AlertDialogHeader>
-                  <AlertDialogTitle>בטוחים שברצונכם למחוק את החשבון?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    תועברו למסך הראשי. למחיקה סופית של הנתונים, נא ליצור קשר עם הצוות שלנו דרך טופס "צור קשר".
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>ביטול</AlertDialogCancel>
-                  <AlertDialogAction
-                    onClick={handleDeleteAccount}
-                    disabled={deleting}
-                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                  >
-                    {deleting ? "מבצע..." : "אישור"}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
+
+            <Button
+              variant="destructive"
+              className="w-full rounded-full font-bold"
+              onClick={handleDeleteAccount}
+              disabled={deleting}
+            >
+              {deleting ? "מבצע..." : "בקשה למחיקת חשבון"}
+            </Button>
+            
           </div>
         </div>
       </div>

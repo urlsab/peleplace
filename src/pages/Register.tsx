@@ -61,12 +61,16 @@ const Register = () => {
         id_document_url: idDocUrl,
         terms_accepted_at: new Date().toISOString(),
         date_of_birth: `${birthYear}-01-01`,
+        registration_status: "approved",
         gender,
       } as any);
 
       if (profileError) throw profileError;
 
+      
       setSubmitted(true);
+      setTimeout(() => navigate("/profile"), 3000);
+      
     } catch (error: any) {
       toast({
         title: "שגיאה",
@@ -85,36 +89,43 @@ const Register = () => {
 
   // Success page after registration
   if (submitted) {
-    return (
-      <div className="min-h-screen bg-background pattern-dots flex items-center justify-center px-4">
-        <div className="mx-auto max-w-md text-center space-y-6">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
-            <CheckCircle2 className="h-10 w-10 text-primary" />
-          </div>
-          <h1 className="text-3xl font-black font-display">הבקשה נשלחה בהצלחה! 🎉</h1>
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-card space-y-4 text-right">
-            <p className="text-foreground leading-relaxed">
-              תודה שנרשמתם לפל״א! הבקשה שלכם התקבלה ותיבדק על ידי הצוות שלנו בהקדם.
-            </p>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              אנחנו שמים דגש על בניית קהילה בטוחה ומכבדת, ולכן כל הרשמה עוברת אישור ידני. 
-              ברגע שההרשמה תאושר — תקבלו עדכון במייל ותוכלו להתחיל להשתמש באתר.
-            </p>
-            <p className="text-muted-foreground text-sm">
-              ⏳ זמן אישור ממוצע: עד 24 שעות
-            </p>
-          </div>
-          <Button
-            onClick={() => navigate("/")}
-            variant="outline"
-            className="rounded-full px-8"
-          >
-            חזרה לעמוד הראשי
-          </Button>
+  return (
+    <div className="min-h-screen bg-background pattern-dots flex items-center justify-center px-4">
+      <div className="mx-auto max-w-md text-center space-y-6">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
+          <CheckCircle2 className="h-10 w-10 text-primary" />
         </div>
+        <h1 className="text-3xl font-black font-display">ההרשמה הושלמה בהצלחה! 🎉</h1>
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-card space-y-4 text-right">
+          <p className="text-foreground leading-relaxed font-bold">
+            📧 אשרו את כתובת המייל שלכם
+          </p>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            שלחנו אליכם מייל אימות לכתובת <span className="font-bold text-foreground">{user?.email}</span>.
+            <br />
+            לחצו על הקישור במייל כדי לאשר את החשבון ולהתחיל להשתמש באתר.
+          </p>
+          <p className="text-muted-foreground text-sm">
+            לא קיבלתם מייל? בדקו את תיקיית הספאם.
+          </p>
+        </div>
+        <Button
+          onClick={() => navigate("/profile")}
+          className="rounded-full px-8"
+        >
+          לעמוד הפרופיל שלי
+        </Button>
+        <Button
+          onClick={() => navigate("/")}
+          variant="outline"
+          className="rounded-full px-8"
+        >
+          חזרה לעמוד הראשי
+        </Button>
       </div>
-    );
-  }
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen bg-background pattern-dots py-12 px-4">

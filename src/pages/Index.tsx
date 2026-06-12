@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Briefcase, HandHeart, Home, Star, Heart, Sparkles, Sun, ShieldCheck, UserCheck, Lock, Eye, CalendarPlus } from "lucide-react";
+import { Briefcase, HandHeart, Home, Star, Heart, Sparkles, Sun, ShieldCheck, Lock, Eye, CalendarPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import founderPhoto from "@/assets/founder-photo.png";
@@ -15,6 +15,7 @@ import shabbatTableBg from "@/assets/shabbat-table-bg.jpg";
 import categoriesBg from "@/assets/categories-bg.jpg";
 import heroImage from "@/assets/hero-shabbat.jpg";
 import ScrollingBackground from "@/components/ScrollingBackground";
+import catappLogo from "@/assets/catapp-logo.png";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -23,13 +24,72 @@ const fadeUp = {
 };
 
 const backgroundLayers = [
-  { id: "hero", image: heroImage, overlayStyle: { background: "linear-gradient(to left, hsla(210,18%,6%,0.7) 20%, hsla(210,18%,6%,0.4) 50%, hsla(210,18%,6%,0.15) 100%)" } },
-  { id: "opportunities", image: categoriesBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.55)", backdropFilter: "blur(1px)" } },
-  { id: "about", image: aboutWarmBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.6)", backdropFilter: "blur(1px)" } },
-  { id: "trust", image: aboutWarmBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.62)", backdropFilter: "blur(1px)" } },
-  { id: "faq", image: warmLandscapeBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.55)", backdropFilter: "blur(1px)" } },
-  { id: "contact", image: shabbatTableBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.6)", backdropFilter: "blur(1px)" } },
-  { id: "cta", image: shabbatTableBg, overlayStyle: { backgroundColor: "hsla(50,20%,97%,0.62)", backdropFilter: "blur(1px)" } },
+  {
+    id: "hero",
+    image: heroImage,
+    overlayStyle: {
+      background:
+        "linear-gradient(to left, hsla(210,18%,6%,0.82) 20%, hsla(210,18%,6%,0.58) 50%, hsla(210,18%,6%,0.25) 100%)",
+    },
+  },
+
+  // כהה מעט יותר כדי שהטקסט יבלוט
+  {
+    id: "opportunities",
+    image: categoriesBg,
+    overlayStyle: {
+      backgroundColor: "hsla(210,18%,6%,0.22)",
+      backdropFilter: "blur(1px)",
+    },
+  },
+
+  // כהה מעט יותר
+  {
+    id: "about",
+    image: aboutWarmBg,
+    overlayStyle: {
+      backgroundColor: "hsla(210,18%,6%,0.18)",
+      backdropFilter: "blur(1px)",
+    },
+  },
+
+  // כהה יותר באזור האמון והבטיחות
+  {
+    id: "trust",
+    image: aboutWarmBg,
+    overlayStyle: {
+      backgroundColor: "hsla(210,18%,6%,0.24)",
+      backdropFilter: "blur(1px)",
+    },
+  },
+
+  {
+    id: "faq",
+    image: warmLandscapeBg,
+    overlayStyle: {
+      backgroundColor: "hsla(210,18%,6%,0.18)",
+      backdropFilter: "blur(1px)",
+    },
+  },
+
+  {
+    id: "contact",
+    image: shabbatTableBg,
+    overlayStyle: {
+      backgroundColor: "hsla(210,18%,6%,0.22)",
+      backdropFilter: "blur(1px)",
+    },
+  },
+
+  // CTA מעט כהה יותר כדי לתת דרמטיות
+  {
+    id: "cta",
+    image: shabbatTableBg,
+    overlayStyle: {
+      backgroundColor: "hsla(210,18%,6%,0.28)",
+      backdropFilter: "blur(1px)",
+    },
+  },
 ];
 
 const Index = () => {
@@ -196,11 +256,7 @@ const Index = () => {
 
             <div className="grid gap-5 md:grid-cols-2 max-w-5xl mx-auto">
               {[
-                {
-                  icon: UserCheck,
-                  title: "אישור ידני לכל הרשמה",
-                  desc: "צוות פל״א בודק כל פרופיל לפני שהוא נכנס לקהילה — שם מלא, טלפון, ממליץ/ה ופרטי זיהוי.",
-                },
+                
                 {
                   icon: ShieldCheck,
                   title: "מניעת זיוף זהויות",
@@ -275,12 +331,12 @@ const Index = () => {
               className="relative mx-auto max-w-4xl p-2 text-center md:p-4"
             >
               <div className="relative z-10">
-                <h2 className="mb-5 text-3xl font-black text-foreground md:text-[3rem] leading-tight">
+                <h2 className="mb-5 text-3xl font-black text-white md:text-[3rem] leading-tight">
                   השבת הבאה שלכם
                   <br />
                   מתחילה כאן
                 </h2>
-                <p className="mx-auto mb-8 max-w-2xl text-lg md:text-xl text-foreground font-bold leading-[1.8]">
+                <p className="mx-auto mb-8 max-w-2xl text-lg md:text-xl text-white font-bold leading-[1.8]">
                   הצטרפו לקהילה שלנו ותמצאו את המקום המושלם לכל שבת וחג
                 </p>
                 <Button
@@ -296,24 +352,39 @@ const Index = () => {
         </motion.section>
 
         {/* Footer */}
-        <motion.footer initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="border-t border-border/40 bg-transparent py-10">
+        <motion.footer initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="bg-transparent py-10">
           <div className="container mx-auto px-6">
             <div className="flex flex-col items-center gap-4 text-center">
               <div className="flex items-center gap-1.5 justify-center">
                 <span className="text-lg font-black font-display">פל<span className="text-gradient-warm">״</span>א</span>
               </div>
               <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-bold">
-                <a href="/terms" className="text-foreground hover:text-primary transition-colors">תקנון</a>
-                <span className="text-foreground/60">|</span>
-                <a href="/accessibility" className="text-foreground hover:text-primary transition-colors">הצהרת נגישות</a>
-                <span className="text-foreground/60">|</span>
-                <p className="text-foreground">
+                <a href="/terms" className="text-white hover:text-primary transition-colors">תקנון</a>
+                <span className="text-white/60">|</span>
+                <a href="/accessibility" className="text-white hover:text-primary transition-colors">הצהרת נגישות</a>
+                <span className="text-white/60">|</span>
+                <p className="text-white">
                   © 2026 פל״א — פשוט לבחור איפה. כל הזכויות שמורות
+                </p>
+                <span className="text-white/60">|</span>
+                <p className="text-white">
+                  <a
+              href="https://catapp.it.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center hover:opacity-80 transition-opacity"
+            >
+              בניהול 
+              <img src={catappLogo} alt="catapp" className="h-5 w-auto" style={{marginRight:'4px'}} />
+               
+              </a>
                 </p>
               </div>
             </div>
           </div>
         </motion.footer>
+
+        
       </div>
     </div>
   );

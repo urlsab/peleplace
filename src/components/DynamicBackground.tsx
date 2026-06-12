@@ -45,7 +45,7 @@ interface DynamicBackgroundProps {
  * - Mobile: static image (saves bandwidth).
  * Renders behind page content (z-index: -10) with a cream overlay for readability.
  */
-const DynamicBackground = ({ variant, overlayOpacity = 0.75 }: DynamicBackgroundProps) => {
+const DynamicBackground = ({ variant, overlayOpacity = 0.2 }: DynamicBackgroundProps) => {
   const isMobile = useIsMobile();
   const { video, image } = SOURCES[variant];
 

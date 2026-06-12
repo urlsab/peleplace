@@ -92,7 +92,7 @@ const Profile = () => {
 
   // Load detailed profile based on activeRole
   useEffect(() => {
-    if (!user || !profile || profile.registration_status !== "approved") {
+    if (!user || !profile ) {
       setLoadingProfile(false);
       return;
     }
@@ -195,48 +195,6 @@ const Profile = () => {
     );
   }
 
-  if (profile.registration_status === "pending") {
-    return (
-      <div className="min-h-screen">
-        <DynamicBackground variant="jerusalem" />
-        <Navbar />
-        <div className="pt-24 pb-12 px-4">
-          <div className="mx-auto max-w-md text-center space-y-6">
-            <Clock className="mx-auto h-16 w-16 text-amber-soft" />
-            <h1 className="text-2xl font-black font-display">ההרשמה שלך בבדיקה</h1>
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-card space-y-4 text-right">
-              <p className="text-foreground leading-relaxed">
-                הצוות שלנו בודק כעת את פרטי ההרשמה שלך כדי לשמור על מרחב בטוח ומכבד לכל המשתתפים.
-              </p>
-              <p className="text-muted-foreground text-sm leading-relaxed">
-                בינתיים את/ה מוזמן/ת לגלוש באתר ולהכיר את ההזדמנויות — אך שליחת בקשות תתאפשר רק לאחר האישור.
-              </p>
-              <p className="text-muted-foreground text-sm">
-                ⏳ זמן אישור ממוצע: עד 24 שעות
-              </p>
-            </div>
-            <Button onClick={() => navigate("/explore")} variant="outline" className="rounded-full px-8">
-              גלשו באתר בינתיים
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (profile.registration_status === "rejected") {
-    return (
-      <div className="min-h-screen">
-        <DynamicBackground variant="jerusalem" />
-        <Navbar />
-        <div className="pt-24 text-center px-4">
-          <XCircle className="mx-auto h-16 w-16 text-destructive mb-4" />
-          <h1 className="text-2xl font-black font-display mb-2">ההרשמה לא אושרה</h1>
-          <p className="text-muted-foreground">פנו אלינו לפרטים נוספים</p>
-        </div>
-      </div>
-    );
-  }
 
   // If we have a detailed profile and are in view mode, show it
   const showView = mode === "view" && detailedProfile && profileType;

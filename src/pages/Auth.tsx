@@ -59,13 +59,33 @@ const Auth = () => {
   const { toast } = useToast();
   const { user, profile, loading: authLoading } = useAuth();
 
-  // Smart redirect for already logged-in users
   useEffect(() => {
-    if (authLoading || !user) return;
-    // Don't auto-redirect while user is in the middle of the registration wizard
-    if (regStep === "profile" || regStep === "done") return;
-    redirectByStatus();
-  }, [user, profile, authLoading, regStep]);
+  if (authLoading || !user) return;
+  if (regStep === "profile" || regStep === "done") return;
+  if (!profile) return;
+
+  if (profile.registration_status === "pending") {
+    supabase.auth.signOut();
+    toast({
+      title: "הבקשה שלך עדיין ממתינה לאישור",
+      description: "תקבל/י עדכון במייל לאחר האישור.",
+      variant: "destructive",
+    });
+    return;
+  }
+
+  if (profile.registration_status === "rejected") {
+    supabase.auth.signOut();
+    toast({
+      title: "ההרשמה שלך לא אושרה",
+      description: "פנה/י אלינו לפרטים נוספים.",
+      variant: "destructive",
+    });
+    return;
+  }
+
+  redirectByStatus();
+}, [user, profile, authLoading, regStep]);
 
   const redirectByStatus = () => {
     if (!user) return;
@@ -79,8 +99,8 @@ const Auth = () => {
       navigate("/explore");
     }
   };
-
-  const handleLogin = async (e: React.FormEvent) => {
+  
+const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
@@ -94,23 +114,15 @@ const Auth = () => {
 
     const signedInUser = data.user;
     if (signedInUser) {
-      const { data: existingProfile } = await supabase
-        .from("profiles")
-        .select("registration_status")
-        .eq("user_id", signedInUser.id)
-        .maybeSingle();
+      
+      navigate("/")
 
-      if (existingProfile?.registration_status === "pending") {
-        navigate("/profile");
-      } else if (existingProfile?.registration_status === "approved") {
-        navigate("/explore");
-      } else if (existingProfile?.registration_status === "rejected") {
-        navigate("/profile");
-      }
+   
     }
 
     setLoading(false);
   };
+  
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -182,57 +194,30 @@ const Auth = () => {
       setLoading(false);
     }
   };
-
-  const handleGoogleSignIn = async () => {
-    // Google sign-in is only allowed for users who already registered (Login tab).
-    if (!isLogin) {
-      toast({
-        title: "הרשמה עם Google אינה זמינה",
-        description: "כדי להצטרף לפל״א יש למלא את טופס ההרשמה. לאחר שהבקשה תאושר, תוכל/י להתחבר עם Google.",
-        variant: "destructive",
-      });
-      return;
+const handleGoogleSignIn = async () => {
+  if (!isLogin) {
+    toast({
+      title: "הרשמה עם Google אינה זמינה",
+      description: "כדי להצטרף לפל״א יש למלא את טופס ההרשמה. לאחר שהבקשה תאושר, תוכל/י להתחבר עם Google.",
+      variant: "destructive",
+    });
+    return;
+  }
+  setGoogleLoading(true);
+  try {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: window.location.origin },
+    });
+    if (error) {
+      toast({ title: "שגיאה בהתחברות עם Google", description: error.message, variant: "destructive" });
     }
-    setGoogleLoading(true);
-    try {
-      const result = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
-      });
-      if (result.error) {
-        toast({ title: "שגיאה בהתחברות עם Google", description: String(result.error), variant: "destructive" });
-        setGoogleLoading(false);
-        return;
-      }
-      if (result.redirected) return;
-
-      // Session set — verify a profile exists for this user. If not, sign them out and redirect to registration.
-      const { data: { user: signedInUser } } = await supabase.auth.getUser();
-      if (signedInUser) {
-        const { data: existingProfile } = await supabase
-          .from("profiles")
-          .select("id")
-          .eq("user_id", signedInUser.id)
-          .maybeSingle();
-
-        if (!existingProfile) {
-          await supabase.auth.signOut();
-          toast({
-            title: "עוד לא נרשמת לפל״א",
-            description: "כדי להמשיך, יש למלא את טופס ההצטרפות. לאחר אישור, תוכל/י להתחבר עם Google.",
-            variant: "destructive",
-          });
-          setIsLogin(false);
-          setGoogleLoading(false);
-          return;
-        }
-      }
-      // Profile exists — redirect handled by useEffect
-    } catch (error: any) {
-      toast({ title: "שגיאה", description: error.message, variant: "destructive" });
-    } finally {
-      setGoogleLoading(false);
-    }
-  };
+  } catch (error: any) {
+    toast({ title: "שגיאה", description: error.message, variant: "destructive" });
+  } finally {
+    setGoogleLoading(false);
+  }
+};
 
   // Wizard step: detailed profile (after account created)
   if (regStep === "profile" && registeredUserId && category) {

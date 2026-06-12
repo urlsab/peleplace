@@ -103,6 +103,11 @@
     --shadow-hover: 0 12px 40px -8px hsl(215 88% 50% / 0.14);
   }
 
+  .home-page,
+  .home-page * {
+    color: hsl(0 0% 100%) !important;
+  }
+
   .text-gradient-warm {
     background: var(--gradient-warm);
     -webkit-background-clip: text;

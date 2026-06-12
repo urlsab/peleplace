@@ -63,6 +63,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           .maybeSingle(),
       ]);
 
+      console.log("profileResult:", profileResult.data, "error:", profileResult.error);
+
       if (!active || requestIdRef.current !== requestId) return;
 
       setProfile(profileResult.data ?? null);

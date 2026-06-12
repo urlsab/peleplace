@@ -2,7 +2,7 @@ import { LogOut, User, Shield, Search, CalendarCheck, Menu, FileText, Mail, Sett
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
-import logoPele from "@/assets/logo-pela-v6.png";
+import logoPele from "@/assets/pele_heart_pele-removebg-preview.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,7 +39,7 @@ const Navbar = () => {
             height={48}
             className="h-10 w-10 shrink-0 object-contain transition-transform group-hover:scale-105 rounded-full"
           />
-          <span className="text-[11px] text-foreground font-bold mt-0.5 truncate">— פשוט לבחור איפה</span>
+
         </button>
 
         {/* Desktop quick links */}
@@ -122,12 +122,8 @@ const Navbar = () => {
 
                 <DropdownMenuSeparator />
 
-                <DropdownMenuItem onClick={() => navigate("/terms")} className="rounded-xl gap-2 cursor-pointer">
-                  <FileText className="h-4 w-4" /> תקנון
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => goToSection("#contact")} className="rounded-xl gap-2 cursor-pointer">
-                  <Mail className="h-4 w-4" /> צור קשר
-                </DropdownMenuItem>
+                
+                
                 <DropdownMenuItem onClick={() => navigate("/settings")} className="rounded-xl gap-2 cursor-pointer">
                   <SettingsIcon className="h-4 w-4" /> הגדרות
                 </DropdownMenuItem>
