@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,10 +9,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, CheckCircle2, Eye, EyeOff } from "lucide-react";
+import { Upload, Eye, EyeOff } from "lucide-react";
 import DynamicBackground from "@/components/DynamicBackground";
 import Navbar from "@/components/Navbar";
-import ProfileFormFields, { type ProfileCategory } from "@/components/profile/ProfileFormFields";
+import { type ProfileCategory } from "@/components/profile/ProfileFormFields";
+import peleTextsLogo from "@/assets/pele_texts-removebg-preview.png";
 
 type RegistrationCategory = ProfileCategory;
 
@@ -50,59 +50,78 @@ const Auth = () => {
   const [recommenderRelationship, setRecommenderRelationship] = useState("");
   const [idFile, setIdFile] = useState<File | null>(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
-  // Wizard step within registration: account → profile (after signup) → done
-  const [regStep, setRegStep] = useState<"account" | "profile" | "done">("account");
-  const [registeredUserId, setRegisteredUserId] = useState<string | null>(null);
-  const [submitted, setSubmitted] = useState(false);
+  const [showEmailConfirmationHint, setShowEmailConfirmationHint] = useState(false);
 
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { user, profile, loading: authLoading } = useAuth();
+  const { user, profile, loading: authLoading, signOut } = useAuth();
 
   useEffect(() => {
-  if (authLoading || !user) return;
-  if (regStep === "profile" || regStep === "done") return;
-  if (!profile) return;
+    const isConfirmed = sessionStorage.getItem("pele_registration_confirmed_popup") === "1";
+    if (!isConfirmed) return;
 
-  if (profile.registration_status === "pending") {
-    supabase.auth.signOut();
+    sessionStorage.removeItem("pele_registration_confirmed_popup");
+    setIsLogin(true);
+    setShowEmailConfirmationHint(false);
     toast({
-      title: "הבקשה שלך עדיין ממתינה לאישור",
-      description: "תקבל/י עדכון במייל לאחר האישור.",
-      variant: "destructive",
+      title: "ההרשמה הושלמה בהצלחה",
+      description: "אישור המייל התקבל. אפשר להתחבר עכשיו.",
     });
-    return;
-  }
+  }, [toast]);
 
-  if (profile.registration_status === "rejected") {
-    supabase.auth.signOut();
-    toast({
-      title: "ההרשמה שלך לא אושרה",
-      description: "פנה/י אלינו לפרטים נוספים.",
-      variant: "destructive",
-    });
-    return;
-  }
+  useEffect(() => {
+    if (authLoading || !user) return;
 
-  redirectByStatus();
-}, [user, profile, authLoading, regStep]);
+    const attemptedGoogleLogin = sessionStorage.getItem("pele_google_login_attempt") === "1";
 
-  const redirectByStatus = () => {
-    if (!user) return;
     if (!profile) {
-      // User signed up but no profile yet — could be Google sign-in, stay here
+      if (attemptedGoogleLogin) {
+        sessionStorage.removeItem("pele_google_login_attempt");
+        void signOut().finally(() => navigate("/auth/not-registered", { replace: true }));
+      }
       return;
     }
-    if (profile.registration_status === "pending") {
-      navigate("/profile");
-    } else if (profile.registration_status === "approved") {
-      navigate("/explore");
+
+    if (attemptedGoogleLogin) {
+      const hasManualRegistrationData =
+        !!profile.terms_accepted_at &&
+        !!profile.phone &&
+        !!profile.recommender_name &&
+        !!profile.recommender_phone &&
+        !!profile.recommender_relationship;
+
+      if (!hasManualRegistrationData) {
+        sessionStorage.removeItem("pele_google_login_attempt");
+        void signOut().finally(() => navigate("/auth/not-registered", { replace: true }));
+        return;
+      }
+
+      sessionStorage.removeItem("pele_google_login_attempt");
     }
-  };
-  
+
+    if (profile.registration_status === "pending") {
+      navigate("/profile", { replace: true });
+      return;
+    }
+
+    if (profile.registration_status === "rejected") {
+      void signOut();
+      toast({
+        title: "ההרשמה שלך לא אושרה",
+        description: "פנו אלינו לפרטים נוספים.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    navigate("/explore", { replace: true });
+  }, [user, profile, authLoading, navigate, signOut, toast]);
+
 const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+  sessionStorage.removeItem("pele_google_login_attempt");
 
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
 
@@ -114,10 +133,7 @@ const handleLogin = async (e: React.FormEvent) => {
 
     const signedInUser = data.user;
     if (signedInUser) {
-      
-      navigate("/")
-
-   
+      navigate("/");
     }
 
     setLoading(false);
@@ -134,56 +150,55 @@ const handleLogin = async (e: React.FormEvent) => {
       const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
-        options: { emailRedirectTo: window.location.origin },
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/confirmed`,
+          data: {
+            registration_source: "manual",
+            full_name: fullName,
+            email,
+            phone,
+            user_type: category === "single" ? "single" : "host",
+            host_subtype: category === "single" ? null : category,
+            gender,
+            date_of_birth: dateOfBirth,
+            recommender_name: recommenderName,
+            recommender_phone: recommenderPhone,
+            recommender_relationship: recommenderRelationship,
+          },
+        },
       });
       if (authError) throw authError;
-      const userId = authData.user?.id;
-      if (!userId) throw new Error("לא התקבל מזהה משתמש");
+      if (!authData.user?.id) throw new Error("לא התקבל מזהה משתמש");
 
-      // 2. Upload ID document (optional)
-      let idDocUrl: string | null = null;
-      if (idFile) {
-        const ext = idFile.name.split(".").pop();
-        const path = `${userId}/${Date.now()}.${ext}`;
-        const { error: uploadError } = await supabase.storage
-          .from("id-documents")
-          .upload(path, idFile);
-        if (uploadError) throw uploadError;
-        idDocUrl = path;
-      }
-
-      // 3. Create profile with pending status
+      // Save profile metadata for post-confirmation completion.
       const userType = category === "single" ? "single" : "host";
       const hostSubtype = category === "single" ? null : category;
-      const { error: profileError } = await supabase.from("profiles").insert({
-        user_id: userId,
-        full_name: fullName,
-        email,
-        phone,
-        user_type: userType as "single" | "host",
-        host_subtype: hostSubtype,
-        date_of_birth: dateOfBirth,
-        gender,
-        id_document_url: idDocUrl,
-        terms_accepted_at: new Date().toISOString(),
-        recommender_name: recommenderName,
-        recommender_phone: recommenderPhone,
-        recommender_relationship: recommenderRelationship,
-      } as any);
-      if (profileError) throw profileError;
 
-      // 4. Send registration-received email (non-blocking)
-      supabase.functions.invoke("send-transactional-email", {
-        body: {
-          templateName: "registration-received",
-          to: email,
-          data: { fullName },
+      const { error: updateMetadataError } = await supabase.auth.updateUser({
+        data: {
+          registration_source: "manual",
+          full_name: fullName,
+          email,
+          phone,
+          user_type: userType,
+          host_subtype: hostSubtype,
+          gender,
+          date_of_birth: dateOfBirth,
+          recommender_name: recommenderName,
+          recommender_phone: recommenderPhone,
+          recommender_relationship: recommenderRelationship,
         },
-      }).catch(() => {});
+      });
+      if (updateMetadataError) {
+        console.warn("Could not update user metadata after signup:", updateMetadataError.message);
+      }
 
-      // Move to detailed-profile step
-      setRegisteredUserId(userId);
-      setRegStep("profile");
+      toast({
+        title: "ההרשמה הצליחה",
+        description: "נשלח אליך מייל לאימות הכתובת. נעביר אותך לעמוד ההמתנה לאישור.",
+      });
+
+      navigate("/auth/pending-confirmation", { replace: true });
     } catch (error: any) {
       toast({
         title: "שגיאה בהרשמה",
@@ -205,95 +220,22 @@ const handleGoogleSignIn = async () => {
   }
   setGoogleLoading(true);
   try {
+    sessionStorage.setItem("pele_google_login_attempt", "1");
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: window.location.origin },
+      options: { redirectTo: `${window.location.origin}/auth` },
     });
     if (error) {
+      sessionStorage.removeItem("pele_google_login_attempt");
       toast({ title: "שגיאה בהתחברות עם Google", description: error.message, variant: "destructive" });
     }
   } catch (error: any) {
+    sessionStorage.removeItem("pele_google_login_attempt");
     toast({ title: "שגיאה", description: error.message, variant: "destructive" });
   } finally {
     setGoogleLoading(false);
   }
 };
-
-  // Wizard step: detailed profile (after account created)
-  if (regStep === "profile" && registeredUserId && category) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4 py-8 pt-24">
-        <DynamicBackground variant="candles" />
-        <Navbar />
-        <div className="w-full max-w-lg space-y-6">
-          <div className="text-center space-y-1">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 mb-2">
-              <CheckCircle2 className="h-6 w-6 text-primary" />
-            </div>
-            <h1 className="text-2xl font-black font-display">החשבון נוצר! 🎉</h1>
-            <p className="text-sm text-muted-foreground">עוד שלב אחד — נכיר אותך טוב יותר</p>
-          </div>
-          <div className="rounded-2xl border border-border/60 bg-card p-6 sm:p-8 shadow-card">
-            <h2 className="text-lg font-bold font-display text-center mb-1">בניית פרופיל</h2>
-            <p className="text-xs text-muted-foreground text-center mb-5">
-              הפרטים האלה יעזרו לנו להתאים לך את ההזדמנויות הכי טובות
-            </p>
-            <ProfileFormFields
-              category={category}
-              userId={registeredUserId}
-              onSaved={() => { setRegStep("done"); setSubmitted(true); }}
-              submitLabel="סיום הרשמה"
-            />
-            <button
-              type="button"
-              onClick={() => { setRegStep("done"); setSubmitted(true); }}
-              className="mt-4 w-full text-center text-xs text-muted-foreground hover:text-foreground"
-            >
-              דלגו על השלב — אפשר להשלים אחר כך
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Success screen
-  if (submitted) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4 pt-24">
-        <DynamicBackground variant="candles" />
-        <Navbar />
-        <div className="mx-auto max-w-md text-center space-y-6">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-primary/10">
-            <CheckCircle2 className="h-10 w-10 text-primary" />
-          </div>
-          <h1 className="text-3xl font-black font-display">ההרשמה נקלטה בהצלחה! 🎉</h1>
-          <div className="rounded-2xl border border-border bg-card p-6 shadow-card space-y-4 text-right">
-            <p className="text-foreground leading-relaxed">
-              תודה שנרשמת לפל״א! הבקשה שלך התקבלה ותיבדק על ידי הצוות שלנו בהקדם.
-            </p>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              אנחנו שמים דגש על בניית קהילה בטוחה ומכבדת, ולכן כל הרשמה עוברת אישור ידני.
-              בינתיים את/ה יכול/ה לגלוש באתר ולהכיר את ההזדמנויות — וברגע שההרשמה תאושר, תקבל/י עדכון במייל ותוכל/י להתחיל לשלוח בקשות.
-            </p>
-            <p className="text-muted-foreground text-sm">
-              ⏳ זמן אישור ממוצע: עד 24 שעות
-            </p>
-            <div className="rounded-xl bg-accent/60 px-4 py-3 text-sm">
-              <p className="font-medium text-foreground">פרטי ההתחברות שלך:</p>
-              <p className="text-muted-foreground mt-1">שם משתמש: <span dir="ltr" className="font-mono">{email}</span></p>
-              <p className="text-muted-foreground">סיסמה: הסיסמה שבחרת בעת ההרשמה</p>
-            </div>
-          </div>
-          <div className="flex justify-center">
-            <Button onClick={() => navigate("/")} className="rounded-full px-8">
-              חזרה לעמוד הראשי
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-8 pt-24">
@@ -302,17 +244,14 @@ const handleGoogleSignIn = async () => {
       <div className="w-full max-w-md space-y-6">
         {/* Logo */}
         <div className="text-center">
-          <button onClick={() => navigate("/")} className="inline-block">
-            <span className="text-3xl font-black font-display">
-              פל<span className="text-gradient-warm">״</span>א
-            </span>
+          <button onClick={() => navigate("/")} className="inline-flex items-center justify-center">
+            <img src={peleTextsLogo} alt='פל"א - פשוט לבחור איפה' className="h-10 w-auto sm:h-11 object-contain" />
           </button>
-          <p className="mt-1 text-sm text-muted-foreground">פשוט לבחור איפה</p>
         </div>
 
-        <div className="rounded-2xl border border-border/60 bg-card p-6 sm:p-8 shadow-card">
+        <div className="rounded-2xl border border-border/80 bg-card/95 backdrop-blur-md p-6 sm:p-8 shadow-card">
           {/* Tab switcher */}
-          <div className="mb-6 flex gap-2 p-1 bg-muted/50 rounded-full">
+          <div className="mb-6 flex gap-2 p-1 bg-muted/70 rounded-full">
             <button
               className={`flex-1 rounded-full py-2.5 text-sm font-semibold transition-all ${isLogin ? "bg-card text-foreground shadow-sm" : "text-muted-foreground"}`}
               onClick={() => setIsLogin(true)}
@@ -330,6 +269,12 @@ const handleGoogleSignIn = async () => {
           {isLogin ? (
             /* LOGIN FORM */
             <form onSubmit={handleLogin} className="space-y-4">
+              {showEmailConfirmationHint && (
+                <div className="rounded-xl border border-primary/30 bg-primary/10 px-3 py-2 text-right text-xs">
+                  <p className="font-semibold text-foreground">ההרשמה נקלטה בהצלחה.</p>
+                  <p className="text-muted-foreground mt-1">אנא אשרו את כתובת המייל בתיבת הדואר ואז התחברו.</p>
+                </div>
+              )}
               <div className="space-y-1.5">
                 <Label htmlFor="login-email" className="text-xs">אימייל</Label>
                 <Input
@@ -377,7 +322,7 @@ const handleGoogleSignIn = async () => {
               <div className="space-y-2 rounded-xl border border-border bg-accent/30 p-3">
                 <Label className="text-xs font-bold">מי אתה? *</Label>
                 <Select dir="rtl" value={category ?? undefined} onValueChange={(val) => setCategory(val as RegistrationCategory)}>
-                  <SelectTrigger className="text-right font-semibold bg-background">
+                  <SelectTrigger className="text-right font-semibold bg-background/90">
                     <SelectValue placeholder="בחרו סוג משתמש" />
                   </SelectTrigger>
                   <SelectContent align="end" sideOffset={6}>
@@ -528,7 +473,7 @@ const handleGoogleSignIn = async () => {
               </div>
 
               {/* ID Upload */}
-              <div className="space-y-1.5">
+              {/* <div className="space-y-1.5">
                 <Label className="text-xs">צילום תעודת זהות</Label>
                 <p className="text-[11px] text-muted-foreground leading-relaxed">
                   לא חובה, אבל יקל עלינו בתהליך האישור וההרשמה 🚀
@@ -550,7 +495,7 @@ const handleGoogleSignIn = async () => {
                     onChange={(e) => setIdFile(e.target.files?.[0] ?? null)}
                   />
                 </label>
-              </div>
+              </div> */}
 
               {/* Terms */}
               <div className="flex items-start gap-3 rounded-xl border border-border bg-background p-3">
@@ -558,7 +503,7 @@ const handleGoogleSignIn = async () => {
                   id="terms"
                   checked={termsAccepted}
                   onCheckedChange={(checked) => setTermsAccepted(checked === true)}
-                  className="mt-0.5"
+                  className="mt-0.5 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground"
                 />
                 <Label htmlFor="terms" className="text-xs leading-relaxed cursor-pointer">
                   קראתי ואני מאשר/ת את{" "}

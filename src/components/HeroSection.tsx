@@ -10,6 +10,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import peleTextsLogo from "@/assets/pele_texts-removebg-preview.png";
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -29,11 +30,11 @@ const HeroSection = () => {
             transition={{ duration: 0.7, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
             className="mb-6 text-[3.2rem] font-black leading-[1.1] tracking-tight md:text-[4.5rem] text-cream drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
           >
-            תמיד יש לך
-            <br />
-            <span className="text-gradient-warm">
-              איפה להיות.
-            </span>
+            <img
+              src={peleTextsLogo}
+              alt="תמיד יש לך איפה להיות."
+              className="h-[7rem] w-auto object-contain md:h-[10rem]"
+            />
           </motion.h1>
 
           <motion.p
@@ -85,8 +86,8 @@ const HeroSection = () => {
                   ✨ על הקהילה
                 </span>
               </div>
-              <DialogTitle className="text-3xl font-black font-display text-right leading-tight">
-                פל״א — <span className="text-gradient-warm">פשוט לבחור איפה</span>
+              <DialogTitle className="text-right leading-tight">
+                <img src={peleTextsLogo} alt='פל"א - פשוט לבחור איפה' className="h-11 w-auto object-contain" />
               </DialogTitle>
               <DialogDescription className="text-right text-sm text-foreground font-bold mt-2">
                 קהילה שמחברת בין אנשים, לבבות ובתים — בכל שבת וחג

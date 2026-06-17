@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Briefcase, HandHeart, Home, Star, Heart, Sparkles, Sun, ShieldCheck, Lock, Eye, CalendarPlus } from "lucide-react";
+import { Home, Star, Heart, Sun, CalendarPlus, Quote } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import founderPhoto from "@/assets/founder-photo.png";
@@ -16,6 +16,7 @@ import categoriesBg from "@/assets/categories-bg.jpg";
 import heroImage from "@/assets/hero-shabbat.jpg";
 import ScrollingBackground from "@/components/ScrollingBackground";
 import catappLogo from "@/assets/catapp-logo.png";
+import peleTextsLogo from "@/assets/pele_texts-removebg-preview.png";
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -29,7 +30,7 @@ const backgroundLayers = [
     image: heroImage,
     overlayStyle: {
       background:
-        "linear-gradient(to left, hsla(210,18%,6%,0.82) 20%, hsla(210,18%,6%,0.58) 50%, hsla(210,18%,6%,0.25) 100%)",
+        "linear-gradient(to left, hsla(357,52%,10%,0.84) 20%, hsla(357,44%,12%,0.6) 50%, hsla(357,40%,14%,0.24) 100%)",
     },
   },
 
@@ -38,7 +39,7 @@ const backgroundLayers = [
     id: "opportunities",
     image: categoriesBg,
     overlayStyle: {
-      backgroundColor: "hsla(210,18%,6%,0.22)",
+      backgroundColor: "hsla(357,44%,12%,0.24)",
       backdropFilter: "blur(1px)",
     },
   },
@@ -48,17 +49,7 @@ const backgroundLayers = [
     id: "about",
     image: aboutWarmBg,
     overlayStyle: {
-      backgroundColor: "hsla(210,18%,6%,0.18)",
-      backdropFilter: "blur(1px)",
-    },
-  },
-
-  // כהה יותר באזור האמון והבטיחות
-  {
-    id: "trust",
-    image: aboutWarmBg,
-    overlayStyle: {
-      backgroundColor: "hsla(210,18%,6%,0.24)",
+      backgroundColor: "hsla(357,38%,12%,0.2)",
       backdropFilter: "blur(1px)",
     },
   },
@@ -67,7 +58,7 @@ const backgroundLayers = [
     id: "faq",
     image: warmLandscapeBg,
     overlayStyle: {
-      backgroundColor: "hsla(210,18%,6%,0.18)",
+      backgroundColor: "hsla(357,38%,12%,0.22)",
       backdropFilter: "blur(1px)",
     },
   },
@@ -76,7 +67,7 @@ const backgroundLayers = [
     id: "contact",
     image: shabbatTableBg,
     overlayStyle: {
-      backgroundColor: "hsla(210,18%,6%,0.22)",
+      backgroundColor: "hsla(357,44%,12%,0.26)",
       backdropFilter: "blur(1px)",
     },
   },
@@ -86,7 +77,7 @@ const backgroundLayers = [
     id: "cta",
     image: shabbatTableBg,
     overlayStyle: {
-      backgroundColor: "hsla(210,18%,6%,0.28)",
+      backgroundColor: "hsla(357,46%,12%,0.26)",
       backdropFilter: "blur(1px)",
     },
   },
@@ -123,7 +114,7 @@ const Index = () => {
           >
             <div
               className="rounded-2xl p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-card border border-primary/15"
-              style={{ background: "linear-gradient(135deg, hsla(25,80%,51%,0.08), hsla(155,30%,45%,0.06))" }}
+              style={{ background: "linear-gradient(135deg, hsla(357,92%,34%,0.12), hsla(14,88%,62%,0.1))" }}
             >
               <div className="flex items-center gap-3 text-right">
                 <div className="h-10 w-10 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
@@ -168,63 +159,75 @@ const Index = () => {
               </h2>
             </motion.div>
 
-            {/* Asymmetric layout: large image left, text overflowing right */}
-            <div className="grid gap-10 md:grid-cols-2 items-start max-w-6xl mx-auto">
-              {/* Image column — large, no frame */}
-              <motion.div {...fadeUp} transition={{ delay: 0.1, duration: 0.6 }} className="md:order-2 self-start">
-                <div className="relative">
+            {/* Asymmetric layout: image and text interlock instead of sitting in separate boxes */}
+            <div className="relative grid gap-y-10 md:grid-cols-[1.05fr_1fr] items-start max-w-6xl mx-auto">
+              {/* Connector glow — bridges the two columns visually */}
+              <div className="hidden md:block absolute top-1/3 left-1/2 -translate-x-1/2 w-[26rem] h-[26rem] rounded-full bg-secondary/20 blur-[90px] pointer-events-none z-0" />
+
+              {/* Image column */}
+              <motion.div {...fadeUp} transition={{ delay: 0.1, duration: 0.6 }} className="md:order-2 self-start relative z-10">
+                <div className="relative -rotate-1">
                   <img
                     src={founderPhoto}
                     alt="אודיה, יוסף חיים ופלא — המשפחה מאחורי הפרויקט"
-                    className="w-full rounded-[2rem] shadow-card object-cover aspect-[4/5]"
+                    className="w-full rounded-tl-xl rounded-tr-[4rem] rounded-bl-[4rem] rounded-br-xl shadow-card object-cover aspect-[4/5]"
                     loading="lazy"
                     width={800}
                     height={1000}
                   />
                   {/* Caption tag floating over image */}
-                  <div className="absolute left-1/2 bottom-4 -translate-x-1/2 bg-cream rounded-full px-5 py-2.5 shadow-card border border-border/40">
+                  <div className="absolute left-1/2 bottom-4 -translate-x-1/2 bg-cream rounded-full px-5 py-2.5 shadow-card border border-border/40 rotate-1">
                     <span className="text-xs font-bold text-foreground text-center block">אודיה, יוסף חיים ופלא 💛</span>
                   </div>
                 </div>
               </motion.div>
 
-              {/* Text column — flowing, no card background */}
-              <motion.div {...fadeUp} transition={{ delay: 0.2, duration: 0.6 }} className="md:order-1 space-y-6 text-right self-start">
-                <p className="text-2xl md:text-[1.85rem] font-display font-black leading-[1.45] text-foreground">
-                  שלום, אני <span className="text-gradient-warm">אודיה עמרוסי</span> — בת 32, נשואה ליוסף חיים ואמא לפלא בן שנה.
-                </p>
+              {/* Text column — frosted panel that overlaps the image so the two interlock */}
+              <motion.div
+                {...fadeUp}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="md:order-1 self-start relative z-20 md:-ml-14 lg:-ml-20"
+              >
+                <div className="relative rounded-tl-[3rem] rounded-tr-xl rounded-bl-xl rounded-br-[3rem] bg-cream/90 backdrop-blur-md border border-white/50 shadow-card p-7 md:p-10 space-y-6 text-right">
+                  <Quote className="absolute -top-5 right-8 h-12 w-12 text-secondary/15 rotate-180" />
 
-                <p className="text-lg md:text-xl text-foreground font-bold leading-[1.9]">
-                  התחתנתי בגיל 30 — אחרי שנים ארוכות של שבתות וחגים שבהם הרגשתי קצת בודדה בתוך ההמולה המשפחתית. כשאחים שלי — הגדול ממני אבל גם קטנים ממני — התחתנו, הקושי רק גדל.
-                </p>
+                  <p className="text-2xl md:text-[1.85rem] font-display font-black leading-[1.45] text-foreground">
+                    שלום, אני <span className="text-gradient-warm">אודיה עמרוסי</span> — בת 32, נשואה ליוסף חיים ואמא לפלא בן שנה.
+                  </p>
 
-                <p className="text-lg md:text-xl text-foreground font-bold leading-[1.9]">
-                  העדפתי כל שבת וחג להתארח אצל חברים או לעבוד כאחות בבית חולים, רק כדי לא להרגיש את החלל.
-                </p>
+                  <p className="text-lg md:text-xl text-foreground font-bold leading-[1.9]">
+                    התחתנתי בגיל 30 — אחרי שנים ארוכות של שבתות וחגים שבהם הרגשתי קצת בודדה בתוך ההמולה המשפחתית. כשאחים שלי — הגדול ממני אבל גם קטנים ממני — התחתנו, הקושי רק גדל.
+                  </p>
 
-                <p className="text-lg md:text-xl text-foreground font-bold leading-[1.9]">
-                  הקמתי את <strong className="text-foreground">פל״א</strong> כדי לתת לרווקים ורווקות את מה שהייתי צריכה — <em className="text-primary not-italic font-semibold">בחירה</em>. בחירה אם להישאר אצל ההורים, או למצוא מקום אחר להיות בו.
-                </p>
+                  <p className="text-lg md:text-xl text-foreground font-bold leading-[1.9]">
+                    העדפתי כל שבת וחג להתארח אצל חברים או לעבוד כאחות בבית חולים, רק כדי לא להרגיש את החלל.
+                  </p>
 
-                <p className="text-lg md:text-xl text-foreground font-bold leading-[1.9] pt-1">
-                  שכל אחד ירגיש שתמיד יש לו איפה להיות. <span className="inline-block animate-float">❤️</span>
-                </p>
+                  <p className="text-lg md:text-xl text-foreground font-bold leading-[1.9]">
+                    הקמתי את <strong className="text-foreground">פל״א</strong> כדי לתת לרווקים ורווקות את מה שהייתי צריכה — <em className="text-primary not-italic font-semibold">בחירה</em>. בחירה אם להישאר אצל ההורים, או למצוא מקום אחר להיות בו.
+                  </p>
 
-                {/* The need — minimal inline list, no boxes */}
-                <div className="pt-8 mt-8 border-t border-border/40">
-                  <h3 className="font-display font-bold text-sm text-primary tracking-[0.15em] uppercase mb-5">הצורך הוא דו-צדדי</h3>
-                  <div className="grid gap-4 sm:grid-cols-2">
+                  <p className="text-lg md:text-xl text-foreground font-bold leading-[1.9] pt-1">
+                    שכל אחד ירגיש שתמיד יש לו איפה להיות. <span className="inline-block animate-float">❤️</span>
+                  </p>
+                </div>
+
+                {/* The need — flowing tags instead of a square grid */}
+                <div className="pt-10 mt-8">
+                  <div className="flex flex-wrap gap-3 justify-end">
                     {[
-                      { emoji: "💛", title: "רווקים ורווקות", desc: "מקום חם בשבתות וחגים" },
-                      { emoji: "🏡", title: "זוגות ומשפחות", desc: "לפתוח את הדלת ולהכיל" },
-                      { emoji: "🌱", title: "חוות והתנדבות", desc: "עזרה עם לב ומשמעות" },
-                      { emoji: "💼", title: "מקומות עבודה", desc: "עובדים אמינים לשבתות" },
+                      { emoji: "💛", title: "רווקים ורווקות", desc: "מקום חם בשבתות וחגים", rotate: "rotate-1" },
+                      { emoji: "🏡", title: "זוגות ומשפחות", desc: "לפתוח את הדלת ולהכיל", rotate: "-rotate-1" },
+                      { emoji: "🌱", title: "חוות והתנדבות", desc: "עזרה עם לב ומשמעות", rotate: "rotate-1" },
                     ].map((item) => (
-                      <div key={item.title} className="flex items-start gap-3 group">
-                        <span className="text-2xl mt-0.5 shrink-0 group-hover:scale-110 transition-transform">{item.emoji}</span>
-                        <div>
-                          <div className="font-bold font-display text-sm">{item.title}</div>
-                          <div className="text-xs text-foreground font-bold mt-0.5">{item.desc}</div>
+                      <div
+                        key={item.title}
+                        className={`flex items-center gap-3 bg-cream/80 backdrop-blur-sm rounded-full px-5 py-3 shadow-card border border-white/40 ${item.rotate} hover:rotate-0 transition-transform`}
+                      >
+                        <span className="text-2xl shrink-0">{item.emoji}</span>
+                        <div className="text-right">
+                          <div className="font-bold font-display text-sm leading-tight">{item.title}</div>
+                          <div className="text-xs text-foreground/80 font-bold mt-0.5">{item.desc}</div>
                         </div>
                       </div>
                     ))}
@@ -232,73 +235,6 @@ const Index = () => {
                 </div>
               </motion.div>
             </div>
-          </div>
-        </motion.section>
-
-        {/* Trust & Safety — מניעת זיוף זהויות והגנה על המשתמשים */}
-        <motion.section id="trust" initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.22 }} transition={{ duration: 0.65 }} className="relative py-24 overflow-hidden">
-          <div className="absolute top-16 left-[10%] animate-float-slow opacity-[0.06]">
-            <ShieldCheck className="h-16 w-16 text-primary" />
-          </div>
-
-          <div className="container relative z-10 mx-auto px-6">
-            <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-12 text-center max-w-2xl mx-auto">
-              <h2 className="text-3xl md:text-[2.75rem] font-black leading-[1.1]">
-                קהילה <span className="text-gradient-warm">מאומתת</span>
-                <br />
-                שאפשר לסמוך עליה
-              </h2>
-              <p className="mt-5 text-lg md:text-xl text-foreground font-bold leading-[1.85]">
-                כל פרופיל בפל״א עובר תהליך אישור ידני. אנחנו מקפידים על אמיתות הזהויות
-                ועל הגנה מירבית על המידע שלכם — כי שבת חמה מתחילה מתוך תחושת ביטחון.
-              </p>
-            </motion.div>
-
-            <div className="grid gap-5 md:grid-cols-2 max-w-5xl mx-auto">
-              {[
-                
-                {
-                  icon: ShieldCheck,
-                  title: "מניעת זיוף זהויות",
-                  desc: "אסור להירשם תחת שם בדוי או להתחזות. הפרת הכלל גוררת חסימה מיידית — ואחריות פלילית לפי החוק.",
-                },
-                {
-                  icon: Lock,
-                  title: "פרטים שנחשפים רק כשצריך",
-                  desc: "מספר הטלפון והכתובת של המארח/ת והאורח/ת נחשפים אך ורק לאחר אישור הדדי של בקשת האירוח.",
-                },
-                {
-                  icon: Eye,
-                  title: "דיווח אנונימי על חשד",
-                  desc: "כל חבר/ת קהילה יכול/ה לדווח על פרופיל חשוד. נבדוק כל דיווח תוך 48 שעות — וזהותך נשמרת חסויה.",
-                },
-              ].map((item) => (
-                <motion.div
-                  key={item.title}
-                  {...fadeUp}
-                  transition={{ duration: 0.5 }}
-                  className="group flex items-start gap-4 rounded-2xl border border-primary/15 bg-card/70 backdrop-blur-sm p-6 hover:border-primary/30 hover:shadow-card transition-all"
-                >
-                  <div className="shrink-0 h-12 w-12 rounded-full flex items-center justify-center bg-gradient-to-br from-primary/15 to-secondary/15 group-hover:scale-110 transition-transform">
-                    <item.icon className="h-6 w-6 text-primary" />
-                  </div>
-                  <div className="text-right flex-1">
-                    <h3 className="font-bold font-display text-base mb-1.5">{item.title}</h3>
-                    <p className="text-sm text-foreground font-bold leading-[1.75]">{item.desc}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            <motion.div {...fadeUp} transition={{ duration: 0.6, delay: 0.2 }} className="mt-10 text-center">
-              <a
-                href="/terms"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
-              >
-                קראו עוד על מדיניות האימות וההגנה שלנו
-                <span aria-hidden>←</span>
-              </a>
-            </motion.div>
           </div>
         </motion.section>
 
@@ -356,16 +292,14 @@ const Index = () => {
           <div className="container mx-auto px-6">
             <div className="flex flex-col items-center gap-4 text-center">
               <div className="flex items-center gap-1.5 justify-center">
-                <span className="text-lg font-black font-display">פל<span className="text-gradient-warm">״</span>א</span>
+                <img src={peleTextsLogo} alt='פל"א - פשוט לבחור איפה' className="h-7 w-auto object-contain" />
               </div>
               <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-bold">
                 <a href="/terms" className="text-white hover:text-primary transition-colors">תקנון</a>
                 <span className="text-white/60">|</span>
                 <a href="/accessibility" className="text-white hover:text-primary transition-colors">הצהרת נגישות</a>
                 <span className="text-white/60">|</span>
-                <p className="text-white">
-                  © 2026 פל״א — פשוט לבחור איפה. כל הזכויות שמורות
-                </p>
+                <p className="text-white">© 2026 כל הזכויות שמורות</p>
                 <span className="text-white/60">|</span>
                 <p className="text-white">
                   <a

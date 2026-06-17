@@ -50,9 +50,6 @@ const Navbar = () => {
           <button onClick={() => goToSection("#about")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
             הסיפור שלנו
           </button>
-          <button onClick={() => goToSection("#trust")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
-            אמון וביטחון
-          </button>
           <button onClick={() => goToSection("#faq")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
             שאלות ותשובות
           </button>
@@ -80,7 +77,7 @@ const Navbar = () => {
             </Button>
           )}
           {user ? (
-            <DropdownMenu>
+            <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
                 <Button size="sm" variant="outline" className="rounded-full gap-2 h-9 pl-2 pr-3" aria-label="פתח תפריט">
                   <Menu className="h-4 w-4" />
@@ -149,7 +146,7 @@ const Navbar = () => {
           ) : (
             <>
               {/* Mobile menu for guests */}
-              <DropdownMenu>
+              <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
                   <Button size="sm" variant="ghost" className="rounded-full h-8 w-8 p-0 lg:hidden">
                     <Menu className="h-4 w-4" />
@@ -158,7 +155,6 @@ const Navbar = () => {
                 <DropdownMenuContent align="end" className="w-48 rounded-2xl p-2">
                     <DropdownMenuItem onClick={() => goToSection("#hero")} className="rounded-xl cursor-pointer font-bold text-foreground">בית</DropdownMenuItem>
                     <DropdownMenuItem onClick={() => goToSection("#about")} className="rounded-xl cursor-pointer font-bold text-foreground">הסיפור שלנו</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => goToSection("#trust")} className="rounded-xl cursor-pointer font-bold text-foreground">אמון וביטחון</DropdownMenuItem>
                     <DropdownMenuItem onClick={() => goToSection("#faq")} className="rounded-xl cursor-pointer font-bold text-foreground">שאלות ותשובות</DropdownMenuItem>
                     <DropdownMenuItem onClick={() => goToSection("#contact")} className="rounded-xl cursor-pointer font-bold text-foreground">צור קשר</DropdownMenuItem>
                     <DropdownMenuItem onClick={() => navigate("/calendar")} className="rounded-xl cursor-pointer font-bold text-foreground">לוח שבתות</DropdownMenuItem>

@@ -52,7 +52,7 @@ const ScrollingBackground = ({ layers }: { layers: BackgroundLayer[] }) => {
           className="absolute inset-0"
           style={{
             opacity: i === activeIndex ? 1 : 0,
-            transition: "opacity 0.4s ease-out",
+            transition: "opacity 0.65s ease-in-out",
             willChange: "opacity",
           }}
         >

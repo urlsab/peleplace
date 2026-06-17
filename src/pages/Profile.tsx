@@ -455,7 +455,7 @@ const Profile = () => {
       <div className="pt-24 pb-12 px-4">
         <div className="mx-auto max-w-lg">
           {/* Dual-role toggle */}
-          <div className="mb-6 rounded-full bg-card border border-border p-1 shadow-card flex items-center text-sm font-bold">
+          <div className="mb-6 rounded-full bg-card/95 backdrop-blur-sm border border-border p-1 shadow-card flex items-center text-sm font-bold">
             <button
               type="button"
               onClick={() => { setActiveRole("single"); setMode("view"); }}
@@ -566,7 +566,7 @@ const Profile = () => {
                       />
                     )}
                     <Input id="profileImage" name="profileImage" type="file" accept="image/*" className="cursor-pointer" />
-                    <p className="text-xs text-muted-foreground">תמונה אישית תעזור למארחים להכיר אותך</p>
+                    <p className="text-xs text-foreground/75">תמונה אישית תעזור למארחים להכיר אותך</p>
                   </div>
 
                   <div className="space-y-2">
@@ -634,7 +634,7 @@ const Profile = () => {
                           className="flex w-full items-center gap-4 rounded-2xl border-2 border-border bg-background p-4 text-right transition-all hover:border-primary hover:shadow-md">
                           <div>
                             <div className="font-bold font-display">{opt.label}</div>
-                            <div className="text-sm text-muted-foreground">{opt.desc}</div>
+                            <div className="text-sm text-foreground/75">{opt.desc}</div>
                           </div>
                         </button>
                       ))}
@@ -673,7 +673,7 @@ const Profile = () => {
                       </div>
                       <div id="dates" className="space-y-2 scroll-mt-24 rounded-2xl bg-primary/5 p-4 border-2 border-primary/20">
                         <Label className="text-base font-bold">📅 תאריכים פנויים לאירוח</Label>
-                        <p className="text-xs text-muted-foreground">בחרו את השבתות והחגים שבהם תוכלו לארח. אל תשכחו לשמור בסוף!</p>
+                        <p className="text-xs text-foreground/75">בחרו את השבתות והחגים שבהם תוכלו לארח. אל תשכחו לשמור בסוף!</p>
                         <HostDatePicker
                           selectedDates={availableDates}
                           onChange={setAvailableDates}

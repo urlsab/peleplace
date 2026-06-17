@@ -145,7 +145,7 @@ const ShabbatCalendar = () => {
           <p className="text-muted-foreground mt-1">לחצו על תאריך לראות אפשרויות אירוח</p>
         </motion.div>
 
-        <div className="rounded-3xl border border-border bg-card p-4 sm:p-6 shadow-card">
+        <div className="rounded-3xl border border-border/80 bg-card/95 backdrop-blur-sm p-4 sm:p-6 shadow-card">
           <div className="flex items-center justify-between mb-4">
             <Button variant="ghost" size="sm" className="rounded-full h-9 w-9 p-0" onClick={() => setViewMonth(new Date(viewMonth.getFullYear(), viewMonth.getMonth() - 1, 1))}>
               <ChevronRight className="h-4 w-4" />
@@ -183,15 +183,15 @@ const ShabbatCalendar = () => {
                   className={`
                     relative aspect-square rounded-2xl p-1 sm:p-1.5 transition-all overflow-hidden text-right
                     border hover:scale-[1.04] hover:shadow-md
-                    ${cell.isYomTov ? "bg-gradient-to-br from-[hsl(var(--amber-soft))]/60 to-[hsl(var(--terracotta))]/30 border-[hsl(var(--terracotta))]/40" : ""}
-                    ${!cell.isYomTov && cell.isShabbat ? "bg-gradient-to-br from-[hsl(var(--amber-soft))]/40 to-primary/10 border-primary/30" : ""}
+                    ${cell.isYomTov ? "bg-gradient-to-br from-[hsl(var(--amber-soft))]/45 to-[hsl(var(--terracotta))]/22 border-[hsl(var(--terracotta))]/50" : ""}
+                    ${!cell.isYomTov && cell.isShabbat ? "bg-gradient-to-br from-[hsl(var(--amber-soft))]/32 to-primary/8 border-primary/35" : ""}
                     ${!isSpecial ? "bg-card border-border/60" : ""}
                     ${isToday ? "ring-2 ring-primary" : ""}
                   `}
                 >
                   {/* Top row: greg + hebrew */}
                   <div className="flex items-start justify-between leading-none">
-                    <span className={`text-[9px] sm:text-[10px] font-medium ${isSpecial ? "text-primary/80" : "text-muted-foreground/70"}`}>
+                    <span className={`text-[9px] sm:text-[10px] font-semibold ${isSpecial ? "text-foreground/75" : "text-muted-foreground/75"}`}>
                       {cell.hebrewDay}
                     </span>
                     <span className={`text-sm sm:text-base font-bold ${isSpecial ? "text-foreground" : "text-foreground/80"}`}>
@@ -214,7 +214,7 @@ const ShabbatCalendar = () => {
 
                   {/* Holiday name strip */}
                   {holidayLabel && (
-                    <div className="absolute bottom-0 inset-x-0 px-1 py-0.5 bg-[hsl(var(--terracotta))]/80 text-cream text-[8px] sm:text-[9px] font-bold truncate text-center">
+                    <div className="absolute bottom-0 inset-x-0 px-1 py-0.5 bg-primary/90 text-primary-foreground text-[8px] sm:text-[9px] font-bold truncate text-center">
                       {holidayLabel}
                     </div>
                   )}

@@ -116,7 +116,7 @@ const RegistrationDialog = ({ trigger }: { trigger: React.ReactNode }) => {
             </div>
 
             {/* ID Upload */}
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label>צילום תעודת זהות / רישיון נהיגה *</Label>
               <p className="text-xs text-muted-foreground">לצורכי אימות בלבד — לא יוצג לאף אחד</p>
               <label
@@ -136,7 +136,7 @@ const RegistrationDialog = ({ trigger }: { trigger: React.ReactNode }) => {
                   onChange={(e) => setIdFile(e.target.files?.[0] ?? null)}
                 />
               </label>
-            </div>
+            </div> */}
 
             {category === "place" && (
               <>

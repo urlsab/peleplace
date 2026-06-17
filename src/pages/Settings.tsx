@@ -18,6 +18,7 @@ const Settings = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [newEmail, setNewEmail] = useState(user?.email || "");
+  const [currentPasswordForEmail, setCurrentPasswordForEmail] = useState("");
   const [savingPassword, setSavingPassword] = useState(false);
   const [savingEmail, setSavingEmail] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -52,7 +53,35 @@ const Settings = () => {
   const handleEmailChange = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newEmail || newEmail === user.email) return;
+
+    if (!currentPasswordForEmail) {
+      toast({
+        title: "נדרשת סיסמה",
+        description: "הזינו את הסיסמה הנוכחית כדי לאמת את הזהות שלכם",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setSavingEmail(true);
+
+    // אימות זהות מחדש: לפני שמאפשרים שינוי מייל, מבטיחים שהמשתמש
+    // אכן מכיר את הסיסמה הנוכחית (לא רק שיש לו סשן פתוח)
+    const { error: verifyError } = await supabase.auth.signInWithPassword({
+      email: user.email!,
+      password: currentPasswordForEmail,
+    });
+
+    if (verifyError) {
+      toast({
+        title: "סיסמה שגויה",
+        description: "לא הצלחנו לאמת את הזהות שלכם. בדקו את הסיסמה ונסו שוב",
+        variant: "destructive",
+      });
+      setSavingEmail(false);
+      return;
+    }
+
     const { error } = await supabase.auth.updateUser({ email: newEmail });
     if (error) {
       toast({ title: "שגיאה", description: error.message, variant: "destructive" });
@@ -61,6 +90,7 @@ const Settings = () => {
         title: "מייל אישור נשלח 📧",
         description: "בדקו את המייל החדש שלכם כדי להשלים את השינוי",
       });
+      setCurrentPasswordForEmail("");
     }
     setSavingEmail(false);
   };
@@ -156,7 +186,7 @@ const Settings = () => {
               <h2 className="text-lg font-bold font-display">כתובת מייל</h2>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">מייל</Label>
+              <Label htmlFor="email">מייל חדש</Label>
               <Input
                 id="email"
                 type="email"
@@ -165,15 +195,27 @@ const Settings = () => {
                 dir="ltr"
                 className="rounded-xl"
               />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="current-password-email">סיסמה נוכחית (לאימות)</Label>
+              <Input
+                id="current-password-email"
+                type="password"
+                value={currentPasswordForEmail}
+                onChange={(e) => setCurrentPasswordForEmail(e.target.value)}
+                placeholder="הזינו לאימות הזהות"
+                dir="ltr"
+                className="rounded-xl"
+              />
               <p className="text-xs text-muted-foreground">
-                בעת שינוי, יישלח מייל אישור לכתובת החדשה
+                לאחר אימות הסיסמה, יישלח מייל אישור לכתובת החדשה
               </p>
             </div>
             <Button
               type="submit"
               variant="outline"
               className="w-full rounded-full font-bold"
-              disabled={savingEmail || newEmail === user.email}
+              disabled={savingEmail || newEmail === user.email || !currentPasswordForEmail}
             >
               {savingEmail ? "שולח..." : "עדכון מייל"}
             </Button>

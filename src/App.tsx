@@ -21,6 +21,9 @@ import Settings from "./pages/Settings.tsx";
 import DemoProfile from "./pages/DemoProfile.tsx";
 import Accessibility from "./pages/Accessibility.tsx";
 import Feedback from "./pages/Feedback.tsx";
+import GoogleNotRegistered from "./pages/GoogleNotRegistered.tsx";
+import PendingEmailConfirmation from "./pages/PendingEmailConfirmation.tsx";
+import AuthConfirmed from "./pages/AuthConfirmed.tsx";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +38,9 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/register" element={<Auth />} />
+            <Route path="/auth/not-registered" element={<GoogleNotRegistered />} />
+            <Route path="/auth/pending-confirmation" element={<PendingEmailConfirmation />} />
+            <Route path="/auth/confirmed" element={<AuthConfirmed />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/explore" element={<Explore />} />
             <Route path="/admin" element={<Admin />} />

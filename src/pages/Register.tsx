@@ -245,7 +245,7 @@ const Register = () => {
             </div>
 
             {/* ID Upload - optional */}
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <Label>צילום תעודת זהות / רישיון נהיגה</Label>
               <p className="text-xs text-muted-foreground">
                 לא חובה, אך העלאת מסמך מזהה תקל עלינו לאשר את ההרשמה מהר יותר 🚀
@@ -266,7 +266,7 @@ const Register = () => {
                   onChange={(e) => setIdFile(e.target.files?.[0] ?? null)}
                 />
               </label>
-            </div>
+            </div> */}
 
             {/* Terms */}
             <div className="flex items-start gap-3 rounded-xl border border-border bg-background p-4">

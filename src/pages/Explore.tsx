@@ -555,7 +555,10 @@ const Explore = () => {
       {/* Footer */}
       <footer className="border-t border-border bg-card py-8">
         <div className="container mx-auto px-6 text-center text-sm text-muted-foreground">
-          <p>© 2026 פל״א — פשוט לבחור איפה. כל הזכויות שמורות ❤️</p>
+          <div className="flex flex-col items-center gap-2">
+            <img src={peleTextsLogo} alt='פל"א - פשוט לבחור איפה' className="h-7 w-auto object-contain" />
+            <p>© 2026 כל הזכויות שמורות ❤️</p>
+          </div>
         </div>
       </footer>
 
