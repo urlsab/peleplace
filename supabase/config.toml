@@ -1,5 +1,14 @@
 project_id = "ogjxewxdxouazrrocypk"
 
+[auth]
+site_url = "https://peleplace.com"
+additional_redirect_urls = [
+  "https://peleplace.com",
+  "https://peleplace.com/**",
+  "http://localhost:5173/**",
+  "http://localhost:4173/**"
+]
+
 [functions.process-email-queue]
 verify_jwt = true
 
