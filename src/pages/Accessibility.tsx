@@ -24,7 +24,7 @@ const Accessibility = () => {
             <h1 className="mt-4 text-3xl font-black font-display">
               {isHe ? "הצהרת נגישות" : "Accessibility Statement"}
             </h1>
-            <p className="mt-2 text-muted-foreground">
+            <p style={{color:'black'}} className="mt-2 text-muted-foreground">
               {isHe ? "עודכן לאחרונה: אפריל 2026" : "Last updated: April 2026"}
             </p>
           </div>
