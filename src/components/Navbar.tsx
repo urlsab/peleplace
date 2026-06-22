@@ -56,9 +56,11 @@ const Navbar = () => {
           <button onClick={() => goToSection("#contact")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
             צור קשר
           </button>
-          <button onClick={() => navigate("/calendar")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
-            לוח שבתות
-          </button>
+          {user && (
+            <button onClick={() => navigate("/calendar")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+              לוח שבתות
+            </button>
+          )}
           <button onClick={() => navigate("/terms")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
             תקנון
           </button>
@@ -110,9 +112,6 @@ const Navbar = () => {
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => navigate("/calendar")} className="rounded-xl gap-2 cursor-pointer">
                       לוח שבתות
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate("/explore")} className="rounded-xl gap-2 cursor-pointer md:hidden">
-                      <Search className="h-4 w-4" /> חיפוש
                     </DropdownMenuItem>
                   </>
                 )}

@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { CalendarRange, ChevronRight, ChevronLeft, Flame, Sparkles as SparklesIcon } from "lucide-react";
+import { CalendarRange, ChevronRight, ChevronLeft, Flame, Sparkles as SparklesIcon, Phone, MessageCircle, Mail, Lock } from "lucide-react";
 import { HDate, HebrewCalendar, Location, Event, flags } from "@hebcal/core";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
@@ -28,11 +28,12 @@ type CellInfo = {
 };
 
 const ShabbatCalendar = () => {
-  const { profile } = useAuth();
+  const { user, profile } = useAuth();
   const navigate = useNavigate();
   const isApproved = profile?.registration_status === "approved";
   const today = new Date();
   const [viewMonth, setViewMonth] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
+  const [hoveredDate, setHoveredDate] = useState<string | null>(null);
 
   const { data: opportunities = [] } = useQuery({
     queryKey: ["calendar-opportunity-dates"],
@@ -49,6 +50,39 @@ const ShabbatCalendar = () => {
     },
     enabled: isApproved,
   });
+
+  // Fetch shabbat offers for the current month (all logged-in users)
+  const monthStart = `${viewMonth.getFullYear()}-${String(viewMonth.getMonth() + 1).padStart(2, "0")}-01`;
+  const lastDay = new Date(viewMonth.getFullYear(), viewMonth.getMonth() + 1, 0).getDate();
+  const monthEnd = `${viewMonth.getFullYear()}-${String(viewMonth.getMonth() + 1).padStart(2, "0")}-${String(lastDay).padStart(2, "0")}`;
+
+  const { data: shabbatOffers = [] } = useQuery({
+    queryKey: ["calendar-shabbat-offers", monthStart, monthEnd],
+    queryFn: async () => {
+      try {
+        const { data, error } = await supabase
+          .from("shabbat_offers")
+          .select("*")
+          .gte("date", monthStart)
+          .lte("date", monthEnd);
+        if (error) return []; // table may not exist yet
+        return data || [];
+      } catch {
+        return [];
+      }
+    },
+    enabled: !!user,
+  });
+
+  // Group offers by date
+  const offersByDate = useMemo(() => {
+    const map = new Map<string, typeof shabbatOffers>();
+    shabbatOffers.forEach((offer) => {
+      if (!map.has(offer.date)) map.set(offer.date, []);
+      map.get(offer.date)!.push(offer);
+    });
+    return map;
+  }, [shabbatOffers]);
 
   const opportunityDateSet = useMemo(() => new Set(opportunities), [opportunities]);
 
@@ -109,21 +143,6 @@ const ShabbatCalendar = () => {
 
   const todayStr = formatDateKey(today.getFullYear(), today.getMonth(), today.getDate());
 
-  if (!isApproved) {
-    return (
-      <div className="min-h-screen">
-        <DynamicBackground variant="vineyard" />
-        <Navbar />
-        <div className="container mx-auto px-6 pt-32 text-center">
-          <CalendarRange className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-          <h1 className="text-2xl font-black font-display mb-2">לוח השבתות פתוח למשתמשים מאושרים</h1>
-          <p className="text-muted-foreground mb-6">השלימו את ההרשמה כדי לראות שבתות פנויות</p>
-          <Button onClick={() => navigate("/profile")} className="rounded-full">חזרה לפרופיל</Button>
-        </div>
-      </div>
-    );
-  }
-
   const monthHebRange = (() => {
     const first = new HDate(new Date(viewMonth.getFullYear(), viewMonth.getMonth(), 1));
     const last = new HDate(new Date(viewMonth.getFullYear(), viewMonth.getMonth() + 1, 0));
@@ -174,59 +193,132 @@ const ShabbatCalendar = () => {
               const isToday = cell.date === todayStr;
               const isSpecial = cell.isShabbat || cell.isYomTov || cell.holidays.length > 0;
               const holidayLabel = cell.holidays[0];
+              const cellOffers = offersByDate.get(cell.date) || [];
+              const hasOffers = cellOffers.length > 0;
+              const isHovered = hoveredDate === cell.date;
 
               return (
-                <button
+                <div
                   key={i}
-                  onClick={() => navigate(`/calendar/${cell.date}`)}
-                  title={cell.holidays.length ? cell.holidays.join(" • ") : cell.isShabbat ? "שבת" : ""}
-                  className={`
-                    relative aspect-square rounded-2xl p-1 sm:p-1.5 transition-all overflow-hidden text-right
-                    border hover:scale-[1.04] hover:shadow-md
-                    ${cell.isYomTov ? "bg-gradient-to-br from-[hsl(var(--amber-soft))]/45 to-[hsl(var(--terracotta))]/22 border-[hsl(var(--terracotta))]/50" : ""}
-                    ${!cell.isYomTov && cell.isShabbat ? "bg-gradient-to-br from-[hsl(var(--amber-soft))]/32 to-primary/8 border-primary/35" : ""}
-                    ${!isSpecial ? "bg-card border-border/60" : ""}
-                    ${isToday ? "ring-2 ring-primary" : ""}
-                  `}
+                  className="relative"
+                  onMouseEnter={() => hasOffers && user && setHoveredDate(cell.date)}
+                  onMouseLeave={() => setHoveredDate(null)}
                 >
-                  {/* Top row: greg + hebrew */}
-                  <div className="flex items-start justify-between leading-none">
-                    <span className={`text-[9px] sm:text-[10px] font-semibold ${isSpecial ? "text-foreground/75" : "text-muted-foreground/75"}`}>
-                      {cell.hebrewDay}
-                    </span>
-                    <span className={`text-sm sm:text-base font-bold ${isSpecial ? "text-foreground" : "text-foreground/80"}`}>
-                      {cell.day}
-                    </span>
-                  </div>
+                  <button
+                    onClick={() => navigate(`/calendar/${cell.date}`)}
+                    title={cell.holidays.length ? cell.holidays.join(" • ") : cell.isShabbat ? "שבת" : ""}
+                    className={`
+                      w-full aspect-square rounded-2xl p-1 sm:p-1.5 transition-all overflow-hidden text-right
+                      border hover:scale-[1.04] hover:shadow-md
+                      ${cell.isYomTov ? "bg-gradient-to-br from-[hsl(var(--amber-soft))]/45 to-[hsl(var(--terracotta))]/22 border-[hsl(var(--terracotta))]/50" : ""}
+                      ${!cell.isYomTov && cell.isShabbat ? "bg-gradient-to-br from-[hsl(var(--amber-soft))]/32 to-primary/8 border-primary/35" : ""}
+                      ${!isSpecial ? "bg-card border-border/60" : ""}
+                      ${isToday ? "ring-2 ring-primary" : ""}
+                    `}
+                  >
+                    {/* Top row: hebrew + gregorian */}
+                    <div className="flex items-start justify-between leading-none">
+                      <span className={`text-[9px] sm:text-[10px] font-semibold ${isSpecial ? "text-foreground/75" : "text-muted-foreground/75"}`}>
+                        {cell.hebrewDay}
+                      </span>
+                      <span className={`text-sm sm:text-base font-bold ${isSpecial ? "text-foreground" : "text-foreground/80"}`}>
+                        {cell.day}
+                      </span>
+                    </div>
 
-                  {/* Center icon for Shabbat/Yom Tov */}
-                  {isSpecial && (
-                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      {cell.isYomTov ? (
-                        <SparklesIcon className="h-5 w-5 sm:h-6 sm:w-6 text-[hsl(var(--terracotta))]/70" />
-                      ) : cell.isShabbat ? (
-                        <Flame className="h-5 w-5 sm:h-6 sm:w-6 text-primary/60" />
-                      ) : (
-                        <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--terracotta))]/60" />
-                      )}
+                    {/* Center icon for Shabbat/Yom Tov */}
+                    {isSpecial && (
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                        {cell.isYomTov ? (
+                          <SparklesIcon className="h-5 w-5 sm:h-6 sm:w-6 text-[hsl(var(--terracotta))]/70" />
+                        ) : cell.isShabbat ? (
+                          <Flame className="h-5 w-5 sm:h-6 sm:w-6 text-primary/60" />
+                        ) : (
+                          <span className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--terracotta))]/60" />
+                        )}
+                      </div>
+                    )}
+
+                    {/* Holiday name strip */}
+                    {holidayLabel && (
+                      <div className="absolute bottom-0 inset-x-0 px-1 py-0.5 bg-primary/90 text-primary-foreground text-[8px] sm:text-[9px] font-bold truncate text-center">
+                        {holidayLabel}
+                      </div>
+                    )}
+
+                    {/* Opportunity dot (from host profiles) */}
+                    {hasOpps && !hasOffers && !holidayLabel && (
+                      <span className="absolute bottom-1 left-1/2 -translate-x-1/2 h-1.5 w-1.5 rounded-full bg-primary" />
+                    )}
+                    {hasOpps && !hasOffers && holidayLabel && (
+                      <span className="absolute top-1 left-1 h-2 w-2 rounded-full bg-primary ring-2 ring-card" />
+                    )}
+
+                    {/* Offer indicator dot (from shabbat_offers) */}
+                    {hasOffers && (
+                      <span className="absolute bottom-1 right-1 h-2 w-2 rounded-full bg-emerald-500 ring-1 ring-card" />
+                    )}
+                  </button>
+
+                  {/* Hover contact popup for shabbat offers */}
+                  {isHovered && hasOffers && (
+                    <div
+                      className="absolute z-50 bottom-full mb-1.5 left-1/2 -translate-x-1/2 w-52 rounded-xl border border-border bg-card shadow-lg p-3 space-y-2 text-right"
+                      onMouseEnter={() => setHoveredDate(cell.date)}
+                      onMouseLeave={() => setHoveredDate(null)}
+                    >
+                      {cellOffers.map((offer) => (
+                        <div key={offer.id} className="text-xs space-y-1">
+                          <p className="font-bold truncate">{offer.host_name}</p>
+                          <p className="text-muted-foreground truncate text-[10px]">{offer.address}</p>
+                          {offer.is_full ? (
+                            <div className="flex items-center gap-1 text-destructive text-[10px] font-bold">
+                              <Lock className="h-3 w-3" /> תפוס — אין אפשרות להצטרף
+                            </div>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              {offer.contact_whatsapp && (
+                                <a
+                                  href={`https://wa.me/${offer.contact_whatsapp.replace(/\D/g, "")}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="flex items-center gap-1 text-emerald-600 hover:text-emerald-700 transition-colors"
+                                  title="וואטסאפ"
+                                >
+                                  <MessageCircle className="h-4 w-4" />
+                                </a>
+                              )}
+                              {offer.contact_phone && (
+                                <a
+                                  href={`tel:${offer.contact_phone}`}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="flex items-center gap-1 text-primary hover:text-primary/80 transition-colors"
+                                  title="שיחה"
+                                >
+                                  <Phone className="h-4 w-4" />
+                                </a>
+                              )}
+                              {offer.contact_email && (
+                                <a
+                                  href={`mailto:${offer.contact_email}`}
+                                  onClick={(e) => e.stopPropagation()}
+                                  className="flex items-center gap-1 text-blue-600 hover:text-blue-700 transition-colors"
+                                  title="מייל"
+                                >
+                                  <Mail className="h-4 w-4" />
+                                </a>
+                              )}
+                            </div>
+                          )}
+                          {cellOffers.indexOf(offer) < cellOffers.length - 1 && (
+                            <div className="border-t border-border/50 pt-1" />
+                          )}
+                        </div>
+                      ))}
                     </div>
                   )}
-
-                  {/* Holiday name strip */}
-                  {holidayLabel && (
-                    <div className="absolute bottom-0 inset-x-0 px-1 py-0.5 bg-primary/90 text-primary-foreground text-[8px] sm:text-[9px] font-bold truncate text-center">
-                      {holidayLabel}
-                    </div>
-                  )}
-
-                  {/* Opportunity dot */}
-                  {hasOpps && !holidayLabel && (
-                    <span className="absolute bottom-1 left-1/2 -translate-x-1/2 h-1.5 w-1.5 rounded-full bg-primary" />
-                  )}
-                  {hasOpps && holidayLabel && (
-                    <span className="absolute top-1 left-1 h-2 w-2 rounded-full bg-primary ring-2 ring-card" />
-                  )}
-                </button>
+                </div>
               );
             })}
           </div>
@@ -239,7 +331,7 @@ const ShabbatCalendar = () => {
               <SparklesIcon className="h-3.5 w-3.5 text-[hsl(var(--terracotta))]/70" /> חג
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-primary" /> יש אפשרויות אירוח
+              <span className="h-2 w-2 rounded-full bg-emerald-500" /> הצעת אירוח (ריחוף לפרטים)
             </div>
             <div className="flex items-center gap-1.5">
               <span className="inline-block h-3 w-3 rounded ring-2 ring-primary" /> היום
@@ -252,3 +344,4 @@ const ShabbatCalendar = () => {
 };
 
 export default ShabbatCalendar;
+

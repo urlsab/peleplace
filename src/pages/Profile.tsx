@@ -16,6 +16,8 @@ import Navbar from "@/components/Navbar";
 import ProfileView from "@/components/profile/ProfileView";
 import HostDatePicker from "@/components/profile/HostDatePicker";
 import DynamicBackground from "@/components/DynamicBackground";
+import PersonalInfoCard from "@/components/profile/PersonalInfoCard";
+import ShabbatOfferSection from "@/components/profile/ShabbatOfferSection";
 
 const regionLabels: Record<string, string> = {
   north: "צפון", haifa: "חיפה", sharon: "שרון", center: "מרכז",
@@ -42,6 +44,7 @@ const Profile = () => {
   const { user, profile, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [localProfile, setLocalProfile] = useState<any>(null);
   const [hostType, setHostType] = useState<HostType>(null);
   const [saving, setSaving] = useState(false);
   const [mode, setMode] = useState<"view" | "edit">("view");
@@ -178,10 +181,13 @@ const Profile = () => {
     loadProfile();
   }, [user, profile, activeRole]);
 
+  // Sync localProfile when profile loads
+  const currentProfile = localProfile ?? profile;
+
   if (authLoading || loadingProfile) return <div className="min-h-screen flex items-center justify-center">טוען...</div>;
   if (!user) return null;
 
-  if (!profile) {
+  if (!profile && !localProfile) {
     return (
       <div className="min-h-screen">
         <DynamicBackground variant="jerusalem" />
@@ -200,6 +206,7 @@ const Profile = () => {
   const showView = mode === "view" && detailedProfile && profileType;
 
   const isSingle = activeRole === "single";
+  const displayProfile = localProfile ?? profile;
 
   const afterSave = async () => {
     // Reload profile
@@ -454,6 +461,12 @@ const Profile = () => {
       <Navbar />
       <div className="pt-24 pb-12 px-4">
         <div className="mx-auto max-w-lg">
+          {/* Personal info card */}
+          <PersonalInfoCard
+            profile={displayProfile}
+            onProfileUpdated={(updated) => setLocalProfile(updated)}
+          />
+
           {/* Dual-role toggle */}
           <div className="mb-6 rounded-full bg-card/95 backdrop-blur-sm border border-border p-1 shadow-card flex items-center text-sm font-bold">
             <button
@@ -482,19 +495,6 @@ const Profile = () => {
             </button>
           </div>
 
-          {/* Soft block: encourage existing users to complete their detailed profile */}
-          {((activeRole === "single" && !hasSingleProfile) || (activeRole === "host" && !hasHostProfile)) && !loadingProfile && (
-            <div className="mb-5 rounded-2xl border-2 border-primary/30 bg-primary/10 p-5 text-center space-y-2">
-              <div className="text-2xl">✨</div>
-              <h3 className="font-black font-display text-lg">השלימו את הפרופיל שלכם</h3>
-              <p className="text-sm text-foreground leading-relaxed">
-                {activeRole === "single"
-                  ? "כדי שנוכל להציע לכם את ההזדמנויות הכי מתאימות — מלאו את פרטי הפרופיל למטה. זה לוקח רק כמה דקות."
-                  : "כדי שאורחים יוכלו למצוא אתכם — מלאו את פרטי המקום למטה. זה לוקח רק כמה דקות."}
-              </p>
-            </div>
-          )}
-
           {showView ? (
             <>
               <div className="text-center mb-6 space-y-3">
@@ -510,7 +510,7 @@ const Profile = () => {
                 </Button>
               </div>
               <ProfileView
-                profile={profile}
+                profile={displayProfile}
                 detailedProfile={detailedProfile}
                 profileType={profileType!}
                 onEdit={() => setMode("edit")}
@@ -526,7 +526,7 @@ const Profile = () => {
                   </DialogHeader>
                   <div className="pt-2">
                     <ProfileView
-                      profile={profile}
+                      profile={displayProfile}
                       detailedProfile={detailedProfile}
                       profileType={profileType!}
                       onEdit={() => {}}
@@ -543,7 +543,7 @@ const Profile = () => {
                 <h1 className="text-3xl font-black font-display">
                   {detailedProfile ? "עריכת פרופיל" : "בניית הפרופיל"}
                 </h1>
-                <p className="text-muted-foreground mt-1">שלום {profile.full_name}! 👋</p>
+                <p className="text-muted-foreground mt-1">שלום {displayProfile.full_name}! 👋</p>
                 {detailedProfile && (
                   <Button variant="ghost" size="sm" onClick={() => setMode("view")} className="mt-2">
                     ← חזרה לתצוגה
@@ -838,6 +838,9 @@ const Profile = () => {
               )}
             </>
           )}
+
+          {/* Shabbat offers section — available to all logged-in users */}
+          <ShabbatOfferSection />
         </div>
       </div>
     </div>

@@ -12,7 +12,6 @@ import Auth from "./pages/Auth.tsx";
 // Register page removed — registration is now part of Auth.tsx
 import Profile from "./pages/Profile.tsx";
 import Admin from "./pages/Admin.tsx";
-import Explore from "./pages/Explore.tsx";
 import MyBookings from "./pages/MyBookings.tsx";
 import ShabbatCalendar from "./pages/ShabbatCalendar.tsx";
 import CalendarDate from "./pages/CalendarDate.tsx";
@@ -63,7 +62,6 @@ const App = () => (
             <Route path="/auth/pending-confirmation" element={<PendingEmailConfirmation />} />
             <Route path="/auth/confirmed" element={<AuthConfirmed />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/explore" element={<Explore />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/my-bookings" element={<MyBookings />} />
             <Route path="/calendar" element={<ShabbatCalendar />} />

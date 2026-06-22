@@ -14,6 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
+      shabbat_offers: {
+        Row: {
+          id: string
+          user_id: string
+          host_name: string
+          address: string
+          description: string | null
+          is_paid: boolean
+          kashrut_level: string
+          date: string
+          is_full: boolean
+          contact_phone: string | null
+          contact_whatsapp: string | null
+          contact_email: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          host_name: string
+          address: string
+          description?: string | null
+          is_paid?: boolean
+          kashrut_level?: string
+          date: string
+          is_full?: boolean
+          contact_phone?: string | null
+          contact_whatsapp?: string | null
+          contact_email?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          host_name?: string
+          address?: string
+          description?: string | null
+          is_paid?: boolean
+          kashrut_level?: string
+          date?: string
+          is_full?: boolean
+          contact_phone?: string | null
+          contact_whatsapp?: string | null
+          contact_email?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       bookings: {
         Row: {
           auto_expire_at: string

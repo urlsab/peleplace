@@ -35,7 +35,7 @@ type Opp = {
 const CalendarDate = () => {
   const { date } = useParams<{ date: string }>();
   const navigate = useNavigate();
-  const { profile } = useAuth();
+  const { profile, loading } = useAuth();
   const isApproved = profile?.registration_status === "approved";
 
   const { data: opps = [], isLoading } = useQuery({
@@ -90,14 +90,13 @@ const CalendarDate = () => {
     };
   }, [date]);
 
-  if (!isApproved) {
+  if (loading) {
     return (
       <div className="min-h-screen">
         <DynamicBackground variant="vineyard" />
         <Navbar />
-        <div className="container mx-auto px-6 pt-32 text-center">
-          <h1 className="text-2xl font-black font-display mb-2">פתוח למשתמשים מאושרים</h1>
-          <Button onClick={() => navigate("/profile")} className="rounded-full mt-4">חזרה לפרופיל</Button>
+        <div className="container mx-auto px-6 pt-32 flex justify-center">
+          <div className="h-10 w-10 rounded-full border-4 border-primary border-t-transparent animate-spin" />
         </div>
       </div>
     );
@@ -146,7 +145,7 @@ const CalendarDate = () => {
             <CalendarDays className="h-12 w-12 mx-auto text-muted-foreground/40 mb-3" />
             <p className="font-medium">אין כרגע אפשרויות אירוח לתאריך זה</p>
             <p className="text-sm text-muted-foreground mt-1">נסו תאריך אחר או צפו בכל ההזדמנויות</p>
-            <Button onClick={() => navigate("/explore")} className="rounded-full mt-4">לכל ההזדמנויות</Button>
+            <Button onClick={() => navigate("/calendar")} className="rounded-full mt-4">חזרה ללוח השבתות</Button>
           </div>
         )}
 
@@ -158,7 +157,7 @@ const CalendarDate = () => {
               return (
                 <button
                   key={i}
-                  onClick={() => navigate("/explore")}
+                  onClick={() => navigate("/calendar")}
                   className="w-full text-right rounded-2xl border border-border bg-card p-4 hover:bg-muted/30 transition-all"
                 >
                   <div className="flex items-start gap-3">
@@ -177,8 +176,8 @@ const CalendarDate = () => {
                 </button>
               );
             })}
-            <Button onClick={() => navigate("/explore")} className="w-full mt-4 rounded-full">
-              צפו בכל ההזדמנויות בחיפוש
+            <Button onClick={() => navigate("/calendar")} className="w-full mt-4 rounded-full">
+              חזרה ללוח השבתות
             </Button>
           </div>
         )}
