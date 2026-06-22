@@ -14,8 +14,8 @@ const Terms = () => {
           transition={{ duration: 0.5 }}
         >
           <div className="text-center mb-12">
-            <h1 className="mt-8 text-3xl font-black font-display">תקנון, תנאי שימוש ומדיניות פרטיות</h1>
-            <p className="mt-2 text-muted-foreground">עודכן לאחרונה: אפריל 2026</p>
+            <h1 className="mt-8 text-3xl font-black font-display text-re">תקנון, תנאי שימוש ומדיניות פרטיות</h1>
+            <p className="mt-2 text-muted-foreground text-black">עודכן לאחרונה: אפריל 2026</p>
           </div>
 
           <div className="space-y-8 rounded-2xl border border-border bg-card p-8 shadow-card text-right leading-relaxed">

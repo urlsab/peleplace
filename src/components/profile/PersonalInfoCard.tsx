@@ -5,17 +5,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Edit2, CheckCircle, Clock, XCircle, User, Phone, Mail, Shield } from "lucide-react";
+import { Edit2, XCircle, User, Phone, Mail, Shield } from "lucide-react";
 
-const statusConfig: Record<string, { label: string; icon: typeof Clock; className: string }> = {
-  pending: { label: "ממתין לאישור", icon: Clock, className: "bg-yellow-100 text-yellow-800 border-yellow-200" },
-  approved: { label: "מאושר ✓", icon: CheckCircle, className: "bg-green-100 text-green-800 border-green-200" },
+const statusConfig: Record<string, { label: string; icon: typeof XCircle; className: string }> = {
   rejected: { label: "נדחה", icon: XCircle, className: "bg-red-100 text-red-800 border-red-200" },
 };
 
 const userTypeLabels: Record<string, string> = {
   single: "רווק/ה מחפש/ת",
   host: "מארח/ת",
+  both: "רווק/ה + מארח/ת",
 };
 
 interface PersonalInfoCardProps {
@@ -54,8 +53,8 @@ const PersonalInfoCard = ({ profile, onProfileUpdated }: PersonalInfoCardProps) 
     recommender_phone: profile.recommender_phone || "",
   });
 
-  const status = statusConfig[profile.registration_status] ?? statusConfig.pending;
-  const StatusIcon = status.icon;
+  const status = statusConfig[profile.registration_status];
+  const StatusIcon = status?.icon;
 
   const handleSave = async () => {
     if (!form.full_name.trim()) {
@@ -102,12 +101,12 @@ const PersonalInfoCard = ({ profile, onProfileUpdated }: PersonalInfoCardProps) 
       <div className="flex items-center justify-between mb-5">
         <h2 className="text-lg font-black font-display">פרטים אישיים</h2>
         <div className="flex items-center gap-2">
-          <span
-            className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${status.className}`}
-          >
-            <StatusIcon className="h-3 w-3" />
-            {status.label}
-          </span>
+          {status && StatusIcon && (
+            <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${status.className}`}>
+              <StatusIcon className="h-3 w-3" />
+              {status.label}
+            </span>
+          )}
           {!editing && (
             <Button
               variant="outline"

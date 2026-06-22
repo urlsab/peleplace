@@ -70,11 +70,11 @@ const TagSection = ({ title, items, tone = "primary" }: { title: string; items?:
 const ProfileView = ({ profile, detailedProfile, profileType, onEdit, previewMode = false }: ProfileViewProps) => {
   if (!detailedProfile) {
     return (
-      <div className="text-center space-y-4 rounded-2xl border border-border bg-card p-8 shadow-card">
-        <p className="text-muted-foreground">עדיין לא מילאת פרופיל מפורט</p>
+      <div >
+        {/* <p className="text-muted-foreground">עדיין לא מילאת פרופיל מפורט</p>
         <Button onClick={onEdit} className="rounded-full">
           <Edit className="h-4 w-4 ml-2" /> בניית פרופיל
-        </Button>
+        </Button> */}
       </div>
     );
   }

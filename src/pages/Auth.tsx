@@ -22,13 +22,13 @@ const CATEGORIES: {
   label: string;
   description: string;
 }[] = [
-  { value: "single", label: "רווק / רווקה", description: "מחפש/ת מקום לשבת או חג" },
-  { value: "host_family", label: "משפחה מארחת", description: "מארחים בבית לארוחות שבת וחג" },
-  { value: "host_reservist", label: "אשת מילואים", description: "נשארת בבית ושמחה לארח אורחת שתעזור ותהיה חברה" },
-  { value: "host_organized_shabbat", label: "ארגון לשבתות", description: "מארגנים שבתות קבוצתיות" },
-  { value: "host_singles_group", label: "קבוצת רווקים", description: "מפעילים קהילה לרווקים" },
-  { value: "host_volunteer", label: "מקום להתנדבות", description: "מציעים התנדבות בשבת/חג" },
-  { value: "host_work", label: "מקום עבודה", description: "מציעים עבודה בשבת/חג" },
+  { value: "single", label: "אורח/ת", description: "מחפש/ת מקום לשבת או חג וכד'" },
+  { value: "host_family", label: "מארח/ת", description: "מארחים לארוחות שבת וחג וכד'" },
+  { value: "host_reservist", label: "אורח/ת ומארח/ת", description: "המשתמש/ת יכול להיות גם אורח/ת וגם מארח/ת" },
+  // { value: "host_organized_shabbat", label: "ארגון לשבתות", description: "מארגנים שבתות קבוצתיות" },
+  // { value: "host_singles_group", label: "קבוצת רווקים", description: "מפעילים קהילה לרווקים" },
+  // { value: "host_volunteer", label: "מקום להתנדבות", description: "מציעים התנדבות בשבת/חג" },
+  // { value: "host_work", label: "מקום עבודה", description: "מציעים עבודה בשבת/חג" },
 ];
 
 const Auth = () => {

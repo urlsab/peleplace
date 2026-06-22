@@ -114,10 +114,8 @@ const ShabbatOfferSection = () => {
     });
     setSaving(false);
     if (error) {
-      const msg = error.message.includes("shabbat_offers")
-        ? "הטבלה עדיין לא נוצרה ב-DB. יש להריץ את המיגרציה (ראה הוראות)"
-        : error.message;
-      toast({ title: "שגיאה", description: msg, variant: "destructive" });
+      console.error("shabbat_offers insert error:", error);
+      toast({ title: "שגיאה", description: error.message, variant: "destructive" });
     } else {
       toast({ title: "ההצעה נוספה ✨" });
       setForm({ ...emptyForm });

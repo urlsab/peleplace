@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { ArrowRight, MapPin, Briefcase, HandHeart, Home, Sparkles, CalendarDays, Flame } from "lucide-react";
+import { ArrowRight, MapPin, Briefcase, HandHeart, Home, Sparkles, CalendarDays, Flame, Phone, MessageCircle, Mail, Lock } from "lucide-react";
 import { HDate, HebrewCalendar, flags } from "@hebcal/core";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
@@ -25,6 +25,23 @@ const regionLabels: Record<string, string> = {
   south: "דרום", judea_samaria: "יהודה ושומרון",
 };
 
+const kashrutLabels: Record<string, string> = {
+  not_kosher: "לא כשר", kosher: "כשר", mehadrin: "כשר למהדרין", chalak_beit_yosef: "חלק/בית יוסף",
+};
+
+type ShabbatOffer = {
+  id: string;
+  host_name: string;
+  address: string;
+  description: string | null;
+  is_paid: boolean;
+  kashrut_level: string;
+  is_full: boolean;
+  contact_phone: string | null;
+  contact_whatsapp: string | null;
+  contact_email: string | null;
+};
+
 type Opp = {
   type: keyof typeof categoryConfig;
   title: string;
@@ -35,7 +52,7 @@ type Opp = {
 const CalendarDate = () => {
   const { date } = useParams<{ date: string }>();
   const navigate = useNavigate();
-  const { profile, loading } = useAuth();
+  const { user, profile, loading } = useAuth();
   const isApproved = profile?.registration_status === "approved";
 
   const { data: opps = [], isLoading } = useQuery({
@@ -63,6 +80,23 @@ const CalendarDate = () => {
       return all;
     },
     enabled: isApproved && !!date,
+  });
+
+  const { data: shabbatOffers = [] } = useQuery<ShabbatOffer[]>({
+    queryKey: ["date-shabbat-offers", date],
+    queryFn: async () => {
+      try {
+        const { data, error } = await supabase
+          .from("shabbat_offers")
+          .select("*")
+          .eq("date", date!);
+        if (error) return [];
+        return (data || []) as ShabbatOffer[];
+      } catch {
+        return [];
+      }
+    },
+    enabled: !!user && !!date,
   });
 
   const dateInfo = useMemo(() => {
@@ -136,49 +170,140 @@ const CalendarDate = () => {
           )}
         </motion.div>
 
-        <h2 className="font-display font-bold text-xl mb-3">אפשרויות אירוח לתאריך זה</h2>
+        {/* Shabbat hosting offers — visible to all logged-in users */}
+        {user && shabbatOffers.length > 0 && (
+          <>
+            <h2 className="font-display font-bold text-xl mb-3">הצעות אירוח לשבת זו</h2>
+            <div className="space-y-3 mb-6">
+              {shabbatOffers.map((offer) => (
+                <motion.div
+                  key={offer.id}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`rounded-2xl border p-5 ${
+                    offer.is_full
+                      ? "border-border/50 bg-muted/30 opacity-60"
+                      : "border-emerald-500/40 bg-emerald-50/30 dark:bg-emerald-950/10"
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-2 mb-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-bold text-base">{offer.host_name}</span>
+                        {offer.is_full && (
+                          <Badge variant="destructive" className="text-[10px] flex items-center gap-1">
+                            <Lock className="h-3 w-3" /> תפוס
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-0.5">{offer.address}</p>
+                      {offer.description && (
+                        <p className="text-sm mt-2 text-foreground/80">{offer.description}</p>
+                      )}
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        <Badge variant={offer.is_paid ? "default" : "secondary"} className="text-[11px]">
+                          {offer.is_paid ? "בתשלום 💳" : "ללא תשלום 🎁"}
+                        </Badge>
+                        <Badge variant="outline" className="text-[11px]">
+                          {kashrutLabels[offer.kashrut_level] || offer.kashrut_level}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
 
-        {isLoading && <p className="text-muted-foreground text-sm">טוען...</p>}
+                  {!offer.is_full && (
+                    <div className="flex items-center gap-3 pt-3 border-t border-border/40">
+                      <span className="text-xs text-muted-foreground ml-auto">צור קשר עם המארח/ת:</span>
+                      {offer.contact_whatsapp && (
+                        <a
+                          href={`https://wa.me/${offer.contact_whatsapp.replace(/\D/g, "")}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-1.5 text-sm font-medium text-emerald-600 hover:text-emerald-700 transition-colors rounded-full bg-emerald-100/60 dark:bg-emerald-900/30 px-3 py-1.5"
+                        >
+                          <MessageCircle className="h-4 w-4" />
+                          וואטסאפ
+                        </a>
+                      )}
+                      {offer.contact_phone && (
+                        <a
+                          href={`tel:${offer.contact_phone}`}
+                          className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 transition-colors rounded-full bg-primary/10 px-3 py-1.5"
+                        >
+                          <Phone className="h-4 w-4" />
+                          שיחה
+                        </a>
+                      )}
+                      {offer.contact_email && (
+                        <a
+                          href={`mailto:${offer.contact_email}`}
+                          className="flex items-center gap-1.5 text-sm font-medium text-blue-600 hover:text-blue-700 transition-colors rounded-full bg-blue-100/60 dark:bg-blue-900/30 px-3 py-1.5"
+                        >
+                          <Mail className="h-4 w-4" />
+                          מייל
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          </>
+        )}
 
-        {!isLoading && opps.length === 0 && (
+        {isApproved && (
+          <>
+            <h2 className="font-display font-bold text-xl mb-3">אפשרויות אירוח לתאריך זה</h2>
+
+            {isLoading && <p className="text-muted-foreground text-sm">טוען...</p>}
+
+            {!isLoading && opps.length === 0 && shabbatOffers.length === 0 && (
+              <div className="rounded-3xl border border-border bg-card p-8 text-center">
+                <CalendarDays className="h-12 w-12 mx-auto text-muted-foreground/40 mb-3" />
+                <p className="font-medium">אין כרגע אפשרויות אירוח לתאריך זה</p>
+                <p className="text-sm text-muted-foreground mt-1">נסו תאריך אחר או צפו בכל ההזדמנויות</p>
+                <Button onClick={() => navigate("/calendar")} className="rounded-full mt-4">חזרה ללוח השבתות</Button>
+              </div>
+            )}
+
+            {opps.length > 0 && (
+              <div className="space-y-2">
+                {opps.map((opp, i) => {
+                  const cfg = categoryConfig[opp.type];
+                  const Icon = cfg.icon;
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => navigate("/calendar")}
+                      className="w-full text-right rounded-2xl border border-border bg-card p-4 hover:bg-muted/30 transition-all"
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className={`${cfg.color} h-11 w-11 rounded-xl flex items-center justify-center text-cream flex-shrink-0`}>
+                          <Icon className="h-5 w-5" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bold truncate">{opp.title}</p>
+                          <p className="text-sm text-muted-foreground flex items-center gap-1 mt-0.5">
+                            <MapPin className="h-3.5 w-3.5" />
+                            {[opp.city, opp.region ? regionLabels[opp.region] : null].filter(Boolean).join(", ") || "מיקום לא צוין"}
+                          </p>
+                          <Badge variant="secondary" className="mt-1.5 text-[10px]">{cfg.label}</Badge>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </>
+        )}
+
+        {!isApproved && !user && (
           <div className="rounded-3xl border border-border bg-card p-8 text-center">
             <CalendarDays className="h-12 w-12 mx-auto text-muted-foreground/40 mb-3" />
             <p className="font-medium">אין כרגע אפשרויות אירוח לתאריך זה</p>
             <p className="text-sm text-muted-foreground mt-1">נסו תאריך אחר או צפו בכל ההזדמנויות</p>
             <Button onClick={() => navigate("/calendar")} className="rounded-full mt-4">חזרה ללוח השבתות</Button>
-          </div>
-        )}
-
-        {opps.length > 0 && (
-          <div className="space-y-2">
-            {opps.map((opp, i) => {
-              const cfg = categoryConfig[opp.type];
-              const Icon = cfg.icon;
-              return (
-                <button
-                  key={i}
-                  onClick={() => navigate("/calendar")}
-                  className="w-full text-right rounded-2xl border border-border bg-card p-4 hover:bg-muted/30 transition-all"
-                >
-                  <div className="flex items-start gap-3">
-                    <div className={`${cfg.color} h-11 w-11 rounded-xl flex items-center justify-center text-cream flex-shrink-0`}>
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="font-bold truncate">{opp.title}</p>
-                      <p className="text-sm text-muted-foreground flex items-center gap-1 mt-0.5">
-                        <MapPin className="h-3.5 w-3.5" />
-                        {[opp.city, opp.region ? regionLabels[opp.region] : null].filter(Boolean).join(", ") || "מיקום לא צוין"}
-                      </p>
-                      <Badge variant="secondary" className="mt-1.5 text-[10px]">{cfg.label}</Badge>
-                    </div>
-                  </div>
-                </button>
-              );
-            })}
-            <Button onClick={() => navigate("/calendar")} className="w-full mt-4 rounded-full">
-              חזרה ללוח השבתות
-            </Button>
           </div>
         )}
       </div>

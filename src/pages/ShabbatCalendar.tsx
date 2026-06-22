@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { CalendarRange, ChevronRight, ChevronLeft, Flame, Sparkles as SparklesIcon, Phone, MessageCircle, Mail, Lock } from "lucide-react";
+import { CalendarRange, ChevronRight, ChevronLeft, Flame, Sparkles as SparklesIcon } from "lucide-react";
 import { HDate, HebrewCalendar, Location, Event, flags } from "@hebcal/core";
 import { supabase } from "@/integrations/supabase/client";
 import Navbar from "@/components/Navbar";
@@ -33,7 +33,6 @@ const ShabbatCalendar = () => {
   const isApproved = profile?.registration_status === "approved";
   const today = new Date();
   const [viewMonth, setViewMonth] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
-  const [hoveredDate, setHoveredDate] = useState<string | null>(null);
 
   const { data: opportunities = [] } = useQuery({
     queryKey: ["calendar-opportunity-dates"],
@@ -195,14 +194,10 @@ const ShabbatCalendar = () => {
               const holidayLabel = cell.holidays[0];
               const cellOffers = offersByDate.get(cell.date) || [];
               const hasOffers = cellOffers.length > 0;
-              const isHovered = hoveredDate === cell.date;
-
               return (
                 <div
                   key={i}
                   className="relative"
-                  onMouseEnter={() => hasOffers && user && setHoveredDate(cell.date)}
-                  onMouseLeave={() => setHoveredDate(null)}
                 >
                   <button
                     onClick={() => navigate(`/calendar/${cell.date}`)}
@@ -260,64 +255,6 @@ const ShabbatCalendar = () => {
                     )}
                   </button>
 
-                  {/* Hover contact popup for shabbat offers */}
-                  {isHovered && hasOffers && (
-                    <div
-                      className="absolute z-50 bottom-full mb-1.5 left-1/2 -translate-x-1/2 w-52 rounded-xl border border-border bg-card shadow-lg p-3 space-y-2 text-right"
-                      onMouseEnter={() => setHoveredDate(cell.date)}
-                      onMouseLeave={() => setHoveredDate(null)}
-                    >
-                      {cellOffers.map((offer) => (
-                        <div key={offer.id} className="text-xs space-y-1">
-                          <p className="font-bold truncate">{offer.host_name}</p>
-                          <p className="text-muted-foreground truncate text-[10px]">{offer.address}</p>
-                          {offer.is_full ? (
-                            <div className="flex items-center gap-1 text-destructive text-[10px] font-bold">
-                              <Lock className="h-3 w-3" /> תפוס — אין אפשרות להצטרף
-                            </div>
-                          ) : (
-                            <div className="flex items-center gap-2">
-                              {offer.contact_whatsapp && (
-                                <a
-                                  href={`https://wa.me/${offer.contact_whatsapp.replace(/\D/g, "")}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  onClick={(e) => e.stopPropagation()}
-                                  className="flex items-center gap-1 text-emerald-600 hover:text-emerald-700 transition-colors"
-                                  title="וואטסאפ"
-                                >
-                                  <MessageCircle className="h-4 w-4" />
-                                </a>
-                              )}
-                              {offer.contact_phone && (
-                                <a
-                                  href={`tel:${offer.contact_phone}`}
-                                  onClick={(e) => e.stopPropagation()}
-                                  className="flex items-center gap-1 text-primary hover:text-primary/80 transition-colors"
-                                  title="שיחה"
-                                >
-                                  <Phone className="h-4 w-4" />
-                                </a>
-                              )}
-                              {offer.contact_email && (
-                                <a
-                                  href={`mailto:${offer.contact_email}`}
-                                  onClick={(e) => e.stopPropagation()}
-                                  className="flex items-center gap-1 text-blue-600 hover:text-blue-700 transition-colors"
-                                  title="מייל"
-                                >
-                                  <Mail className="h-4 w-4" />
-                                </a>
-                              )}
-                            </div>
-                          )}
-                          {cellOffers.indexOf(offer) < cellOffers.length - 1 && (
-                            <div className="border-t border-border/50 pt-1" />
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
                 </div>
               );
             })}
@@ -331,7 +268,7 @@ const ShabbatCalendar = () => {
               <SparklesIcon className="h-3.5 w-3.5 text-[hsl(var(--terracotta))]/70" /> חג
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="h-2 w-2 rounded-full bg-emerald-500" /> הצעת אירוח (ריחוף לפרטים)
+              <span className="h-2 w-2 rounded-full bg-emerald-500" /> הצעת אירוח (לחיצה לפרטים)
             </div>
             <div className="flex items-center gap-1.5">
               <span className="inline-block h-3 w-3 rounded ring-2 ring-primary" /> היום

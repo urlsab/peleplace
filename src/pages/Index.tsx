@@ -177,7 +177,7 @@ const Index = () => {
                   />
                   {/* Caption tag floating over image */}
                   <div className="absolute left-1/2 bottom-4 -translate-x-1/2 bg-cream rounded-full px-5 py-2.5 shadow-card border border-border/40 rotate-1">
-                    <span className="text-xs font-bold text-foreground text-center block">אודיה, יוסף חיים ופלא 💛</span>
+                    <span className="text-xs font-bold text-foreground text-center block">יוסף חיים, פלא ואודיה💛</span>
                   </div>
                 </div>
               </motion.div>
@@ -213,7 +213,7 @@ const Index = () => {
                 </div>
 
                 {/* The need — flowing tags instead of a square grid */}
-                <div className="pt-10 mt-8">
+                {/* <div className="pt-10 mt-8">
                   <div className="flex flex-wrap gap-3 justify-end">
                     {[
                       { emoji: "💛", title: "רווקים ורווקות", desc: "מקום חם בשבתות וחגים", rotate: "rotate-1" },
@@ -232,7 +232,7 @@ const Index = () => {
                       </div>
                     ))}
                   </div>
-                </div>
+                </div> */}
               </motion.div>
             </div>
           </div>

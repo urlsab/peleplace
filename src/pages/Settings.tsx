@@ -222,12 +222,12 @@ const Settings = () => {
           </form>
 
           {/* Delete account */}
-          <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-6 space-y-4">
+          <div className="rounded-2xl border border-destructive/30 bg-white p-6 space-y-4">
             <div className="flex items-center gap-2">
               <Trash2 className="h-5 w-5 text-destructive" />
               <h2 className="text-lg font-bold font-display text-destructive">מחיקת חשבון</h2>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground text-black-200">
               מחיקת החשבון תסיר את כל הנתונים שלך מהמערכת. פעולה זו אינה הפיכה.
             </p>
 
