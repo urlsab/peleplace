@@ -297,8 +297,8 @@ const Index = () => {
               <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-bold">
                 <a href="/terms" className="text-white hover:text-primary transition-colors">תקנון</a>
                 <span className="text-white/60">|</span>
-                <a href="/accessibility" className="text-white hover:text-primary transition-colors">הצהרת נגישות</a>
-                <span className="text-white/60">|</span>
+                {/* <a href="/accessibility" className="text-white hover:text-primary transition-colors">הצהרת נגישות</a>
+                <span className="text-white/60">|</span> */}
                 <p className="text-white">© 2026 כל הזכויות שמורות</p>
                 <span className="text-white/60">|</span>
                 <p className="text-white">

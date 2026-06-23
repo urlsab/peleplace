@@ -25,6 +25,7 @@ import Feedback from "./pages/Feedback.tsx";
 import GoogleNotRegistered from "./pages/GoogleNotRegistered.tsx";
 import PendingEmailConfirmation from "./pages/PendingEmailConfirmation.tsx";
 import AuthConfirmed from "./pages/AuthConfirmed.tsx";
+import ResetPassword from "./pages/ResetPassword.tsx";
 
 // Clears React Query cache when the logged-in user changes (e.g. logout → login as someone else)
 const AuthCacheSync = () => {
@@ -61,6 +62,7 @@ const App = () => (
             <Route path="/auth/not-registered" element={<GoogleNotRegistered />} />
             <Route path="/auth/pending-confirmation" element={<PendingEmailConfirmation />} />
             <Route path="/auth/confirmed" element={<AuthConfirmed />} />
+            <Route path="/auth/reset-password" element={<ResetPassword />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/my-bookings" element={<MyBookings />} />

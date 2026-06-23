@@ -154,13 +154,13 @@ const ShabbatCalendar = () => {
     <div className="min-h-screen">
       <DynamicBackground variant="vineyard" />
       <Navbar />
-      <div className="container mx-auto px-4 sm:px-6 pt-24 pb-12 max-w-4xl">
+      <div style={{textAlign:'center'}} className="container mx-auto px-4 sm:px-6 pt-24 pb-12 max-w-4xl">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
           <h1 className="text-3xl sm:text-4xl font-black font-display flex items-center gap-2">
-            <CalendarRange className="h-8 w-8 text-primary" />
+            <CalendarRange style={{textAlign:'center'}} className="h-8 w-8 text-primary" />
             לוח שבתות וחגים
           </h1>
-          <p className="text-muted-foreground mt-1">לחצו על תאריך לראות אפשרויות אירוח</p>
+          <p className="text-muted-foreground mt-1 text-black">לחצו על תאריך לראות אפשרויות אירוח</p>
         </motion.div>
 
         <div className="rounded-3xl border border-border/80 bg-card/95 backdrop-blur-sm p-4 sm:p-6 shadow-card">

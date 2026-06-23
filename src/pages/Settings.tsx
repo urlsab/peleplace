@@ -9,6 +9,16 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { KeyRound, Mail, Trash2, ArrowRight } from "lucide-react";
 import DynamicBackground from "@/components/DynamicBackground";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 
 const Settings = () => {
@@ -22,6 +32,7 @@ const Settings = () => {
   const [savingPassword, setSavingPassword] = useState(false);
   const [savingEmail, setSavingEmail] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   if (!user) {
     navigate("/auth");
@@ -180,7 +191,7 @@ const Settings = () => {
           </form>
 
           {/* Change email */}
-          <form onSubmit={handleEmailChange} className="rounded-2xl border border-border bg-card p-6 shadow-card space-y-4">
+          {/* <form onSubmit={handleEmailChange} className="rounded-2xl border border-border bg-card p-6 shadow-card space-y-4">
             <div className="flex items-center gap-2">
               <Mail className="h-5 w-5 text-primary" />
               <h2 className="text-lg font-bold font-display">כתובת מייל</h2>
@@ -219,7 +230,7 @@ const Settings = () => {
             >
               {savingEmail ? "שולח..." : "עדכון מייל"}
             </Button>
-          </form>
+          </form> */}
 
           {/* Delete account */}
           <div className="rounded-2xl border border-destructive/30 bg-white p-6 space-y-4">
@@ -234,7 +245,7 @@ const Settings = () => {
             <Button
               variant="destructive"
               className="w-full rounded-full font-bold"
-              onClick={handleDeleteAccount}
+              onClick={() => setShowDeleteConfirm(true)}
               disabled={deleting}
             >
               {deleting ? "מבצע..." : "בקשה למחיקת חשבון"}
@@ -243,6 +254,32 @@ const Settings = () => {
           </div>
         </div>
       </div>
+
+      {/* Confirmation dialog */}
+      <AlertDialog open={showDeleteConfirm} onOpenChange={setShowDeleteConfirm}>
+        <AlertDialogContent dir="rtl">
+          <AlertDialogHeader className="text-right">
+            <AlertDialogTitle>האם אתה בטוח שברצונך למחוק את החשבון?</AlertDialogTitle>
+            <AlertDialogDescription>
+              פעולה זו תמחק לצמיתות את כל הנתונים שלך, כולל שבתות שפרסמת ובקשות הזמנה. לא ניתן לבטל פעולה זו.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-row-reverse gap-2">
+            <AlertDialogCancel className="rounded-full">
+              לא, בטל
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className="rounded-full bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              onClick={() => {
+                setShowDeleteConfirm(false);
+                handleDeleteAccount();
+              }}
+            >
+              כן, מחק
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

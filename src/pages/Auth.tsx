@@ -33,6 +33,10 @@ const CATEGORIES: {
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [forgotSent, setForgotSent] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -209,6 +213,47 @@ const handleLogin = async (e: React.FormEvent) => {
       setLoading(false);
     }
   };
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setForgotLoading(true);
+
+    try {
+      // Check if the email is registered in the system
+      const { data: isRegistered, error: rpcError } = await supabase.rpc(
+        "check_email_registered",
+        { p_email: forgotEmail.trim().toLowerCase() }
+      );
+
+      if (rpcError) throw rpcError;
+
+      if (!isRegistered) {
+        toast({
+          title: "כתובת המייל אינה רשומה במערכת",
+          description: "לא נמצא חשבון עם כתובת מייל זו. בדקו את הכתובת או הצטרפו לפל\"א.",
+          variant: "destructive",
+        });
+        setForgotLoading(false);
+        return;
+      }
+
+      const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail.trim(), {
+        redirectTo: `${window.location.origin}/auth/reset-password`,
+      });
+
+      if (error) throw error;
+
+      setForgotSent(true);
+    } catch (error: any) {
+      toast({
+        title: "שגיאה בשליחת הבקשה",
+        description: error.message || "משהו השתבש, נסו שוב",
+        variant: "destructive",
+      });
+    } finally {
+      setForgotLoading(false);
+    }
+  };
+
 const handleGoogleSignIn = async () => {
   if (!isLogin) {
     toast({
@@ -249,6 +294,64 @@ const handleGoogleSignIn = async () => {
           </button>
         </div>
 
+        {isForgotPassword && (
+          <div className="rounded-2xl border border-border/80 bg-card/95 backdrop-blur-md p-6 sm:p-8 shadow-card space-y-5">
+            <div className="text-right">
+              <h2 className="text-xl font-black">איפוס סיסמא</h2>
+              <p className="text-xs text-muted-foreground mt-1">
+                הזינו את כתובת המייל הרשומה שלכם ונשלח לכם קישור לאיפוס הסיסמא.
+              </p>
+            </div>
+
+            {forgotSent ? (
+              <div className="space-y-4">
+                <div className="rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-right text-sm">
+                  <p className="font-bold text-foreground">הקישור נשלח!</p>
+                  <p className="text-muted-foreground mt-1">
+                    בדקו את תיבת הדואר שלכם (כולל ספאם). לחצו על הקישור במייל כדי להגדיר סיסמא חדשה.
+                  </p>
+                </div>
+                <Button
+                  variant="outline"
+                  className="w-full rounded-full h-10 text-xs"
+                  onClick={() => { setIsForgotPassword(false); setForgotSent(false); }}
+                >
+                  חזרה לעמוד התחברות
+                </Button>
+              </div>
+            ) : (
+              <form onSubmit={handleForgotPassword} className="space-y-4">
+                <div className="space-y-1.5">
+                  <Label htmlFor="forgot-email" className="text-xs">כתובת מייל</Label>
+                  <Input
+                    id="forgot-email"
+                    type="email"
+                    value={forgotEmail}
+                    onChange={(e) => setForgotEmail(e.target.value)}
+                    required
+                    placeholder="israel@email.com"
+                    dir="ltr"
+                    className="h-10 rounded-xl"
+                  />
+                </div>
+                <Button type="submit" className="w-full rounded-full font-bold h-11" disabled={forgotLoading}>
+                  {forgotLoading ? "שולח..." : "שלחו לי קישור לאיפוס"}
+                </Button>
+                <div className="text-center">
+                  <button
+                    type="button"
+                    onClick={() => setIsForgotPassword(false)}
+                    className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline"
+                  >
+                    חזרה להתחברות
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        )}
+
+        {!isForgotPassword && (
         <div className="rounded-2xl border border-border/80 bg-card/95 backdrop-blur-md p-6 sm:p-8 shadow-card">
           {/* Tab switcher */}
           <div className="mb-6 flex gap-2 p-1 bg-muted/70 rounded-full">
@@ -314,7 +417,15 @@ const handleGoogleSignIn = async () => {
               <Button type="submit" className="w-full rounded-full font-bold h-11" disabled={loading}>
                 {loading ? "מתחבר..." : "התחברות"}
               </Button>
-            </form>
+              <div className="text-center pt-1">
+                <button
+                  type="button"
+                  onClick={() => { setIsForgotPassword(true); setForgotSent(false); setForgotEmail(email); }}
+                  className="text-xs text-muted-foreground hover:text-primary transition-colors underline-offset-2 hover:underline"
+                >
+                  שכחתי סיסמא
+                </button>
+              </div>            </form>
           ) : (
             /* REGISTRATION FORM */
             <form onSubmit={handleRegister} className="space-y-4">
@@ -559,6 +670,7 @@ const handleGoogleSignIn = async () => {
             </p>
           )}
         </div>
+        )}
       </div>
     </div>
   );

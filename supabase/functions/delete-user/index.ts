@@ -29,6 +29,19 @@ serve(async (req) => {
     });
   }
 
+  // Explicitly delete shabbat_offers for this user before removing the auth account.
+  // The table already has ON DELETE CASCADE, but we do this explicitly so the
+  // calendar is cleared immediately and reliably.
+  const { error: offersError } = await supabaseAdmin
+    .from("shabbat_offers")
+    .delete()
+    .eq("user_id", user.id);
+
+  if (offersError) {
+    console.error("Failed to delete shabbat_offers:", offersError.message);
+    // Non-fatal — the CASCADE will clean up if the explicit delete fails.
+  }
+
   const { error } = await supabaseAdmin.auth.admin.deleteUser(user.id);
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), {

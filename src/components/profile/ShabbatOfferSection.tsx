@@ -50,6 +50,9 @@ const ShabbatOfferSection = () => {
   const [form, setForm] = useState({ ...emptyForm });
   const [saving, setSaving] = useState(false);
 
+  // Only hosts may add shabbat offers
+  const isHost = profile?.user_type === "host";
+
   const { data: offers = [], isLoading } = useQuery<Offer[]>({
     queryKey: ["my-shabbat-offers", user?.id],
     queryFn: async () => {
@@ -132,18 +135,20 @@ const ShabbatOfferSection = () => {
           <CalendarDays className="h-5 w-5 text-primary" />
           <h2 className="font-display font-bold text-lg">הצעות אירוח שלי ללוח שבתות</h2>
         </div>
-        <Button
-          size="sm"
-          variant={showForm ? "outline" : "default"}
-          className="rounded-full gap-1.5"
-          onClick={() => setShowForm((v) => !v)}
-        >
-          <PlusCircle className="h-4 w-4" />
-          {showForm ? "סגור" : "הוסף שבת"}
-        </Button>
+        {isHost && (
+          <Button
+            size="sm"
+            variant={showForm ? "outline" : "default"}
+            className="rounded-full gap-1.5"
+            onClick={() => setShowForm((v) => !v)}
+          >
+            <PlusCircle className="h-4 w-4" />
+            {showForm ? "סגור" : "הוסף שבת"}
+          </Button>
+        )}
       </div>
 
-      {showForm && (
+      {isHost && showForm && (
         <form onSubmit={handleSubmit} className="p-6 space-y-4 border-b border-border bg-background/60">
           <h3 className="font-bold font-display text-base">➕ הצעת אירוח חדשה</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -1,7 +1,7 @@
-import { LogOut, User, Shield, Search, CalendarCheck, Menu, FileText, Mail, Settings as SettingsIcon, CalendarPlus } from "lucide-react";
+import { LogOut, User, Shield, Search, CalendarCheck, Menu, FileText, Mail, Settings as SettingsIcon, CalendarPlus, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import logoPele from "@/assets/pele_heart_pele-removebg-preview.png";
 import {
   DropdownMenu,
@@ -15,7 +15,9 @@ import {
 const Navbar = () => {
   const { user, isAdmin, profile, signOut } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
+  const isHomePage = location.pathname === "/";
   const isApproved = profile?.registration_status === "approved";
   const displayName = profile?.full_name?.split(" ")[0] || user?.email?.split("@")[0] || "אורח/ת";
 
@@ -44,26 +46,46 @@ const Navbar = () => {
 
         {/* Desktop quick links */}
         <div className="hidden lg:flex items-center gap-1">
-          <button onClick={() => goToSection("#hero")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
-            בית
-          </button>
-          <button onClick={() => goToSection("#about")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
-            הסיפור שלנו
-          </button>
-          <button onClick={() => goToSection("#faq")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
-            שאלות ותשובות
-          </button>
-          <button onClick={() => goToSection("#contact")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
-            צור קשר
-          </button>
-          {user && (
-            <button onClick={() => navigate("/calendar")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
-              לוח שבתות
-            </button>
+          {isHomePage ? (
+            /* Full links — home page only */
+            <>
+              <button onClick={() => goToSection("#hero")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+                בית
+              </button>
+              <button onClick={() => goToSection("#about")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+                הסיפור שלנו
+              </button>
+              <button onClick={() => goToSection("#faq")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+                שאלות ותשובות
+              </button>
+              <button onClick={() => goToSection("#contact")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+                צור קשר
+              </button>
+              {user && (
+                <button onClick={() => navigate("/calendar")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+                  לוח שבתות
+                </button>
+              )}
+              <button onClick={() => navigate("/terms")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+                תקנון
+              </button>
+            </>
+          ) : (
+            /* Slim links — all other pages */
+            <>
+              <button onClick={() => navigate("/")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+                בית
+              </button>
+              {user && (
+                <button onClick={() => navigate("/calendar")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+                  לוח שבתות
+                </button>
+              )}
+              <button onClick={() => navigate("/terms")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+                תקנון
+              </button>
+            </>
           )}
-          <button onClick={() => navigate("/terms")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
-            תקנון
-          </button>
         </div>
 
         <div className="flex items-center gap-2">
@@ -144,22 +166,24 @@ const Navbar = () => {
             </DropdownMenu>
           ) : (
             <>
-              {/* Mobile menu for guests */}
-              <DropdownMenu modal={false}>
-                <DropdownMenuTrigger asChild>
-                  <Button size="sm" variant="ghost" className="rounded-full h-8 w-8 p-0 lg:hidden">
-                    <Menu className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48 rounded-2xl p-2">
-                    <DropdownMenuItem onClick={() => goToSection("#hero")} className="rounded-xl cursor-pointer font-bold text-foreground">בית</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => goToSection("#about")} className="rounded-xl cursor-pointer font-bold text-foreground">הסיפור שלנו</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => goToSection("#faq")} className="rounded-xl cursor-pointer font-bold text-foreground">שאלות ותשובות</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => goToSection("#contact")} className="rounded-xl cursor-pointer font-bold text-foreground">צור קשר</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate("/calendar")} className="rounded-xl cursor-pointer font-bold text-foreground">לוח שבתות</DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate("/terms")} className="rounded-xl cursor-pointer font-bold text-foreground">תקנון</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              {/* Mobile menu for guests — full links on home page only */}
+              {isHomePage && (
+                <DropdownMenu modal={false}>
+                  <DropdownMenuTrigger asChild>
+                    <Button size="sm" variant="ghost" className="rounded-full h-8 w-8 p-0 lg:hidden">
+                      <Menu className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-48 rounded-2xl p-2">
+                      <DropdownMenuItem onClick={() => goToSection("#hero")} className="rounded-xl cursor-pointer font-bold text-foreground">בית</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => goToSection("#about")} className="rounded-xl cursor-pointer font-bold text-foreground">הסיפור שלנו</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => goToSection("#faq")} className="rounded-xl cursor-pointer font-bold text-foreground">שאלות ותשובות</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => goToSection("#contact")} className="rounded-xl cursor-pointer font-bold text-foreground">צור קשר</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate("/calendar")} className="rounded-xl cursor-pointer font-bold text-foreground">לוח שבתות</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => navigate("/terms")} className="rounded-xl cursor-pointer font-bold text-foreground">תקנון</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
               <Button size="sm" className="rounded-full font-semibold h-8 px-5 text-xs" onClick={() => navigate("/auth")}>
                 הצטרפו / התחברו
               </Button>

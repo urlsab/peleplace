@@ -165,7 +165,19 @@ const Profile = () => {
             />
           )}
 
-          <ShabbatOfferSection />
+          {profile?.user_type === "host" ? (
+            <ShabbatOfferSection />
+          ) : (
+            <div className="mt-8 text-center">
+              <Button
+                variant="outline"
+                className="rounded-full px-6 h-10 text-sm font-bold"
+                onClick={() => navigate("/calendar")}
+              >
+                לצפייה בלוח שבתות
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
