@@ -19,7 +19,7 @@ const PendingEmailConfirmation = () => {
 
         <h1 className="text-3xl sm:text-4xl font-black font-display">מחכים לאישור המייל שלך</h1>
         <p className="text-muted-foreground leading-relaxed">
-          ההרשמה נקלטה בהצלחה. שלחנו לך מייל אימות מסופהבייס.
+          ההרשמה נקלטה בהצלחה. שלחנו לך מייל אימות מפל"א.
           <br />
           כדי להשלים הרשמה, צריך ללחוץ על הקישור במייל.
         </p>
