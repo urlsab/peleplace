@@ -17,33 +17,35 @@ const HeroSection = () => {
   const [communityOpen, setCommunityOpen] = useState(false);
 
   return (
-    <section id="hero" className="relative min-h-[96vh] flex items-center overflow-hidden">
+    <section style={{textAlign:'center'}} id="hero" className="relative min-h-[96vh] flex items-center overflow-hidden">
       {/* Decorative elements */}
-      <div className="absolute top-20 left-10 h-72 w-72 rounded-full bg-primary/10 blur-[100px]" />
-      <div className="absolute bottom-20 right-10 h-60 w-60 rounded-full bg-secondary/10 blur-[80px]" />
+      <div style={{textAlign:'center'}} className="absolute top-20 left-10 h-72 w-72 rounded-full bg-primary/10 blur-[100px]" />
+      <div style={{textAlign:'center'}} className="absolute bottom-20 right-10 h-60 w-60 rounded-full bg-secondary/10 blur-[80px]" />
 
-      <div className="container relative z-10 mx-auto px-6 py-20 md:py-24">
-        <div className="max-w-2xl mt-6 md:mt-10">
+      <div style={{textAlign:'center'}} className="container relative z-10 mx-auto px-6 py-20 md:py-24">
+        <div style={{textAlign:'center'}} className="max-w-2xl mt-6 md:mt-10">
           <motion.h1
+          style={{textAlign:'center'}}
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
             className="mb-6 text-[3.2rem] font-black leading-[1.1] tracking-tight md:text-[4.5rem] text-cream drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
           >
-            <img
+            {/* <img
               src={peleTextsLogo}
               alt="תמיד יש לך איפה להיות."
               className="h-[7rem] w-auto object-contain md:h-[10rem]"
-            />
+            /> */}
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
+            style={{textAlign:'center'}}
             transition={{ duration: 0.7, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-10 max-w-md text-base leading-relaxed text-cream font-bold md:text-lg drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)]"
+            className="mb-10 max-w-md text-base leading-relaxed text-cream font-bold md:text-4xl drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)]"
           >
-            מחברים רווקים ורווקות למקומות חמים, אנשים מדהימים וחוויות משמעותיות — בכל שבת וחג.
+רווקות מאוחרת היא מאתגרת, במיוחד בשבתות וחגים. בשביל הקמנו את מיזם פל"א, שמחבר בין רווקים למארחים כדי להיות שם בשבילם.
           </motion.p>
 
           <motion.div
@@ -52,7 +54,7 @@ const HeroSection = () => {
             transition={{ duration: 0.7, delay: 0.36, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-wrap gap-3"
           >
-            <Button
+            {/* <Button
               size="lg"
               className="rounded-full text-sm font-bold px-7 h-11 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all"
               onClick={() => navigate("/auth")}
@@ -66,7 +68,7 @@ const HeroSection = () => {
               onClick={() => navigate("/auth")}
             >
               אני רוצה לארח
-            </Button>
+            </Button> */}
           </motion.div>
         </div>
       </div>

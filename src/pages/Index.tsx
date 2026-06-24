@@ -136,10 +136,7 @@ const Index = () => {
           </motion.section>
         )}
 
-        {/* Registration Cards */}
-        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55 }}>
-          <RegistrationCards />
-        </motion.div>
+        
 
         {/* About — asymmetric editorial layout */}
         <motion.section id="about" initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.22 }} transition={{ duration: 0.65 }} className="relative py-28 overflow-hidden">
@@ -237,6 +234,11 @@ const Index = () => {
             </div>
           </div>
         </motion.section>
+
+        {/* Registration Cards */}
+        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55 }}>
+          <RegistrationCards />
+        </motion.div>
 
         {/* FAQ */}
         <motion.div initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.18 }} transition={{ duration: 0.6 }}>
