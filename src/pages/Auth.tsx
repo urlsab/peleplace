@@ -288,11 +288,11 @@ const handleGoogleSignIn = async () => {
       <Navbar />
       <div className="w-full max-w-md space-y-6">
         {/* Logo */}
-        <div className="text-center">
+        {/* <div className="text-center">
           <button onClick={() => navigate("/")} className="inline-flex items-center justify-center">
             <img src={peleTextsLogo} alt='פל"א - פשוט לבחור איפה' className="h-10 w-auto sm:h-11 object-contain" />
           </button>
-        </div>
+        </div> */}
 
         {isForgotPassword && (
           <div className="rounded-2xl border border-border/80 bg-card/95 backdrop-blur-md p-6 sm:p-8 shadow-card space-y-5">
