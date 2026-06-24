@@ -160,7 +160,7 @@ const ShabbatCalendar = () => {
             <CalendarRange style={{textAlign:'center'}} className="h-8 w-8 text-primary" />
             לוח שבתות וחגים
           </h1>
-          <p className="text-muted-foreground mt-1 text-black">לחצו על תאריך לראות אפשרויות אירוח</p>
+          {/* <p className="text-muted-foreground mt-1 text-black">לחצו על תאריך לראות אפשרויות אירוח</p> */}
         </motion.div>
 
         <div className="rounded-3xl border border-border/80 bg-card/95 backdrop-blur-sm p-4 sm:p-6 shadow-card">
