@@ -23,8 +23,8 @@ const ContactSection = () => {
           transition={{ duration: 0.6 }}
           className="mb-14 text-center max-w-2xl mx-auto"
         >
-          <h2 className="text-5xl md:text-6xl font-display font-black leading-[1.1] mb-4">
-            <span className="text-gradient-warm">צרו</span>{" "}
+          <h2 style={{color:'white'}} className="text-5xl md:text-6xl font-display font-black leading-[1.1] mb-4">
+            <span>צרו</span>{" "}
             <span>קשר.</span>
           </h2>
         </motion.div>
