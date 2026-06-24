@@ -18,6 +18,7 @@ const Navbar = () => {
   const location = useLocation();
 
   const isHomePage = location.pathname === "/";
+  const isAuthPage = location.pathname === "/auth";
   const isApproved = profile?.registration_status === "approved";
   const displayName = profile?.full_name?.split(" ")[0] || user?.email?.split("@")[0] || "אורח/ת";
 
@@ -32,6 +33,19 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 right-0 left-0 z-50 bg-cream/80 backdrop-blur-xl border-b border-border/40">
+      {isAuthPage ? (
+        <div className="container mx-auto flex items-center justify-center px-6 py-3.5">
+          <button onClick={() => navigate("/")} className="group flex items-center gap-2">
+            <img
+              src={logoPele}
+              alt="פל״א"
+              width={48}
+              height={48}
+              className="h-10 w-10 shrink-0 object-contain transition-transform group-hover:scale-105 rounded-full"
+            />
+          </button>
+        </div>
+      ) : (
       <div className="container mx-auto flex items-center justify-between px-6 py-3.5">
         <button onClick={() => navigate("/")} className="group flex items-center gap-2 min-w-0">
           <img
@@ -191,6 +205,7 @@ const Navbar = () => {
           )}
         </div>
       </div>
+      )}
     </nav>
   );
 };
