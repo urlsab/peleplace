@@ -45,7 +45,7 @@ const HeroSection = () => {
             transition={{ duration: 0.7, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
             className="mb-10 max-w-md text-base leading-relaxed text-cream font-bold md:text-4xl drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)]"
           >
-רווקות מאוחרת היא מאתגרת, במיוחד בשבתות וחגים. בשביל הקמנו את מיזם פל"א, שמחבר בין רווקים למארחים כדי להיות שם בשבילם.
+רווקות מאוחרת היא מאתגרת, במיוחד בשבתות וחגים. בשביל זה הקמנו את מיזם פל"א, שמחבר בין רווקים למארחים כדי להיות שם בשבילם.
           </motion.p>
 
           <motion.div
