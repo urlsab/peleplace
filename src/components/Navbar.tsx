@@ -1,4 +1,4 @@
-import { LogOut, User, Shield, Search, CalendarCheck, Menu, FileText, Mail, Settings as SettingsIcon, CalendarPlus, Home } from "lucide-react";
+import { LogOut, User, Shield, Search, CalendarCheck, Menu, FileText, Mail, Settings as SettingsIcon, CalendarPlus, Home, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -69,6 +69,9 @@ const Navbar = () => {
               <button onClick={() => goToSection("#about")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
                 הסיפור שלנו
               </button>
+              <button onClick={() => goToSection("#you")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+                מי אתם
+              </button>
               <button onClick={() => goToSection("#faq")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
                 שאלות ותשובות
               </button>
@@ -80,9 +83,9 @@ const Navbar = () => {
                   לוח שבתות
                 </button>
               )}
-              <button onClick={() => navigate("/terms")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+              {/* <button onClick={() => navigate("/terms")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
                 תקנון
-              </button>
+              </button> */}
             </>
           ) : (
             /* Slim links — all other pages */
@@ -95,9 +98,9 @@ const Navbar = () => {
                   לוח שבתות
                 </button>
               )}
-              <button onClick={() => navigate("/terms")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
+              {/* <button onClick={() => navigate("/terms")} className="px-3 py-1.5 rounded-full text-sm font-bold text-foreground hover:bg-muted/60 transition-all">
                 תקנון
-              </button>
+              </button> */}
             </>
           )}
         </div>
@@ -132,6 +135,18 @@ const Navbar = () => {
                   <User className="h-4 w-4" /> הפרופיל שלי
                 </DropdownMenuItem>
 
+                <DropdownMenuSeparator />
+
+                {(profile?.user_type === "host" || profile?.user_type === "both") && (
+                  
+                  <DropdownMenuItem
+                    onClick={() => navigate("/profile")}
+                    className="rounded-xl gap-2 cursor-pointer text-green-700 focus:bg-primary/20 focus:text-primary"
+                  >
+                    <CalendarPlus className="h-4 w-4" /> צור אירוע
+                  </DropdownMenuItem>
+                )}
+
                 {isApproved && profile?.user_type === "host" && (
                   <DropdownMenuItem
                     onClick={() => navigate("/profile#dates")}
@@ -154,7 +169,11 @@ const Navbar = () => {
 
                 <DropdownMenuSeparator />
 
-                
+                <DropdownMenuItem onClick={() => navigate("/calendar")} className="rounded-xl gap-2 cursor-pointer">
+                  <CalendarDays className="h-4 w-4" /> לוח שבתות
+                </DropdownMenuItem>
+
+                <DropdownMenuSeparator />
                 
                 <DropdownMenuItem onClick={() => navigate("/settings")} className="rounded-xl gap-2 cursor-pointer">
                   <SettingsIcon className="h-4 w-4" /> הגדרות
@@ -191,10 +210,10 @@ const Navbar = () => {
                   <DropdownMenuContent align="end" className="w-48 rounded-2xl p-2">
                       <DropdownMenuItem onClick={() => goToSection("#hero")} className="rounded-xl cursor-pointer font-bold text-foreground">בית</DropdownMenuItem>
                       <DropdownMenuItem onClick={() => goToSection("#about")} className="rounded-xl cursor-pointer font-bold text-foreground">הסיפור שלנו</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => goToSection("#you")} className="rounded-xl cursor-pointer font-bold text-foreground">מי אתם</DropdownMenuItem>
                       <DropdownMenuItem onClick={() => goToSection("#faq")} className="rounded-xl cursor-pointer font-bold text-foreground">שאלות ותשובות</DropdownMenuItem>
                       <DropdownMenuItem onClick={() => goToSection("#contact")} className="rounded-xl cursor-pointer font-bold text-foreground">צור קשר</DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => navigate("/calendar")} className="rounded-xl cursor-pointer font-bold text-foreground">לוח שבתות</DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => navigate("/terms")} className="rounded-xl cursor-pointer font-bold text-foreground">תקנון</DropdownMenuItem>
+                      {/* <DropdownMenuItem onClick={() => navigate("/terms")} className="rounded-xl cursor-pointer font-bold text-foreground">תקנון</DropdownMenuItem> */}
                   </DropdownMenuContent>
                 </DropdownMenu>
               )}

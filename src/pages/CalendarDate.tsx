@@ -40,6 +40,7 @@ type ShabbatOffer = {
   contact_phone: string | null;
   contact_whatsapp: string | null;
   contact_email: string | null;
+  vibes: string[] | null;
 };
 
 type Opp = {
@@ -141,7 +142,7 @@ const CalendarDate = () => {
       <DynamicBackground variant={dateInfo?.isShabbat ? "candles" : "vineyard"} />
       <Navbar />
       <div className="container mx-auto px-4 sm:px-6 pt-24 pb-12 max-w-3xl">
-        <Button variant="ghost" size="sm" onClick={() => navigate("/calendar")} className="mb-4 rounded-full gap-1">
+        <Button variant="secondary" size="sm" onClick={() => navigate("/calendar")} className="mb-4 rounded-full gap-1">
           <ArrowRight className="h-4 w-4" /> חזרה ללוח
         </Button>
 
@@ -173,8 +174,8 @@ const CalendarDate = () => {
         {/* Shabbat hosting offers — visible to all logged-in users */}
         {user && shabbatOffers.length > 0 && (
           <>
-            <h2 className="font-display font-bold text-xl mb-3">הצעות אירוח לשבת זו</h2>
-            <div className="space-y-3 mb-6">
+            <h2 className="font-display font-bold text-xl mb-3 text-black">הצעות אירוח לשבת זו</h2>
+            <div style={{backgroundColor:'white', borderRadius:'17px'}} className="space-y-3 mb-6">
               {shabbatOffers.map((offer) => (
                 <motion.div
                   key={offer.id}
@@ -199,6 +200,23 @@ const CalendarDate = () => {
                       <p className="text-sm text-muted-foreground mt-0.5">{offer.address}</p>
                       {offer.description && (
                         <p className="text-sm mt-2 text-foreground/80">{offer.description}</p>
+                      )}
+                      {offer.vibes && offer.vibes.length > 0 && (
+                        <div className="flex flex-wrap gap-1.5 mt-2">
+                          {offer.vibes.map((vid) => {
+                            const labels: Record<string, string> = {
+                              board_games: "🎲 משחקי קופסא",
+                              shabbat_songs: "🎵 שירי שבת",
+                              good_food: "🍲 אוכל טעים",
+                              good_talk: "💬 שיחה טובה",
+                            };
+                            return (
+                              <span key={vid} className="text-[11px] bg-primary/10 text-primary rounded-full px-2.5 py-0.5 font-medium">
+                                {labels[vid] ?? vid}
+                              </span>
+                            );
+                          })}
+                        </div>
                       )}
                       <div className="flex flex-wrap gap-1.5 mt-2">
                         <Badge variant={offer.is_paid ? "default" : "secondary"} className="text-[11px]">

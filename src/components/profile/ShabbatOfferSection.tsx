@@ -7,8 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
-import { PlusCircle, Trash2, ToggleLeft, ToggleRight, Phone, MessageCircle, Mail, CalendarDays, Lock } from "lucide-react";
+import { PlusCircle, Trash2, ToggleLeft, ToggleRight, Phone, MessageCircle, Mail, CalendarDays, Lock, Pencil } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 const kashrutLabels: Record<string, string> = {
@@ -17,6 +18,13 @@ const kashrutLabels: Record<string, string> = {
   mehadrin: "כשר למהדרין",
   chalak_beit_yosef: "חלק/בית יוסף",
 };
+
+const VIBES = [
+  { id: "board_games", label: "🎲 משחקי קופסא" },
+  { id: "shabbat_songs", label: "🎵 שירי שבת" },
+  { id: "good_food", label: "🍲 אוכל טעים" },
+  { id: "good_talk", label: "💬 שיחה טובה" },
+];
 
 type Offer = {
   id: string;
@@ -31,6 +39,7 @@ type Offer = {
   contact_phone: string | null;
   contact_whatsapp: string | null;
   contact_email: string | null;
+  vibes: string[] | null;
 };
 
 const emptyForm = {
@@ -40,6 +49,7 @@ const emptyForm = {
   is_paid: false,
   kashrut_level: "kosher",
   date: "",
+  vibes: [] as string[],
 };
 
 const ShabbatOfferSection = () => {
@@ -48,10 +58,11 @@ const ShabbatOfferSection = () => {
   const qc = useQueryClient();
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState({ ...emptyForm });
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
   // Only hosts may add shabbat offers
-  const isHost = profile?.user_type === "host";
+  const isHost = profile?.user_type === "host" || profile?.user_type === "both";
 
   const { data: offers = [], isLoading } = useQuery<Offer[]>({
     queryKey: ["my-shabbat-offers", user?.id],
@@ -94,6 +105,33 @@ const ShabbatOfferSection = () => {
     },
   });
 
+  const openEdit = (offer: Offer) => {
+    setForm({
+      host_name: offer.host_name,
+      address: offer.address,
+      description: offer.description || "",
+      is_paid: offer.is_paid,
+      kashrut_level: offer.kashrut_level,
+      date: offer.date,
+      vibes: offer.vibes || [],
+    });
+    setEditingId(offer.id);
+    setShowForm(true);
+  };
+
+  const openNew = () => {
+    setForm({ ...emptyForm });
+    setEditingId(null);
+    setShowForm((v) => !v);
+  };
+
+  const toggleVibe = (id: string) => {
+    setForm((f) => ({
+      ...f,
+      vibes: f.vibes.includes(id) ? f.vibes.filter((v) => v !== id) : [...f.vibes, id],
+    }));
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.host_name || !form.address || !form.date) {
@@ -101,30 +139,42 @@ const ShabbatOfferSection = () => {
       return;
     }
     setSaving(true);
-    // Auto-populate contact details from the user's profile
-    const { error } = await supabase.from("shabbat_offers").insert({
-      user_id: user!.id,
+
+    const payload = {
       host_name: form.host_name,
       address: form.address,
       description: form.description || null,
       is_paid: form.is_paid,
       kashrut_level: form.kashrut_level,
       date: form.date,
-      is_full: false,
-      contact_phone: profile?.phone || null,
-      contact_whatsapp: profile?.phone || null,
-      contact_email: profile?.email || null,
-    });
+      vibes: form.vibes.length > 0 ? form.vibes : null,
+    };
+
+    let error;
+    if (editingId) {
+      ({ error } = await supabase.from("shabbat_offers").update(payload).eq("id", editingId));
+    } else {
+      ({ error } = await supabase.from("shabbat_offers").insert({
+        ...payload,
+        user_id: user!.id,
+        is_full: false,
+        contact_phone: profile?.phone || null,
+        contact_whatsapp: profile?.phone || null,
+        contact_email: profile?.email || null,
+      }));
+    }
+
     setSaving(false);
     if (error) {
-      console.error("shabbat_offers insert error:", error);
       toast({ title: "שגיאה", description: error.message, variant: "destructive" });
     } else {
-      toast({ title: "ההצעה נוספה ✨" });
+      toast({ title: editingId ? "ההצעה עודכנה ✨" : "ההצעה נוספה ✨" });
       setForm({ ...emptyForm });
       setShowForm(false);
+      setEditingId(null);
       qc.invalidateQueries({ queryKey: ["my-shabbat-offers"] });
       qc.invalidateQueries({ queryKey: ["calendar-shabbat-offers"] });
+      qc.invalidateQueries({ queryKey: ["date-shabbat-offers"] });
     }
   };
 
@@ -138,19 +188,21 @@ const ShabbatOfferSection = () => {
         {isHost && (
           <Button
             size="sm"
-            variant={showForm ? "outline" : "default"}
+            variant={showForm && !editingId ? "outline" : "default"}
             className="rounded-full gap-1.5"
-            onClick={() => setShowForm((v) => !v)}
+            onClick={openNew}
           >
             <PlusCircle className="h-4 w-4" />
-            {showForm ? "סגור" : "הוסף שבת"}
+            {showForm && !editingId ? "סגור" : "הוסף שבת"}
           </Button>
         )}
       </div>
 
       {isHost && showForm && (
         <form onSubmit={handleSubmit} className="p-6 space-y-4 border-b border-border bg-background/60">
-          <h3 className="font-bold font-display text-base">➕ הצעת אירוח חדשה</h3>
+          <h3 className="font-bold font-display text-base">
+            {editingId ? "✏️ עריכת הצעת אירוח" : "➕ הצעת אירוח חדשה"}
+          </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <Label htmlFor="of-host-name">שם המארח/ת *</Label>
@@ -173,6 +225,28 @@ const ShabbatOfferSection = () => {
             <Textarea id="of-desc" placeholder="ארוחה חמה, שיחות, אווירה משפחתית..." className="min-h-[80px]"
               value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} />
           </div>
+
+          {/* Vibes */}
+          <div className="space-y-2">
+            <Label>אנחנו אוהבים…</Label>
+            <div className="flex flex-wrap gap-3">
+              {VIBES.map((v) => (
+                <label key={v.id} className={`flex items-center gap-2 rounded-full border-2 px-4 py-2 cursor-pointer transition-all text-sm font-medium select-none ${
+                  form.vibes.includes(v.id)
+                    ? "border-primary bg-primary/10 text-primary"
+                    : "border-border bg-background hover:border-primary/40"
+                }`}>
+                  <Checkbox
+                    checked={form.vibes.includes(v.id)}
+                    onCheckedChange={() => toggleVibe(v.id)}
+                    className="hidden"
+                  />
+                  {v.label}
+                </label>
+              ))}
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <Label>רמת כשרות</Label>
@@ -196,12 +270,21 @@ const ShabbatOfferSection = () => {
               </Select>
             </div>
           </div>
-          <div className="rounded-lg bg-primary/5 border border-primary/20 px-3 py-2 text-xs text-muted-foreground">
-            📞 פרטי הקשר (טלפון ומייל) יילקחו אוטומטית מהפרופיל שלך ויוצגו למי שמרחף על התאריך בלוח
+          {!editingId && (
+            <div className="rounded-lg bg-primary/5 border border-primary/20 px-3 py-2 text-xs text-muted-foreground">
+              📞 פרטי הקשר (טלפון ומייל) יילקחו אוטומטית מהפרופיל שלך ויוצגו למי שמרחף על התאריך בלוח
+            </div>
+          )}
+          <div className="flex gap-2">
+            <Button type="submit" className="flex-1 rounded-full font-bold" disabled={saving}>
+              {saving ? "שומר..." : editingId ? "שמירת שינויים" : "הוספת הצעה"}
+            </Button>
+            {editingId && (
+              <Button type="button" variant="outline" className="rounded-full" onClick={() => { setShowForm(false); setEditingId(null); setForm({ ...emptyForm }); }}>
+                ביטול
+              </Button>
+            )}
           </div>
-          <Button type="submit" className="w-full rounded-full font-bold" disabled={saving}>
-            {saving ? "שומר..." : "הוספת הצעה"}
-          </Button>
         </form>
       )}
 
@@ -226,8 +309,26 @@ const ShabbatOfferSection = () => {
               </div>
               <p className="text-xs text-muted-foreground mt-0.5 truncate">{offer.address}</p>
               {offer.description && <p className="text-xs mt-1 line-clamp-1">{offer.description}</p>}
+              {offer.vibes && offer.vibes.length > 0 && (
+                <div className="flex flex-wrap gap-1 mt-1.5">
+                  {offer.vibes.map((vid) => {
+                    const vibe = VIBES.find((v) => v.id === vid);
+                    return vibe ? (
+                      <span key={vid} className="text-[10px] bg-primary/10 text-primary rounded-full px-2 py-0.5">{vibe.label}</span>
+                    ) : null;
+                  })}
+                </div>
+              )}
             </div>
             <div className="flex items-center gap-1.5 flex-shrink-0">
+              <button
+                type="button"
+                title="עריכה"
+                className="text-muted-foreground hover:text-primary transition-colors"
+                onClick={() => openEdit(offer)}
+              >
+                <Pencil className="h-4 w-4" />
+              </button>
               <button
                 type="button"
                 title={offer.is_full ? "סמן כפנוי" : "סמן כתפוס"}

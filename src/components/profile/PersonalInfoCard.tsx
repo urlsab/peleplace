@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
-import { Edit2, XCircle, User, Phone, Mail, Shield } from "lucide-react";
+import { Edit2, XCircle, User, Phone, Mail, Shield, Home } from "lucide-react";
 
 const statusConfig: Record<string, { label: string; icon: typeof XCircle; className: string }> = {
   rejected: { label: "נדחה", icon: XCircle, className: "bg-red-100 text-red-800 border-red-200" },
@@ -17,9 +17,27 @@ const userTypeLabels: Record<string, string> = {
   both: "רווק/ה + מארח/ת",
 };
 
+const hostSubTypeLabels: Record<string, string> = {
+  family: "משפחה",
+  volunteer: "התנדבות",
+  volunteer_farm: "חוות מתנדבים",
+  organized_shabbat: "שבת מאורגנת בתשלום",
+  work: "מקום עבודה",
+  singles_group: "חבורת רווקים/ות",
+  // host_ prefixed (from Auth.tsx registration flow)
+  host_family: "משפחה",
+  host_volunteer: "התנדבות",
+  host_volunteer_farm: "חוות מתנדבים",
+  host_organized_shabbat: "שבת מאורגנת בתשלום",
+  host_work: "מקום עבודה",
+  host_singles_group: "חבורת רווקים/ות",
+  host_reservist: "אשת מילואים",
+};
+
 interface PersonalInfoCardProps {
   profile: any;
   onProfileUpdated: (updated: any) => void;
+  hostSubType?: string | null;
 }
 
 const InfoRow = ({
@@ -42,7 +60,7 @@ const InfoRow = ({
   </div>
 );
 
-const PersonalInfoCard = ({ profile, onProfileUpdated }: PersonalInfoCardProps) => {
+const PersonalInfoCard = ({ profile, onProfileUpdated, hostSubType }: PersonalInfoCardProps) => {
   const { toast } = useToast();
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -176,6 +194,9 @@ const PersonalInfoCard = ({ profile, onProfileUpdated }: PersonalInfoCardProps) 
             <p className="text-xs text-muted-foreground font-semibold mb-2">שדות לא ניתנים לשינוי</p>
             <InfoRow icon={Mail} label="אימייל" value={profile.email} dir="ltr" />
             <InfoRow icon={Shield} label="סוג הרשמה" value={userTypeLabels[profile.user_type]} />
+            {hostSubType && (
+              <InfoRow icon={Home} label="סוג מארח" value={hostSubTypeLabels[hostSubType] ?? hostSubType} />
+            )}
           </div>
 
           <div className="flex gap-2 pt-1">
@@ -194,6 +215,9 @@ const PersonalInfoCard = ({ profile, onProfileUpdated }: PersonalInfoCardProps) 
           <InfoRow icon={Mail} label="אימייל" value={profile.email} dir="ltr" />
           <InfoRow icon={Phone} label="טלפון" value={profile.phone} dir="ltr" />
           <InfoRow icon={Shield} label="סוג הרשמה" value={userTypeLabels[profile.user_type]} />
+          {hostSubType && (
+            <InfoRow icon={Home} label="סוג מארח" value={hostSubTypeLabels[hostSubType] ?? hostSubType} />
+          )}
 
           <div className="pt-3 mt-3">
             <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2">

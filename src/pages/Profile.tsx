@@ -101,6 +101,7 @@ const Profile = () => {
           <PersonalInfoCard
             profile={displayProfile}
             onProfileUpdated={(updated) => setLocalProfile(updated)}
+            hostSubType={displayProfile?.host_subtype ?? null}
           />
 
           {/* Role toggle — only for 'both' users or users who have built both profiles */}

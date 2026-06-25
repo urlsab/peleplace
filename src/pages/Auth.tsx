@@ -15,7 +15,7 @@ import Navbar from "@/components/Navbar";
 import { type ProfileCategory } from "@/components/profile/ProfileFormFields";
 import peleTextsLogo from "@/assets/pele_texts-removebg-preview.png";
 
-type RegistrationCategory = ProfileCategory;
+type RegistrationCategory = ProfileCategory | "host_volunteer_farm";
 
 const CATEGORIES: {
   value: RegistrationCategory;
@@ -44,7 +44,8 @@ const Auth = () => {
   const [googleLoading, setGoogleLoading] = useState(false);
 
   // Registration fields
-  const [category, setCategory] = useState<RegistrationCategory | null>(null);
+  const [userRole, setUserRole] = useState<"single" | "host" | "both" | null>(null);
+  const [hostSubType, setHostSubType] = useState<string | null>(null);
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
   const [gender, setGender] = useState("");
@@ -146,7 +147,7 @@ const handleLogin = async (e: React.FormEvent) => {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!category || !termsAccepted || !gender || !dateOfBirth || !recommenderName.trim() || !recommenderPhone.trim() || !recommenderRelationship.trim()) return;
+    if (!userRole || (userRole !== "single" && !hostSubType) || !termsAccepted || !gender || !dateOfBirth || !recommenderName.trim() || !recommenderPhone.trim() || !recommenderRelationship.trim()) return;
     setLoading(true);
 
     try {
@@ -161,8 +162,8 @@ const handleLogin = async (e: React.FormEvent) => {
             full_name: fullName,
             email,
             phone,
-            user_type: category === "single" ? "single" : "host",
-            host_subtype: category === "single" ? null : category,
+            user_type: userRole === "single" ? "single" : userRole === "both" ? "both" : "host",
+            host_subtype: userRole === "single" ? null : hostSubType,
             gender,
             date_of_birth: dateOfBirth,
             recommender_name: recommenderName,
@@ -175,8 +176,8 @@ const handleLogin = async (e: React.FormEvent) => {
       if (!authData.user?.id) throw new Error("לא התקבל מזהה משתמש");
 
       // Save profile metadata for post-confirmation completion.
-      const userType = category === "single" ? "single" : "host";
-      const hostSubtype = category === "single" ? null : category;
+      const userType = userRole === "single" ? "single" : userRole === "both" ? "both" : "host";
+      const hostSubtype = userRole === "single" ? null : hostSubType;
 
       const { error: updateMetadataError } = await supabase.auth.updateUser({
         data: {
@@ -431,19 +432,70 @@ const handleGoogleSignIn = async () => {
             <form onSubmit={handleRegister} className="space-y-4">
               {/* Category question at the top of registration */}
               <div className="space-y-2 rounded-xl border border-border bg-accent/30 p-3">
-                <Label className="text-xs font-bold">מי אתה? *</Label>
-                <Select dir="rtl" value={category ?? undefined} onValueChange={(val) => setCategory(val as RegistrationCategory)}>
-                  <SelectTrigger className="text-right font-semibold bg-background/90">
-                    <SelectValue placeholder="בחרו סוג משתמש" />
-                  </SelectTrigger>
-                  <SelectContent align="end" sideOffset={6}>
-                    {CATEGORIES.map((c) => (
-                      <SelectItem key={c.value} value={c.value}>
-                        {c.label} — {c.description}
-                      </SelectItem>
+                <Label className="text-xs font-bold">מי את/ה? *</Label>
+                {userRole !== "host" && userRole !== "both" ? (
+                  /* Main role selection */
+                  <div className="grid grid-cols-1 gap-2 pt-1">
+                    {([
+                      { value: "single" as const, label: "🙋 אורח/ת", desc: "מחפש/ת מקום לשבת או חג" },
+                      { value: "host" as const, label: "🏡 מארח/ת", desc: "אירוח, התנדבות, עבודה ועוד" },
+                      { value: "both" as const, label: "🙋🏡 אורח/ת ומארח/ת", desc: "גם מחפש/ת וגם מארח/ת" },
+                    ]).map((opt) => (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => { setUserRole(opt.value); setHostSubType(null); }}
+                        className={`flex w-full items-start gap-3 rounded-xl border-2 p-3 text-right transition-all ${
+                          userRole === opt.value
+                            ? "border-primary bg-primary/10"
+                            : "border-border bg-background hover:border-primary/50"
+                        }`}
+                      >
+                        <div>
+                          <div className="font-bold text-sm">{opt.label}</div>
+                          <div className="text-xs text-muted-foreground">{opt.desc}</div>
+                        </div>
+                      </button>
                     ))}
-                  </SelectContent>
-                </Select>
+                  </div>
+                ) : (
+                  /* Host sub-type selection */
+                  <div className="space-y-2 pt-1">
+                    <button
+                      type="button"
+                      onClick={() => { setUserRole(null); setHostSubType(null); }}
+                      className="text-xs text-primary hover:underline"
+                    >
+                      ← חזרה
+                    </button>
+                    <p className="text-xs text-muted-foreground font-semibold">
+                      {userRole === "both" ? "איזה סוג מארח (בנוסף להיות אורח/ת)?" : "איזה סוג מארח?"}
+                    </p>
+                    {([
+                      { value: "host_family", label: "🏡 משפחה", desc: "פתיחת הבית לאורחים בשבת/חג" },
+                      { value: "host_volunteer", label: "🤝 התנדבות", desc: "בית חב\"\u05d3, בית ילד, בית אבות ועוד" },
+                      { value: "host_organized_shabbat", label: "📅 שבת מאורגנת בתשלום", desc: "סמינר ערכים, שבת שידוכים" },
+                      { value: "host_volunteer_farm", label: "🌿 חוות מתנדבים", desc: "חווה המחפשת מתנדבים לשמירה ופעילות" },
+                      { value: "host_work", label: "💼 מקום עבודה", desc: "עבודה זמנית או קבועה" },
+                    ] as const).map((opt) => (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => setHostSubType(opt.value)}
+                        className={`flex w-full items-start gap-3 rounded-xl border-2 p-3 text-right transition-all ${
+                          hostSubType === opt.value
+                            ? "border-primary bg-primary/10"
+                            : "border-border bg-background hover:border-primary/50"
+                        }`}
+                      >
+                        <div>
+                          <div className="font-bold text-sm">{opt.label}</div>
+                          <div className="text-xs text-muted-foreground">{opt.desc}</div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="space-y-1.5">
@@ -628,7 +680,7 @@ const handleGoogleSignIn = async () => {
               <Button
                 type="submit"
                 className="w-full rounded-full font-bold h-11"
-                disabled={loading || !category || !termsAccepted || !gender || !dateOfBirth || !recommenderName.trim() || !recommenderPhone.trim() || !recommenderRelationship.trim()}
+                disabled={loading || !userRole || (userRole !== "single" && !hostSubType) || !termsAccepted || !gender || !dateOfBirth || !recommenderName.trim() || !recommenderPhone.trim() || !recommenderRelationship.trim()}
               >
                 {loading ? "נרשם..." : "הצטרפות לפל״א"}
               </Button>

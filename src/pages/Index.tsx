@@ -236,7 +236,7 @@ const Index = () => {
         </motion.section>
 
         {/* Registration Cards */}
-        <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55 }}>
+        <motion.div id="you" initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55 }}>
           <RegistrationCards />
         </motion.div>
 

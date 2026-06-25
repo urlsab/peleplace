@@ -13,7 +13,16 @@ import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type Category = "single" | "host" | "both" | null;
-type HostSubType = "family" | "work" | "volunteer" | "singles_group" | "organized_shabbat" | null;
+type HostSubType = "family" | "work" | "volunteer" | "volunteer_farm" | "singles_group" | "organized_shabbat" | null;
+
+const hostSubTypeLabels: Record<string, string> = {
+  family: "משפחה",
+  volunteer: "התנדבות",
+  volunteer_farm: "חוות מתנדבים",
+  organized_shabbat: "שבת מאורגנת בתשלום",
+  work: "מקום עבודה",
+  singles_group: "חבורת רווקים/ות",
+};
 type Step = "type" | "hosttype" | "form";
 
 const regionLabels: Record<string, string> = {
@@ -141,11 +150,11 @@ const Register = () => {
             team_size: parseInt(form.get("teamSize") as string) || null,
             special_requirements: (form.get("specialReq") as string) || null,
           }).throwOnError();
-        } else if (hostSubType === "volunteer") {
+        } else if (hostSubType === "volunteer" || hostSubType === "volunteer_farm") {
           await supabase.from("host_volunteer_profiles").insert({
             user_id: user.id,
             place_name: form.get("placeName") as string,
-            volunteer_type: volunteerType || null,
+            volunteer_type: hostSubType === "volunteer_farm" ? "farm" : volunteerType || null,
             region: region as any || null,
             city: (form.get("city") as string) || null,
             special_requirements: (form.get("specialReq") as string) || null,
@@ -295,11 +304,11 @@ const Register = () => {
             <button type="button" onClick={() => setStep("type")} className="text-sm text-primary hover:underline">← חזרה</button>
             <p className="text-center text-lg font-bold font-display">איזה סוג אירוח?</p>
             {([
-              { type: "family" as const, label: "🏡 משפחה מארחת", desc: "פתיחת הבית לאורחים בשבת/חג" },
-              { type: "singles_group" as const, label: "\u2728 חבורת רווקים/ות", desc: "חבורה שמתארגנת שבת ורוצה לקלוט עוד" },
-              { type: "organized_shabbat" as const, label: "\ud83d\udcc5 שבת מאורגנת", desc: "סמינר ערכים, שבת שידוכים, ארגון" },
-              { type: "work" as const, label: "\ud83d\udcbc מקום עבודה", desc: "הצעת עבודה זמנית או קבועה" },
-              { type: "volunteer" as const, label: "\ud83e\udd1d מקום התנדבות", desc: "חווה, בית ילד, בית חב\u05d3 ועוד" },
+              { type: "family" as const, label: "🏡 משפחה", desc: "פתיחת הבית לאורחים בשבת/חג" },
+              { type: "volunteer" as const, label: "🤝 התנדבות", desc: "בית חב\u05d3, בית ילד, בית אבות ועוד" },
+              { type: "organized_shabbat" as const, label: "📅 שבת מאורגנת בתשלום", desc: "סמינר ערכים, שבת שידוכים, ארגון" },
+              { type: "volunteer_farm" as const, label: "🌿 חוות מתנדבים", desc: "חווה המחפשת מתנדבים לשמירה, מרעה ופעילות" },
+              { type: "work" as const, label: "💼 מקום עבודה", desc: "הצעת עבודה זמנית או קבועה" },
             ]).map((opt) => (
               <button key={opt.type} onClick={() => handleHostTypeSelect(opt.type)}
                 className="flex w-full items-center gap-4 rounded-2xl border-2 border-border bg-background p-4 text-right transition-all hover:border-primary hover:shadow-md">
@@ -322,7 +331,7 @@ const Register = () => {
 
             <div className="rounded-xl bg-accent/60 px-4 py-2.5 text-center text-sm font-medium">
               {category === "single" && "🙋 הרשמה כרווק/ה"}
-              {category === "host" && `🏠 הרשמה כמארח/ת`}
+              {category === "host" && `🏠 הרשמה כמארח/ת${hostSubType ? ` — ${hostSubTypeLabels[hostSubType]}` : ""}`}
               {category === "both" && "🙋🏠 הרשמה כרווק/ה + מארח/ת"}
             </div>
 
@@ -486,23 +495,24 @@ const Register = () => {
                   </>
                 )}
 
-                {hostSubType === "volunteer" && (
+                {(hostSubType === "volunteer" || hostSubType === "volunteer_farm") && (
                   <>
-                    <div className="space-y-2"><Label htmlFor="placeName">שם המקום *</Label><Input id="placeName" name="placeName" required placeholder='בית חב"\u05d3 הרצליה' /></div>
-                    <div className="space-y-2">
-                      <Label>סוג ההתנדבות</Label>
-                      <Select value={volunteerType} onValueChange={setVolunteerType}>
-                        <SelectTrigger><SelectValue placeholder="בחרו סוג" /></SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="farm">חווה</SelectItem>
-                          <SelectItem value="children_home">בית ילד</SelectItem>
-                          <SelectItem value="chabad">בית חב"\u05d3</SelectItem>
-                          <SelectItem value="elderly">בית אבות</SelectItem>
-                          <SelectItem value="military_families">משפחות מילואים</SelectItem>
-                          <SelectItem value="other">אחר</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                    <div className="space-y-2"><Label htmlFor="placeName">שם המקום *</Label><Input id="placeName" name="placeName" required placeholder={hostSubType === "volunteer_farm" ? "חוות הגלבוע" : 'בית חב"\u05d3 הרצליה'} /></div>
+                    {hostSubType === "volunteer" && (
+                      <div className="space-y-2">
+                        <Label>סוג ההתנדבות</Label>
+                        <Select value={volunteerType} onValueChange={setVolunteerType}>
+                          <SelectTrigger><SelectValue placeholder="בחרו סוג" /></SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="children_home">בית ילד</SelectItem>
+                            <SelectItem value="chabad">בית חב"\u05d3</SelectItem>
+                            <SelectItem value="elderly">בית אבות</SelectItem>
+                            <SelectItem value="military_families">משפחות מילואים</SelectItem>
+                            <SelectItem value="other">אחר</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
                     <div className="space-y-2"><Label htmlFor="specialReq">דרישות מיוחדות</Label><Textarea id="specialReq" name="specialReq" placeholder="כושר פיזי, ניסיון עם ילדים..." /></div>
                     <div className="space-y-3 rounded-xl border border-border bg-background p-4">
                       <h4 className="font-bold text-sm">מה כלול?</h4>

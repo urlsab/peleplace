@@ -28,6 +28,7 @@ export type Database = {
           contact_phone: string | null
           contact_whatsapp: string | null
           contact_email: string | null
+          vibes: string[] | null
           created_at: string
           updated_at: string
         }
@@ -44,6 +45,7 @@ export type Database = {
           contact_phone?: string | null
           contact_whatsapp?: string | null
           contact_email?: string | null
+          vibes?: string[] | null
           created_at?: string
           updated_at?: string
         }
@@ -60,6 +62,7 @@ export type Database = {
           contact_phone?: string | null
           contact_whatsapp?: string | null
           contact_email?: string | null
+          vibes?: string[] | null
           created_at?: string
           updated_at?: string
         }
