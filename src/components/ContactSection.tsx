@@ -35,19 +35,6 @@ const ContactSection = () => {
           className="max-w-md mx-auto flex flex-col gap-6"
           dir="rtl"
         >
-          {/* פניות טכניות */}
-          <a
-            href={`mailto:${CONTACT_EMAIL}`}
-            className="flex items-center gap-4 bg-background/80 backdrop-blur-sm rounded-2xl p-6 border border-border/40 shadow-card hover:border-primary/40 transition-colors group"
-          >
-            <div className="flex-shrink-0 h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-              <Mail className="h-6 w-6 text-primary" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-sm text-muted-foreground mb-0.5">לתמיכה טכנית</span>
-              <span className="font-semibold text-foreground">{CONTACT_EMAIL}</span>
-            </div>
-          </a>
 
           {/* פניות כלליות */}
           <a
@@ -62,6 +49,22 @@ const ContactSection = () => {
               <span className="font-semibold text-foreground">{CONTACT_EMAIL2}</span>
             </div>
           </a>
+
+          {/* פניות טכניות */}
+          <a
+            href={`mailto:${CONTACT_EMAIL}`}
+            className="flex items-center gap-4 bg-background/80 backdrop-blur-sm rounded-2xl p-6 border border-border/40 shadow-card hover:border-primary/40 transition-colors group"
+          >
+            <div className="flex-shrink-0 h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+              <Mail className="h-6 w-6 text-primary" />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-bold text-sm text-muted-foreground mb-0.5">לתמיכה טכנית</span>
+              <span className="font-semibold text-foreground">{CONTACT_EMAIL}</span>
+            </div>
+          </a>
+
+          
         </motion.div>
       </div>
     </section>
