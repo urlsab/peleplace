@@ -428,7 +428,7 @@ const handleGoogleSignIn = async () => {
                 </button>
               </div>            </form>
           ) : (
-            /* REGISTRATION FORM */
+            /* REGISTRATION FORM! */
             <form onSubmit={handleRegister} className="space-y-4">
               {/* Category question at the top of registration */}
               <div className="space-y-2 rounded-xl border border-border bg-accent/30 p-3">
