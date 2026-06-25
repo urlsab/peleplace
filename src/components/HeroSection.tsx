@@ -23,7 +23,7 @@ const HeroSection = () => {
       <div style={{textAlign:'center'}} className="absolute bottom-20 right-10 h-60 w-60 rounded-full bg-secondary/10 blur-[80px]" />
 
       <div style={{textAlign:'center'}} className="container relative z-10 mx-auto px-6 py-20 md:py-24">
-        <div style={{textAlign:'center'}} className="max-w-2xl mt-6 md:mt-10">
+        <div style={{textAlign:'center'}} className="max-w-2xl mx-auto mt-6 md:mt-10">
           <motion.h1
           style={{textAlign:'center'}}
             initial={{ opacity: 0, y: 28 }}
@@ -43,7 +43,7 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             style={{textAlign:'center'}}
             transition={{ duration: 0.7, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-10 max-w-md text-base leading-relaxed text-cream font-bold md:text-4xl drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)]"
+            className="mb-10 mx-auto max-w-xl text-2xl leading-relaxed text-cream font-bold sm:text-3xl md:text-4xl lg:text-5xl drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)]"
           >
 רווקות מאוחרת היא מאתגרת, במיוחד בשבתות וחגים. בשביל זה הקמנו את מיזם פל"א, שמחבר בין רווקים למארחים כדי להיות שם בשבילם.
           </motion.p>

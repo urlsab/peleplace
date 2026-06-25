@@ -2,7 +2,7 @@ import { LogOut, User, Shield, Search, CalendarCheck, Menu, FileText, Mail, Sett
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate, useLocation } from "react-router-dom";
-import logoPele from "@/assets/pele_heart_pele-removebg-preview.png";
+import logoPele from "@/assets/pele_text_and_heart-removebg-preview.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
