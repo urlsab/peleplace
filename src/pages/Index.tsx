@@ -251,7 +251,7 @@ const Index = () => {
         </motion.div>
 
         {/* CTA */}
-        <motion.section id="cta" initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.18 }} transition={{ duration: 0.6 }} className="relative py-24 overflow-hidden">
+        <motion.section id="cta" initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.18 }} transition={{ duration: 0.6 }} className="relative py-24 pb-4 overflow-hidden">
           {/* Floating decorative */}
           <div className="absolute top-10 right-[15%] animate-float opacity-[0.06]">
             <Star className="h-12 w-12 text-primary" />
