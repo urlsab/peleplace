@@ -430,6 +430,7 @@ const handleGoogleSignIn = async () => {
           ) : (
             /* REGISTRATION FORM! */
             <form onSubmit={handleRegister} className="space-y-4">
+              <p className="text-red-600">כל השדות המסומנים ב-* הם חובה</p>
               {/* Category question at the top of registration */}
               <div className="space-y-2 rounded-xl border border-border bg-accent/30 p-3">
                 <Label className="text-xs font-bold">מי את/ה? *</Label>

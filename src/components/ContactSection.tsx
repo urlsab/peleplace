@@ -8,7 +8,7 @@ const fadeUp = {
 };
 
 const CONTACT_EMAIL = "yairsabag213@gmail.com";
-const CONTACT_EMAIL2 = "support@peleplace.com";
+const CONTACT_EMAIL2 = "odaya@peleplace.com";
 
 const ContactSection = () => {
   return (

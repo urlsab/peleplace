@@ -41,6 +41,11 @@ type ShabbatOffer = {
   contact_whatsapp: string | null;
   contact_email: string | null;
   vibes: string[] | null;
+  event_gender: string | null;
+  meal_details: string | null;
+  accommodation_options: string | null;
+  capacity: number | null;
+  special_requirements: string | null;
 };
 
 type Opp = {
@@ -200,6 +205,38 @@ const CalendarDate = () => {
                       <p className="text-sm text-muted-foreground mt-0.5">{offer.address}</p>
                       {offer.description && (
                         <p className="text-sm mt-2 text-foreground/80">{offer.description}</p>
+                      )}
+                      {(offer.event_gender || offer.capacity) && (
+                        <div className="flex flex-wrap gap-1.5 mt-2">
+                          {offer.event_gender && (
+                            <span className="text-[11px] bg-secondary/60 text-secondary-foreground rounded-full px-2.5 py-0.5 font-medium">
+                              {{ men: "גברים בלבד ♂️", women: "נשים בלבד ♀️", mixed: "מעורב ♂️♀️" }[offer.event_gender] ?? offer.event_gender}
+                            </span>
+                          )}
+                          {offer.capacity && (
+                            <span className="text-[11px] bg-secondary/60 text-secondary-foreground rounded-full px-2.5 py-0.5 font-medium">
+                              👥 עד {offer.capacity} אנשים
+                            </span>
+                          )}
+                        </div>
+                      )}
+                      {offer.meal_details && (
+                        <div className="mt-2">
+                          <p className="text-xs font-semibold text-muted-foreground">🍲 פרטי ארוחות:</p>
+                          <p className="text-sm mt-0.5 text-foreground/80">{offer.meal_details}</p>
+                        </div>
+                      )}
+                      {offer.accommodation_options && (
+                        <div className="mt-2">
+                          <p className="text-xs font-semibold text-muted-foreground">🛏️ אפשרויות לינה:</p>
+                          <p className="text-sm mt-0.5 text-foreground/80">{offer.accommodation_options}</p>
+                        </div>
+                      )}
+                      {offer.special_requirements && (
+                        <div className="mt-2 rounded-lg bg-amber-50 dark:bg-amber-950/20 border border-amber-200/60 px-3 py-2">
+                          <p className="text-xs font-semibold text-amber-700 dark:text-amber-400">⚠️ דרישות מיוחדות:</p>
+                          <p className="text-sm mt-0.5 text-foreground/80">{offer.special_requirements}</p>
+                        </div>
                       )}
                       {offer.vibes && offer.vibes.length > 0 && (
                         <div className="flex flex-wrap gap-1.5 mt-2">

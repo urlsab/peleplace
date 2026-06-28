@@ -29,6 +29,11 @@ export type Database = {
           contact_whatsapp: string | null
           contact_email: string | null
           vibes: string[] | null
+          event_gender: string | null
+          meal_details: string | null
+          accommodation_options: string | null
+          capacity: number | null
+          special_requirements: string | null
           created_at: string
           updated_at: string
         }
@@ -46,6 +51,11 @@ export type Database = {
           contact_whatsapp?: string | null
           contact_email?: string | null
           vibes?: string[] | null
+          event_gender?: string | null
+          meal_details?: string | null
+          accommodation_options?: string | null
+          capacity?: number | null
+          special_requirements?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -63,6 +73,11 @@ export type Database = {
           contact_whatsapp?: string | null
           contact_email?: string | null
           vibes?: string[] | null
+          event_gender?: string | null
+          meal_details?: string | null
+          accommodation_options?: string | null
+          capacity?: number | null
+          special_requirements?: string | null
           created_at?: string
           updated_at?: string
         }

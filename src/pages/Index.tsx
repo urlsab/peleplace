@@ -251,7 +251,7 @@ const Index = () => {
         </motion.div>
 
         {/* CTA */}
-        <motion.section id="cta" initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.18 }} transition={{ duration: 0.6 }} className="relative py-24 pb-4 overflow-hidden">
+        <motion.section id="cta" initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.18 }} transition={{ duration: 0.6 }} className="relative py-24 pb-10 overflow-hidden">
           {/* Floating decorative */}
           <div className="absolute top-10 right-[15%] animate-float opacity-[0.06]">
             <Star className="h-12 w-12 text-primary" />
@@ -274,9 +274,9 @@ const Index = () => {
                   <br />
                   מתחילה כאן
                 </h2>
-                <p className="mx-auto mb-8 max-w-2xl text-lg md:text-xl text-white font-bold leading-[1.8]">
+                {/* <p className="mx-auto mb-8 max-w-2xl text-lg md:text-xl text-white font-bold leading-[1.8]">
                   הצטרפו לקהילה שלנו ותמצאו את המקום המושלם לכל שבת וחג
-                </p>
+                </p> */}
                 <Button
                   onClick={handleCTA}
                   size="lg"
@@ -290,7 +290,7 @@ const Index = () => {
         </motion.section>
 
         {/* Footer */}
-        <motion.footer initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="bg-transparent py-10">
+        <motion.footer initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.5 }} className="bg-transparent py-12 pb-4">
           <div className="container mx-auto px-6">
             <div className="flex flex-col items-center gap-4 text-center">
               <div className="flex items-center gap-1.5 justify-center">

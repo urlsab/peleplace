@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
 import { PlusCircle, Trash2, ToggleLeft, ToggleRight, Phone, MessageCircle, Mail, CalendarDays, Lock, Pencil } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -40,6 +41,11 @@ type Offer = {
   contact_whatsapp: string | null;
   contact_email: string | null;
   vibes: string[] | null;
+  event_gender: "men" | "women" | "mixed" | null;
+  meal_details: string | null;
+  accommodation_options: string | null;
+  capacity: number | null;
+  special_requirements: string | null;
 };
 
 const emptyForm = {
@@ -50,6 +56,11 @@ const emptyForm = {
   kashrut_level: "kosher",
   date: "",
   vibes: [] as string[],
+  event_gender: "" as "men" | "women" | "mixed" | "",
+  meal_details: "",
+  accommodation_options: "",
+  capacity: "",
+  special_requirements: "",
 };
 
 const ShabbatOfferSection = () => {
@@ -114,6 +125,11 @@ const ShabbatOfferSection = () => {
       kashrut_level: offer.kashrut_level,
       date: offer.date,
       vibes: offer.vibes || [],
+      event_gender: (offer.event_gender || "") as "men" | "women" | "mixed" | "",
+      meal_details: offer.meal_details || "",
+      accommodation_options: offer.accommodation_options || "",
+      capacity: offer.capacity !== null && offer.capacity !== undefined ? String(offer.capacity) : "",
+      special_requirements: offer.special_requirements || "",
     });
     setEditingId(offer.id);
     setShowForm(true);
@@ -148,6 +164,11 @@ const ShabbatOfferSection = () => {
       kashrut_level: form.kashrut_level,
       date: form.date,
       vibes: form.vibes.length > 0 ? form.vibes : null,
+      event_gender: (form.event_gender as string) || null,
+      meal_details: form.meal_details || null,
+      accommodation_options: form.accommodation_options || null,
+      capacity: form.capacity ? parseInt(form.capacity as string) : null,
+      special_requirements: form.special_requirements || null,
     };
 
     let error;
@@ -220,10 +241,82 @@ const ShabbatOfferSection = () => {
             <Input id="of-address" placeholder="רחוב הרצל 12, תל אביב" value={form.address}
               onChange={(e) => setForm((f) => ({ ...f, address: e.target.value }))} required />
           </div>
+          {/* Event gender */}
+          <div className="space-y-2">
+            <Label>האירוע מיועד ל</Label>
+            <RadioGroup
+              value={form.event_gender}
+              onValueChange={(v) => setForm((f) => ({ ...f, event_gender: v as "men" | "women" | "mixed" }))}
+              className="flex gap-4"
+            >
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="men" id="eg-men" />
+                <Label htmlFor="eg-men" className="cursor-pointer font-normal">גברים</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="women" id="eg-women" />
+                <Label htmlFor="eg-women" className="cursor-pointer font-normal">נשים</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="mixed" id="eg-mixed" />
+                <Label htmlFor="eg-mixed" className="cursor-pointer font-normal">מעורב</Label>
+              </div>
+            </RadioGroup>
+          </div>
+
+          {/* Capacity */}
+          <div className="space-y-1.5">
+            <Label htmlFor="of-capacity">כמות אנשים שניתן להזמין</Label>
+            <Input
+              id="of-capacity"
+              type="number"
+              min={1}
+              placeholder="למשל: 6"
+              value={form.capacity as string}
+              onChange={(e) => setForm((f) => ({ ...f, capacity: e.target.value }))}
+            />
+          </div>
+
           <div className="space-y-1.5">
             <Label htmlFor="of-desc">אופי האירוח (טקסט חופשי)</Label>
             <Textarea id="of-desc" placeholder="ארוחה חמה, שיחות, אווירה משפחתית..." className="min-h-[80px]"
               value={form.description} onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))} />
+          </div>
+
+          {/* Meals */}
+          <div className="space-y-1.5">
+            <Label htmlFor="of-meals">פרטי ארוחות</Label>
+            <Textarea
+              id="of-meals"
+              placeholder="האם יש ארוחות ומה תוכנן? למשל: ארוחת שישי + סעודת שבת מלאה..."
+              className="min-h-[70px]"
+              value={form.meal_details}
+              onChange={(e) => setForm((f) => ({ ...f, meal_details: e.target.value }))}
+            />
+          </div>
+
+          {/* Accommodation */}
+          <div className="space-y-1.5">
+            <Label htmlFor="of-accommodation">אפשרויות לינה</Label>
+            <Textarea
+              id="of-accommodation"
+              placeholder="למשל: מיטות פנויות, מזרן על הרצפה, ללא לינה..."
+              className="min-h-[70px]"
+              value={form.accommodation_options}
+              onChange={(e) => setForm((f) => ({ ...f, accommodation_options: e.target.value }))}
+            />
+          </div>
+
+          {/* Special requirements */}
+          <div className="space-y-1.5">
+            <Label htmlFor="of-special">דרישות מיוחדות לאירוח</Label>
+            <Textarea
+              id="of-special"
+              placeholder="למשל: רישיון נשק חובה, גיל 18+, ניסיון קודם בהתנדבות..."
+              className="min-h-[70px]"
+              value={form.special_requirements}
+              onChange={(e) => setForm((f) => ({ ...f, special_requirements: e.target.value }))}
+            />
           </div>
 
           {/* Vibes */}
@@ -309,6 +402,14 @@ const ShabbatOfferSection = () => {
               </div>
               <p className="text-xs text-muted-foreground mt-0.5 truncate">{offer.address}</p>
               {offer.description && <p className="text-xs mt-1 line-clamp-1">{offer.description}</p>}
+              {offer.capacity !== null && offer.capacity !== undefined && (
+                <p className="text-xs text-muted-foreground mt-0.5">👥 עד {offer.capacity} אנשים</p>
+              )}
+              {offer.event_gender && (
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  {{ men: "גברים בלבד", women: "נשים בלבד", mixed: "מעורב" }[offer.event_gender] ?? ""}
+                </p>
+              )}
               {offer.vibes && offer.vibes.length > 0 && (
                 <div className="flex flex-wrap gap-1 mt-1.5">
                   {offer.vibes.map((vid) => {
