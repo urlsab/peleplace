@@ -41,8 +41,8 @@ const Settings = () => {
 
   const handlePasswordChange = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newPassword.length < 6) {
-      toast({ title: "סיסמה קצרה מדי", description: "לפחות 6 תווים", variant: "destructive" });
+    if (newPassword.length < 8) {
+      toast({ title: "סיסמה קצרה מדי", description: "לפחות 8 תווים המורכבים ממספרים ואותיות", variant: "destructive" });
       return;
     }
     if (newPassword !== confirmPassword) {
@@ -162,8 +162,8 @@ const Settings = () => {
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                minLength={6}
-                placeholder="לפחות 6 תווים"
+                minLength={8}
+                placeholder="לפחות 8 תווים המורכבים ממספרים ואותיות"
                 dir="ltr"
                 className="rounded-xl"
               />

@@ -219,24 +219,6 @@ const handleLogin = async (e: React.FormEvent) => {
     setForgotLoading(true);
 
     try {
-      // Check if the email is registered in the system
-      const { data: isRegistered, error: rpcError } = await supabase.rpc(
-        "check_email_registered",
-        { p_email: forgotEmail.trim().toLowerCase() }
-      );
-
-      if (rpcError) throw rpcError;
-
-      if (!isRegistered) {
-        toast({
-          title: "כתובת המייל אינה רשומה במערכת",
-          description: "לא נמצא חשבון עם כתובת מייל זו. בדקו את הכתובת או הצטרפו לפל\"א.",
-          variant: "destructive",
-        });
-        setForgotLoading(false);
-        return;
-      }
-
       const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail.trim(), {
         redirectTo: `${window.location.origin}/auth/reset-password`,
       });
@@ -536,9 +518,9 @@ const handleGoogleSignIn = async () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    placeholder="לפחות 6 תווים"
+                    placeholder="לפחות 8 תווים המורכבים ממספרים ואותיות"
                     dir="ltr"
-                    minLength={6}
+                    minLength={8}
                     className="h-10 rounded-xl pl-10"
                   />
                   <button

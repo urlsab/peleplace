@@ -63,8 +63,8 @@ const ResetPassword = () => {
       toast({ title: "הסיסמאות אינן תואמות", variant: "destructive" });
       return;
     }
-    if (password.length < 6) {
-      toast({ title: "הסיסמא חייבת להכיל לפחות 6 תווים", variant: "destructive" });
+    if (password.length < 8) {
+      toast({ title: "הסיסמא חייבת להכיל לפחות 8 תווים המורכבים ממספרים ואותיות", variant: "destructive" });
       return;
     }
 
@@ -147,8 +147,8 @@ const ResetPassword = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
-                    minLength={6}
-                    placeholder="לפחות 6 תווים"
+                    minLength={8}
+                    placeholder="לפחות 8 תווים המורכבים ממספרים ואותיות"
                     dir="ltr"
                     className="h-10 rounded-xl pl-10"
                   />
