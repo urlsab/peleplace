@@ -156,7 +156,7 @@ const ShabbatCalendar = () => {
       <Navbar />
       <div style={{textAlign:'center'}} className="container mx-auto px-4 sm:px-6 pt-24 pb-12 max-w-4xl">
         <motion.div style={{textAlign:'center'}} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-6">
-          <h1 style={{textAlign:'center', color:"red", justifyContent:'center'}} className="text-3xl sm:text-4xl font-black font-display flex items-center gap-2">
+          <h1 style={{textAlign:'center', color:"black", justifyContent:'center'}} className="text-3xl sm:text-4xl font-black font-display flex items-center gap-2">
            
             לוח שבתות וחגים
           </h1>

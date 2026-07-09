@@ -11,65 +11,44 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import peleTextsLogo from "@/assets/pele_texts-removebg-preview.png";
+import peleFullLogo from "@/assets/pele_full_logo-removebg-preview.png";
 
 const HeroSection = () => {
   const navigate = useNavigate();
   const [communityOpen, setCommunityOpen] = useState(false);
 
   return (
-    <section style={{textAlign:'center'}} id="hero" className="relative min-h-[96vh] flex items-center overflow-hidden">
+    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden pt-[68px]">
       {/* Decorative elements */}
-      <div style={{textAlign:'center'}} className="absolute top-20 left-10 h-72 w-72 rounded-full bg-primary/10 blur-[100px]" />
-      <div style={{textAlign:'center'}} className="absolute bottom-20 right-10 h-60 w-60 rounded-full bg-secondary/10 blur-[80px]" />
+      <div className="absolute top-20 left-10 h-72 w-72 rounded-full bg-primary/10 blur-[100px]" />
+      <div className="absolute bottom-20 right-10 h-60 w-60 rounded-full bg-secondary/10 blur-[80px]" />
 
-      <div style={{textAlign:'center'}} className="container relative z-10 mx-auto px-6 py-20 md:py-24">
-        <div style={{textAlign:'center'}} className="max-w-2xl mx-auto mt-6 md:mt-10">
-          <motion.h1
-          style={{textAlign:'center'}}
-            initial={{ opacity: 0, y: 28 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-6 text-[3.2rem] font-black leading-[1.1] tracking-tight md:text-[4.5rem] text-cream drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
-          >
-            {/* <img
-              src={peleTextsLogo}
-              alt="תמיד יש לך איפה להיות."
-              className="h-[7rem] w-auto object-contain md:h-[10rem]"
-            /> */}
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            style={{textAlign:'center'}}
-            transition={{ duration: 0.7, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
-            className="mb-10 mx-auto max-w-xl text-2xl leading-relaxed text-cream font-bold sm:text-3xl md:text-4xl lg:text-5xl drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)]"
-          >
-רווקות מאוחרת היא מאתגרת, במיוחד בשבתות וחגים. בשביל זה הקמנו את מיזם פל"א, שמחבר בין רווקים למארחים כדי להיות שם בשבילם.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.36, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-wrap gap-3"
-          >
-            {/* <Button
-              size="lg"
-              className="rounded-full text-sm font-bold px-7 h-11 shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all"
-              onClick={() => navigate("/auth")}
+      <div className="container relative z-10 mx-auto px-6">
+        <div className="grid md:grid-cols-2 gap-10 items-center">
+          {/* Right (RTL first): Text */}
+          <div className="flex flex-col justify-center text-right">
+            <motion.p
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.24, ease: [0.22, 1, 0.36, 1] }}
+              className="text-2xl leading-relaxed font-bold sm:text-3xl md:text-4xl drop-shadow-[0_1px_4px_rgba(0,0,0,0.4)]"
+              style={{ color: '#FAF6F5CC' }}
             >
-              מצאו את השבת שלכם
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="rounded-full text-sm font-semibold px-7 h-11 bg-cream/10 border-cream/25 text-cream hover:bg-cream/20 hover:text-cream backdrop-blur-sm"
-              onClick={() => navigate("/auth")}
-            >
-              אני רוצה לארח
-            </Button> */}
-          </motion.div>
+              רווקות מאוחרת היא מאתגרת, במיוחד בשבתות וחגים. בשביל זה הקמנו את מיזם פל"א, שמחבר בין רווקים למארחים כדי להיות שם בשבילם.
+            </motion.p>
+          </div>
+
+          {/* Left (RTL second): Full logo */}
+          <div className="flex items-center justify-center">
+            <motion.img
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+              src={peleFullLogo}
+              alt='לוגו פל"א'
+              className="w-full max-w-xs md:max-w-sm object-contain drop-shadow-2xl"
+            />
+          </div>
         </div>
       </div>
 

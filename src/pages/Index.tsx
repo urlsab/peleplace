@@ -151,7 +151,7 @@ const Index = () => {
           <div className="container relative z-10 mx-auto px-6">
             {/* Section label — top right, no card */}
             <motion.div {...fadeUp} transition={{ duration: 0.6 }} className="mb-12 text-right max-w-3xl mr-auto">
-              <h2 className="text-4xl md:text-[3.5rem] font-black leading-[1.05]">
+              <h2 className="text-4xl md:text-[3.5rem] font-black leading-[1.05]" style={{ color: '#FAF6F5CC' }}>
                 הסיפור <span className="text-gradient-warm">שלנו</span>
               </h2>
             </motion.div>
@@ -183,28 +183,28 @@ const Index = () => {
               <motion.div
                 {...fadeUp}
                 transition={{ delay: 0.2, duration: 0.6 }}
-                className="md:order-1 self-start relative z-20 md:-ml-14 lg:-ml-20"
+                className="md:order-1 self-start relative z-20"
               >
-                <div className="relative rounded-tl-[3rem] rounded-tr-xl rounded-bl-xl rounded-br-[3rem] bg-cream/90 backdrop-blur-md border border-white/50 shadow-card p-7 md:p-10 space-y-6 text-right">
-                  <Quote className="absolute -top-5 right-8 h-12 w-12 text-secondary/15 rotate-180" />
+                <div className="relative p-7 md:p-10 space-y-6 text-right">
+                  <Quote className="absolute -top-5 right-8 h-12 w-12 text-secondary/40 rotate-180" />
 
-                  <p className="text-2xl md:text-[1.85rem] font-display font-black leading-[1.45] text-foreground">
+                  <p className="text-2xl md:text-[1.85rem] font-display font-black leading-[1.45]" style={{ color: '#FAF6F5CC' }}>
                     שלום, אני <span className="text-gradient-warm">אודיה עמרוסי</span> — בת 32, נשואה ליוסף חיים ואמא לפלא בן שנה.
                   </p>
 
-                  <p className="text-lg md:text-xl text-foreground font-bold leading-[1.9]">
+                  <p className="text-lg md:text-xl font-bold leading-[1.9]" style={{ color: '#FAF6F5CC' }}>
                     התחתנתי בגיל 30 — אחרי שנים ארוכות של שבתות וחגים שבהם הרגשתי קצת בודדה בתוך ההמולה המשפחתית. כשאחים שלי — הגדול ממני אבל גם קטנים ממני — התחתנו, הקושי רק גדל.
                   </p>
 
-                  <p className="text-lg md:text-xl text-foreground font-bold leading-[1.9]">
+                  <p className="text-lg md:text-xl font-bold leading-[1.9]" style={{ color: '#FAF6F5CC' }}>
                     העדפתי כל שבת וחג להתארח אצל חברים או לעבוד כאחות בבית חולים, רק כדי לא להרגיש את החלל.
                   </p>
 
-                  <p className="text-lg md:text-xl text-foreground font-bold leading-[1.9]">
-                    הקמתי את <strong className="text-foreground">פל״א</strong> כדי לתת לרווקים ורווקות את מה שהייתי צריכה — <em className="text-primary not-italic font-semibold">בחירה</em>. בחירה אם להישאר אצל ההורים, או למצוא מקום אחר להיות בו.
+                  <p className="text-lg md:text-xl font-bold leading-[1.9]" style={{ color: '#FAF6F5CC' }}>
+                    הקמתי את <strong style={{ color: '#FAF6F5CC' }}>פל״א</strong> כדי לתת לרווקים ורווקות את מה שהייתי צריכה — <em className="text-primary not-italic font-semibold">בחירה</em>. בחירה אם להישאר אצל ההורים, או למצוא מקום אחר להיות בו.
                   </p>
 
-                  <p className="text-lg md:text-xl text-foreground font-bold leading-[1.9] pt-1">
+                  <p className="text-lg md:text-xl font-bold leading-[1.9] pt-1" style={{ color: '#FAF6F5CC' }}>
                     שכל אחד ירגיש שתמיד יש לו איפה להיות. <span className="inline-block animate-float">❤️</span>
                   </p>
                 </div>
@@ -269,7 +269,7 @@ const Index = () => {
               className="relative mx-auto max-w-4xl p-2 text-center md:p-4"
             >
               <div className="relative z-10">
-                <h2 className="mb-5 text-3xl font-black text-white md:text-[3rem] leading-tight">
+                <h2 className="mb-5 text-3xl font-black md:text-[3rem] leading-tight" style={{ color: '#FAF6F5CC' }}>
                   השבת הבאה שלכם
                   <br />
                   מתחילה כאן
@@ -297,13 +297,13 @@ const Index = () => {
                 <img src={peleTextsLogo} alt='פל"א - פשוט לבחור איפה' className="h-7 w-auto object-contain" />
               </div>
               <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-bold">
-                <a href="/terms" className="text-white hover:text-primary transition-colors">תקנון</a>
-                <span className="text-white/60">|</span>
-                {/* <a href="/accessibility" className="text-white hover:text-primary transition-colors">הצהרת נגישות</a>
-                <span className="text-white/60">|</span> */}
-                <p className="text-white">© 2026 כל הזכויות שמורות</p>
-                <span className="text-white/60">|</span>
-                <p className="text-white">
+                <a href="/terms" className="hover:text-primary transition-colors" style={{ color: '#FAF6F5CC' }}>תקנון</a>
+                <span style={{ color: 'rgba(250,246,245,0.4)' }}>|</span>
+                {/* <a href="/accessibility" className="hover:text-primary transition-colors" style={{ color: '#FAF6F5CC' }}>הצהרת נגישות</a>
+                <span style={{ color: 'rgba(250,246,245,0.4)' }}>|</span> */}
+                <p style={{ color: '#FAF6F5CC' }}>© 2026 כל הזכויות שמורות</p>
+                <span style={{ color: 'rgba(250,246,245,0.4)' }}>|</span>
+                <p style={{ color: '#FAF6F5CC' }}>
                   <a
               href="https://catapp.it.com"
               target="_blank"

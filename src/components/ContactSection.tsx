@@ -23,7 +23,7 @@ const ContactSection = () => {
           transition={{ duration: 0.6 }}
           className="mb-14 text-center max-w-2xl mx-auto"
         >
-          <h2 style={{color:'white'}} className="text-5xl md:text-6xl font-display font-black leading-[1.1] mb-4">
+          <h2 style={{ color: '#FAF6F5CC' }} className="text-5xl md:text-6xl font-display font-black leading-[1.1] mb-4">
             <span>צרו</span>{" "}
             <span>קשר.</span>
           </h2>
